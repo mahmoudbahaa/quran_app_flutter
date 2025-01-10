@@ -4,8 +4,9 @@ import 'package:quran/quran.dart' as quran;
 import 'package:quran_app_flutter/src/settings/settings_controller.dart';
 import 'package:quran_app_flutter/src/util/arabic_number.dart';
 
-import '../settings/settings_view.dart';
 import '../data/surah_names.dart';
+import '../settings/settings_view.dart';
+import '../util/quran_fonts_loader.dart';
 import '../util/quran_player_global_state.dart';
 import 'quran_chapters_details_view.dart';
 
@@ -48,23 +49,26 @@ class QuranChaptersListView extends StatelessWidget {
         itemCount: quran.totalSurahCount,
         itemBuilder: (BuildContext context, int index) {
           return ListTile(
-            title: Text('$surahPrefix${surahNames[index]}',
-                style: TextStyle(fontFamily: 'uthmanic3')),
-            leading: CircleAvatar(
-              // Display the Flutter Logo image asset.
-              // foregroundImage: const AssetImage('assets/images/flutter_logo.png'),
-              child: Text(ArabicNumber().convertToArabicNumber(index + 1), style: TextStyle(fontFamily: 'uthmanic')),
-            ),
-            onTap: () {
-              state.surahNumber.value = index + 1;
-              state.pageNumber.value =
-                  quran.getPageNumber(state.surahNumber.value, 1);
-              // dynamic pageData = quran.getPageData(state.pageNumber).first;
-              state.verseNumber.value = 1;
-              state.wordNumber.value = -1;
-              Get.to(() => QuranChapterDetailsView(settingsController: controller));
-            }
-          );
+              title: Text('$surahPrefix${surahNames[index]}',
+                  style: TextStyle(fontFamily: 'uthmanic3')),
+              leading: CircleAvatar(
+                // Display the Flutter Logo image asset.
+                // foregroundImage: const AssetImage('assets/images/flutter_logo.png'),
+                child: Text(ArabicNumber().convertToArabicNumber(index + 1),
+                    style: TextStyle(fontFamily: 'uthmanic')),
+              ),
+              onTap: () async {
+                state.surahNumber.value = index + 1;
+                state.pageNumber.value =
+                    quran.getPageNumber(state.surahNumber.value, 1);
+                // dynamic pageData = quran.getPageData(state.pageNumber).first;
+                state.verseNumber.value = 1;
+                state.wordNumber.value = -1;
+                await QuranFontsLoader().loadPageFont(
+                    state.pageNumber.value, controller.textRepresentation);
+                Get.to(() =>
+                    QuranChapterDetailsView(settingsController: controller));
+              });
         },
       ),
     );

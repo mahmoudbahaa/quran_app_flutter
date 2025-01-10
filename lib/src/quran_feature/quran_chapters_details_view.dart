@@ -8,6 +8,7 @@ import 'package:quran_app_flutter/src/util/page_transition.dart';
 import 'package:quran_app_flutter/src/util/text_representation.dart';
 
 import '../settings/settings_controller.dart';
+import '../util/quran_fonts_loader.dart';
 import '../util/quran_player_global_state.dart';
 import '../util/swipe_to.dart';
 import 'quran_player.dart';
@@ -141,12 +142,17 @@ class QuranChapterDetailsView extends StatelessWidget {
         (quran.totalPagesCount - settingsController.numPages)) return;
 
     if (settingsController.numPages == 1) {
-      state.pageNumber.value++;
+      state.pageNumber.value = state.pageNumber.value + 1;
     } else {
       state.pageNumber.value =
           ((state.pageNumber.value / settingsController.numPages).floor() + 1) *
                   settingsController.numPages +
               1;
+    }
+
+    for (int i = 0; i < settingsController.numPages; i++) {
+      await QuranFontsLoader().loadPageFont(
+          state.pageNumber.value + i, settingsController.textRepresentation);
     }
 
     dynamic pageData = quran.getPageData(state.pageNumber.value).first;
@@ -161,13 +167,19 @@ class QuranChapterDetailsView extends StatelessWidget {
     if (state.pageNumber <= settingsController.numPages) return;
 
     if (settingsController.numPages == 1) {
-      state.pageNumber.value--;
+      state.pageNumber.value = state.pageNumber.value - 1;
     } else {
       state.pageNumber.value =
           ((state.pageNumber.value / settingsController.numPages).floor() - 1) *
                   settingsController.numPages +
               1;
     }
+
+    for (int i = 0; i < settingsController.numPages; i++) {
+      await QuranFontsLoader().loadPageFont(
+          state.pageNumber.value + i, settingsController.textRepresentation);
+    }
+
     dynamic pageData = quran.getPageData(state.pageNumber.value).first;
     state.surahNumber.value = pageData['surah'];
     state.verseNumber.value = pageData['start'];
@@ -181,7 +193,7 @@ class QuranChapterDetailsView extends StatelessWidget {
     QuranPlayerGlobalState state = Get.find();
 
     return GetX<QuranPlayerGlobalState>(
-        builder: (state) => Scaffold(
+        builder: (_) => Scaffold(
               // appBar: AppBar(
               //   title: Text(
               //       '${quran.getSurahNameArabic(state.surahNumber)} (${state.pageNumber})'),
@@ -201,14 +213,20 @@ class QuranChapterDetailsView extends StatelessWidget {
                 opacity: state.pageTransition.value != PageTransition.noChange
                     ? 0.0
                     : 1.0,
-                duration: const Duration(milliseconds: 700),
+                duration: const Duration(milliseconds: 1000),
                 onEnd: () {
                   if (state.pageTransition.value == PageTransition.nextPage) {
-                    goNextPage(state);
+                    goNextPage(state).then((value) {
+                      state.loadingPage.value = !state.loadingPage.value;
+                      state.update();
+                    });
                     state.pageTransition.value = PageTransition.noChange;
                   } else if (state.pageTransition.value ==
                       PageTransition.previousPage) {
-                    goPreviousPage(state);
+                    goPreviousPage(state).then((value) {
+                      state.loadingPage.value = !state.loadingPage.value;
+                      state.update();
+                    });
                     state.pageTransition.value = PageTransition.noChange;
                   }
                 },

@@ -29,4 +29,6 @@ class QuranPlayerGlobalState extends GetxController {
   // updateWordNumber(int wordNumber) => this.wordNumber = wordNumber;
 
   final Rx<PageTransition> pageTransition = PageTransition.noChange.obs;
+
+  final Rx<bool> loadingPage = false.obs;
 }

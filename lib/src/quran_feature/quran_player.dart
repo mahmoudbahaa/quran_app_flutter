@@ -96,7 +96,7 @@ class _QuranPlayerState extends State<QuranPlayer> {
         if (Platform.isAndroid) {
           directory = (await getExternalStorageDirectory())!;
         } else {
-          directory = (await getApplicationDocumentsDirectory());
+          directory = (await getApplicationCacheDirectory());
         }
 
         filePath =

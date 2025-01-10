@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quran/quran.dart' as quran;
+import 'package:quran_app_flutter/src/util/quran_fonts_loader.dart';
 
 import '../data/verses_v1.dart';
 import '../data/verses_v2.dart';
@@ -65,9 +66,21 @@ class PageBuilder {
 
   List<TextSpan> buildPage(QuranPlayerGlobalState state, int offset,
       int numPages, TextRepresentation textRepresentation, bool flowMode) {
+    final List<TextSpan> children = List.empty(growable: true);
     int pageNumber = offset +
         1 +
         ((state.pageNumber.value - 1) / numPages).floor() * numPages;
+
+    if (!QuranFontsLoader().isFontLoaded(pageNumber, textRepresentation)) {
+      children.add(TextSpan(
+          text: 'جاري تحميل الصفحة, برجاء الإنتظار',
+          style: TextStyle(
+            fontFamily: 'uthmanic3',
+            height: 1.7,
+          )));
+      return children;
+    }
+
     int highlightSurah = -1;
     int highlightVerse = -1;
     int highlightWord = -1;
@@ -76,7 +89,6 @@ class PageBuilder {
     highlightVerse = state.verseNumber.value - 1;
     highlightWord = state.wordNumber.value - 1;
 
-    final List<TextSpan> children = List.empty(growable: true);
     int currentPageNumber = -1;
     int lineNumber = -1;
     int curLineNumber = -1;

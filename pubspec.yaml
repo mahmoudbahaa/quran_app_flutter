@@ -1,0 +1,7390 @@
+name: quran_app_flutter
+description: "Quran app in flutter"
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+# In Windows, build-name is used as the major, minor, and patch parts
+# of the product and file versions while build-number is used as the build suffix.
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.6.0
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  quran: ^1.3.3
+  auto_size_text: ^3.0.0
+  http: ^1.2.2
+  background_downloader: ^8.8.1
+  universal_io: ^2.2.2
+  get: ^4.6.6
+#  just_audio: ^0.9.42
+#  audio_session: ^0.1.23
+#  swipe_to: ^1.0.6
+
+  media_kit: ^1.1.11 # Primary package.
+  media_kit_libs_audio: ^1.0.5 # Native audio dependencies.
+
+#  just_audio_media_kit: ^2.0.6
+#  media_kit_libs_linux: any
+#  media_kit_libs_windows_audio: any
+##  media_kit_libs_macos_audio: any
+#  media_kit_libs_android_audio: any
+##  media_kit_libs_ios_audio: any
+
+  shared_preferences: ^2.3.5
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.8
+  percent_indicator: ^4.2.4
+  dio: ^5.7.0
+  path_provider: ^2.1.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+  flutter_lints: ^5.0.0
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter packages.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  generate: true
+  # To add assets to your application, add an assets section, like this:
+  # assets:
+  #   - images/a_dot_burr.jpeg
+  #   - images/a_dot_ham.jpeg
+
+  assets:
+    [ assets/images/hollow/ ]
+  # An image asset can refer to one or more resolution-specific "variants", see
+  # https://flutter.dev/to/resolution-aware-images
+
+  # For details regarding adding assets from package dependencies, see
+  # https://flutter.dev/to/asset-from-package
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/to/font-from-package
+  fonts:
+    - family: uthmanic
+      fonts:
+        - asset: assets/fonts/UthmanTN1_Ver10.otf
+
+    - family: uthmanic2
+      fonts:
+        - asset: assets/fonts/UthmanicHafs_V20.ttf
+
+    - family: uthmanic3
+      fonts:
+        - asset: assets/fonts/uthmanic_hafs_v22.ttf
+
+    - family: page1
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p001.ttf
+
+    - family: page2
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p002.ttf
+
+    - family: page3
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p003.ttf
+
+    - family: page4
+      fonts:
+        - # noinspection YAMLSchemaValidation
+          asset: assets/fonts/quran/hafs/v1/ttf/p004.ttf
+
+    - family: page5
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p005.ttf
+
+    - family: page6
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p006.ttf
+
+    - family: page7
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p007.ttf
+
+    - family: page8
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p008.ttf
+
+    - family: page9
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p009.ttf
+
+    - family: page10
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p010.ttf
+
+    - family: page11
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p011.ttf
+
+    - family: page12
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p012.ttf
+
+    - family: page13
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p013.ttf
+
+    - family: page14
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p014.ttf
+
+    - family: page15
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p015.ttf
+
+    - family: page16
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p016.ttf
+
+    - family: page17
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p017.ttf
+
+    - family: page18
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p018.ttf
+
+    - family: page19
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p019.ttf
+
+    - family: page20
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p020.ttf
+
+    - family: page21
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p021.ttf
+
+    - family: page22
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p022.ttf
+
+    - family: page23
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p023.ttf
+
+    - family: page24
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p024.ttf
+
+    - family: page25
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p025.ttf
+
+    - family: page26
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p026.ttf
+
+    - family: page27
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p027.ttf
+
+    - family: page28
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p028.ttf
+
+    - family: page29
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p029.ttf
+
+    - family: page30
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p030.ttf
+
+    - family: page31
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p031.ttf
+
+    - family: page32
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p032.ttf
+
+    - family: page33
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p033.ttf
+
+    - family: page34
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p034.ttf
+
+    - family: page35
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p035.ttf
+
+    - family: page36
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p036.ttf
+
+    - family: page37
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p037.ttf
+
+    - family: page38
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p038.ttf
+
+    - family: page39
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p039.ttf
+
+    - family: page40
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p040.ttf
+
+    - family: page41
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p041.ttf
+
+    - family: page42
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p042.ttf
+
+    - family: page43
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p043.ttf
+
+    - family: page44
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p044.ttf
+
+    - family: page45
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p045.ttf
+
+    - family: page46
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p046.ttf
+
+    - family: page47
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p047.ttf
+
+    - family: page48
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p048.ttf
+
+    - family: page49
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p049.ttf
+
+    - family: page50
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p050.ttf
+
+    - family: page51
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p051.ttf
+
+    - family: page52
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p052.ttf
+
+    - family: page53
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p053.ttf
+
+    - family: page54
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p054.ttf
+
+    - family: page55
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p055.ttf
+
+    - family: page56
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p056.ttf
+
+    - family: page57
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p057.ttf
+
+    - family: page58
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p058.ttf
+
+    - family: page59
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p059.ttf
+
+    - family: page60
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p060.ttf
+
+    - family: page61
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p061.ttf
+
+    - family: page62
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p062.ttf
+
+    - family: page63
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p063.ttf
+
+    - family: page64
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p064.ttf
+
+    - family: page65
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p065.ttf
+
+    - family: page66
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p066.ttf
+
+    - family: page67
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p067.ttf
+
+    - family: page68
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p068.ttf
+
+    - family: page69
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p069.ttf
+
+    - family: page70
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p070.ttf
+
+    - family: page71
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p071.ttf
+
+    - family: page72
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p072.ttf
+
+    - family: page73
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p073.ttf
+
+    - family: page74
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p074.ttf
+
+    - family: page75
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p075.ttf
+
+    - family: page76
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p076.ttf
+
+    - family: page77
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p077.ttf
+
+    - family: page78
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p078.ttf
+
+    - family: page79
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p079.ttf
+
+    - family: page80
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p080.ttf
+
+    - family: page81
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p081.ttf
+
+    - family: page82
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p082.ttf
+
+    - family: page83
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p083.ttf
+
+    - family: page84
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p084.ttf
+
+    - family: page85
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p085.ttf
+
+    - family: page86
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p086.ttf
+
+    - family: page87
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p087.ttf
+
+    - family: page88
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p088.ttf
+
+    - family: page89
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p089.ttf
+
+    - family: page90
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p090.ttf
+
+    - family: page91
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p091.ttf
+
+    - family: page92
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p092.ttf
+
+    - family: page93
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p093.ttf
+
+    - family: page94
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p094.ttf
+
+    - family: page95
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p095.ttf
+
+    - family: page96
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p096.ttf
+
+    - family: page97
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p097.ttf
+
+    - family: page98
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p098.ttf
+
+    - family: page99
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p099.ttf
+
+    - family: page100
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p100.ttf
+
+    - family: page101
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p101.ttf
+
+    - family: page102
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p102.ttf
+
+    - family: page103
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p103.ttf
+
+    - family: page104
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p104.ttf
+
+    - family: page105
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p105.ttf
+
+    - family: page106
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p106.ttf
+
+    - family: page107
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p107.ttf
+
+    - family: page108
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p108.ttf
+
+    - family: page109
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p109.ttf
+
+    - family: page110
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p110.ttf
+
+    - family: page111
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p111.ttf
+
+    - family: page112
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p112.ttf
+
+    - family: page113
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p113.ttf
+
+    - family: page114
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p114.ttf
+
+    - family: page115
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p115.ttf
+
+    - family: page116
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p116.ttf
+
+    - family: page117
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p117.ttf
+
+    - family: page118
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p118.ttf
+
+    - family: page119
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p119.ttf
+
+    - family: page120
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p120.ttf
+
+    - family: page121
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p121.ttf
+
+    - family: page122
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p122.ttf
+
+    - family: page123
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p123.ttf
+
+    - family: page124
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p124.ttf
+
+    - family: page125
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p125.ttf
+
+    - family: page126
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p126.ttf
+
+    - family: page127
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p127.ttf
+
+    - family: page128
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p128.ttf
+
+    - family: page129
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p129.ttf
+
+    - family: page130
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p130.ttf
+
+    - family: page131
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p131.ttf
+
+    - family: page132
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p132.ttf
+
+    - family: page133
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p133.ttf
+
+    - family: page134
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p134.ttf
+
+    - family: page135
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p135.ttf
+
+    - family: page136
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p136.ttf
+
+    - family: page137
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p137.ttf
+
+    - family: page138
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p138.ttf
+
+    - family: page139
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p139.ttf
+
+    - family: page140
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p140.ttf
+
+    - family: page141
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p141.ttf
+
+    - family: page142
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p142.ttf
+
+    - family: page143
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p143.ttf
+
+    - family: page144
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p144.ttf
+
+    - family: page145
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p145.ttf
+
+    - family: page146
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p146.ttf
+
+    - family: page147
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p147.ttf
+
+    - family: page148
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p148.ttf
+
+    - family: page149
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p149.ttf
+
+    - family: page150
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p150.ttf
+
+    - family: page151
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p151.ttf
+
+    - family: page152
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p152.ttf
+
+    - family: page153
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p153.ttf
+
+    - family: page154
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p154.ttf
+
+    - family: page155
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p155.ttf
+
+    - family: page156
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p156.ttf
+
+    - family: page157
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p157.ttf
+
+    - family: page158
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p158.ttf
+
+    - family: page159
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p159.ttf
+
+    - family: page160
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p160.ttf
+
+    - family: page161
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p161.ttf
+
+    - family: page162
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p162.ttf
+
+    - family: page163
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p163.ttf
+
+    - family: page164
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p164.ttf
+
+    - family: page165
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p165.ttf
+
+    - family: page166
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p166.ttf
+
+    - family: page167
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p167.ttf
+
+    - family: page168
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p168.ttf
+
+    - family: page169
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p169.ttf
+
+    - family: page170
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p170.ttf
+
+    - family: page171
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p171.ttf
+
+    - family: page172
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p172.ttf
+
+    - family: page173
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p173.ttf
+
+    - family: page174
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p174.ttf
+
+    - family: page175
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p175.ttf
+
+    - family: page176
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p176.ttf
+
+    - family: page177
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p177.ttf
+
+    - family: page178
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p178.ttf
+
+    - family: page179
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p179.ttf
+
+    - family: page180
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p180.ttf
+
+    - family: page181
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p181.ttf
+
+    - family: page182
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p182.ttf
+
+    - family: page183
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p183.ttf
+
+    - family: page184
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p184.ttf
+
+    - family: page185
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p185.ttf
+
+    - family: page186
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p186.ttf
+
+    - family: page187
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p187.ttf
+
+    - family: page188
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p188.ttf
+
+    - family: page189
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p189.ttf
+
+    - family: page190
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p190.ttf
+
+    - family: page191
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p191.ttf
+
+    - family: page192
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p192.ttf
+
+    - family: page193
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p193.ttf
+
+    - family: page194
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p194.ttf
+
+    - family: page195
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p195.ttf
+
+    - family: page196
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p196.ttf
+
+    - family: page197
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p197.ttf
+
+    - family: page198
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p198.ttf
+
+    - family: page199
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p199.ttf
+
+    - family: page200
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p200.ttf
+
+    - family: page201
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p201.ttf
+
+    - family: page202
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p202.ttf
+
+    - family: page203
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p203.ttf
+
+    - family: page204
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p204.ttf
+
+    - family: page205
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p205.ttf
+
+    - family: page206
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p206.ttf
+
+    - family: page207
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p207.ttf
+
+    - family: page208
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p208.ttf
+
+    - family: page209
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p209.ttf
+
+    - family: page210
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p210.ttf
+
+    - family: page211
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p211.ttf
+
+    - family: page212
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p212.ttf
+
+    - family: page213
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p213.ttf
+
+    - family: page214
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p214.ttf
+
+    - family: page215
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p215.ttf
+
+    - family: page216
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p216.ttf
+
+    - family: page217
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p217.ttf
+
+    - family: page218
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p218.ttf
+
+    - family: page219
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p219.ttf
+
+    - family: page220
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p220.ttf
+
+    - family: page221
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p221.ttf
+
+    - family: page222
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p222.ttf
+
+    - family: page223
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p223.ttf
+
+    - family: page224
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p224.ttf
+
+    - family: page225
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p225.ttf
+
+    - family: page226
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p226.ttf
+
+    - family: page227
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p227.ttf
+
+    - family: page228
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p228.ttf
+
+    - family: page229
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p229.ttf
+
+    - family: page230
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p230.ttf
+
+    - family: page231
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p231.ttf
+
+    - family: page232
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p232.ttf
+
+    - family: page233
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p233.ttf
+
+    - family: page234
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p234.ttf
+
+    - family: page235
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p235.ttf
+
+    - family: page236
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p236.ttf
+
+    - family: page237
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p237.ttf
+
+    - family: page238
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p238.ttf
+
+    - family: page239
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p239.ttf
+
+    - family: page240
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p240.ttf
+
+    - family: page241
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p241.ttf
+
+    - family: page242
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p242.ttf
+
+    - family: page243
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p243.ttf
+
+    - family: page244
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p244.ttf
+
+    - family: page245
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p245.ttf
+
+    - family: page246
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p246.ttf
+
+    - family: page247
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p247.ttf
+
+    - family: page248
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p248.ttf
+
+    - family: page249
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p249.ttf
+
+    - family: page250
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p250.ttf
+
+    - family: page251
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p251.ttf
+
+    - family: page252
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p252.ttf
+
+    - family: page253
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p253.ttf
+
+    - family: page254
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p254.ttf
+
+    - family: page255
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p255.ttf
+
+    - family: page256
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p256.ttf
+
+    - family: page257
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p257.ttf
+
+    - family: page258
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p258.ttf
+
+    - family: page259
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p259.ttf
+
+    - family: page260
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p260.ttf
+
+    - family: page261
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p261.ttf
+
+    - family: page262
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p262.ttf
+
+    - family: page263
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p263.ttf
+
+    - family: page264
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p264.ttf
+
+    - family: page265
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p265.ttf
+
+    - family: page266
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p266.ttf
+
+    - family: page267
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p267.ttf
+
+    - family: page268
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p268.ttf
+
+    - family: page269
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p269.ttf
+
+    - family: page270
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p270.ttf
+
+    - family: page271
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p271.ttf
+
+    - family: page272
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p272.ttf
+
+    - family: page273
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p273.ttf
+
+    - family: page274
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p274.ttf
+
+    - family: page275
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p275.ttf
+
+    - family: page276
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p276.ttf
+
+    - family: page277
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p277.ttf
+
+    - family: page278
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p278.ttf
+
+    - family: page279
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p279.ttf
+
+    - family: page280
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p280.ttf
+
+    - family: page281
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p281.ttf
+
+    - family: page282
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p282.ttf
+
+    - family: page283
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p283.ttf
+
+    - family: page284
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p284.ttf
+
+    - family: page285
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p285.ttf
+
+    - family: page286
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p286.ttf
+
+    - family: page287
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p287.ttf
+
+    - family: page288
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p288.ttf
+
+    - family: page289
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p289.ttf
+
+    - family: page290
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p290.ttf
+
+    - family: page291
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p291.ttf
+
+    - family: page292
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p292.ttf
+
+    - family: page293
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p293.ttf
+
+    - family: page294
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p294.ttf
+
+    - family: page295
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p295.ttf
+
+    - family: page296
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p296.ttf
+
+    - family: page297
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p297.ttf
+
+    - family: page298
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p298.ttf
+
+    - family: page299
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p299.ttf
+
+    - family: page300
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p300.ttf
+
+    - family: page301
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p301.ttf
+
+    - family: page302
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p302.ttf
+
+    - family: page303
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p303.ttf
+
+    - family: page304
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p304.ttf
+
+    - family: page305
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p305.ttf
+
+    - family: page306
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p306.ttf
+
+    - family: page307
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p307.ttf
+
+    - family: page308
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p308.ttf
+
+    - family: page309
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p309.ttf
+
+    - family: page310
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p310.ttf
+
+    - family: page311
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p311.ttf
+
+    - family: page312
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p312.ttf
+
+    - family: page313
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p313.ttf
+
+    - family: page314
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p314.ttf
+
+    - family: page315
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p315.ttf
+
+    - family: page316
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p316.ttf
+
+    - family: page317
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p317.ttf
+
+    - family: page318
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p318.ttf
+
+    - family: page319
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p319.ttf
+
+    - family: page320
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p320.ttf
+
+    - family: page321
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p321.ttf
+
+    - family: page322
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p322.ttf
+
+    - family: page323
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p323.ttf
+
+    - family: page324
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p324.ttf
+
+    - family: page325
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p325.ttf
+
+    - family: page326
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p326.ttf
+
+    - family: page327
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p327.ttf
+
+    - family: page328
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p328.ttf
+
+    - family: page329
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p329.ttf
+
+    - family: page330
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p330.ttf
+
+    - family: page331
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p331.ttf
+
+    - family: page332
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p332.ttf
+
+    - family: page333
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p333.ttf
+
+    - family: page334
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p334.ttf
+
+    - family: page335
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p335.ttf
+
+    - family: page336
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p336.ttf
+
+    - family: page337
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p337.ttf
+
+    - family: page338
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p338.ttf
+
+    - family: page339
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p339.ttf
+
+    - family: page340
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p340.ttf
+
+    - family: page341
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p341.ttf
+
+    - family: page342
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p342.ttf
+
+    - family: page343
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p343.ttf
+
+    - family: page344
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p344.ttf
+
+    - family: page345
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p345.ttf
+
+    - family: page346
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p346.ttf
+
+    - family: page347
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p347.ttf
+
+    - family: page348
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p348.ttf
+
+    - family: page349
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p349.ttf
+
+    - family: page350
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p350.ttf
+
+    - family: page351
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p351.ttf
+
+    - family: page352
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p352.ttf
+
+    - family: page353
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p353.ttf
+
+    - family: page354
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p354.ttf
+
+    - family: page355
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p355.ttf
+
+    - family: page356
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p356.ttf
+
+    - family: page357
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p357.ttf
+
+    - family: page358
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p358.ttf
+
+    - family: page359
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p359.ttf
+
+    - family: page360
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p360.ttf
+
+    - family: page361
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p361.ttf
+
+    - family: page362
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p362.ttf
+
+    - family: page363
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p363.ttf
+
+    - family: page364
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p364.ttf
+
+    - family: page365
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p365.ttf
+
+    - family: page366
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p366.ttf
+
+    - family: page367
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p367.ttf
+
+    - family: page368
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p368.ttf
+
+    - family: page369
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p369.ttf
+
+    - family: page370
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p370.ttf
+
+    - family: page371
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p371.ttf
+
+    - family: page372
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p372.ttf
+
+    - family: page373
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p373.ttf
+
+    - family: page374
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p374.ttf
+
+    - family: page375
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p375.ttf
+
+    - family: page376
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p376.ttf
+
+    - family: page377
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p377.ttf
+
+    - family: page378
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p378.ttf
+
+    - family: page379
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p379.ttf
+
+    - family: page380
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p380.ttf
+
+    - family: page381
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p381.ttf
+
+    - family: page382
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p382.ttf
+
+    - family: page383
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p383.ttf
+
+    - family: page384
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p384.ttf
+
+    - family: page385
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p385.ttf
+
+    - family: page386
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p386.ttf
+
+    - family: page387
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p387.ttf
+
+    - family: page388
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p388.ttf
+
+    - family: page389
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p389.ttf
+
+    - family: page390
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p390.ttf
+
+    - family: page391
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p391.ttf
+
+    - family: page392
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p392.ttf
+
+    - family: page393
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p393.ttf
+
+    - family: page394
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p394.ttf
+
+    - family: page395
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p395.ttf
+
+    - family: page396
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p396.ttf
+
+    - family: page397
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p397.ttf
+
+    - family: page398
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p398.ttf
+
+    - family: page399
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p399.ttf
+
+    - family: page400
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p400.ttf
+
+    - family: page401
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p401.ttf
+
+    - family: page402
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p402.ttf
+
+    - family: page403
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p403.ttf
+
+    - family: page404
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p404.ttf
+
+    - family: page405
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p405.ttf
+
+    - family: page406
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p406.ttf
+
+    - family: page407
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p407.ttf
+
+    - family: page408
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p408.ttf
+
+    - family: page409
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p409.ttf
+
+    - family: page410
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p410.ttf
+
+    - family: page411
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p411.ttf
+
+    - family: page412
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p412.ttf
+
+    - family: page413
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p413.ttf
+
+    - family: page414
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p414.ttf
+
+    - family: page415
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p415.ttf
+
+    - family: page416
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p416.ttf
+
+    - family: page417
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p417.ttf
+
+    - family: page418
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p418.ttf
+
+    - family: page419
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p419.ttf
+
+    - family: page420
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p420.ttf
+
+    - family: page421
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p421.ttf
+
+    - family: page422
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p422.ttf
+
+    - family: page423
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p423.ttf
+
+    - family: page424
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p424.ttf
+
+    - family: page425
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p425.ttf
+
+    - family: page426
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p426.ttf
+
+    - family: page427
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p427.ttf
+
+    - family: page428
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p428.ttf
+
+    - family: page429
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p429.ttf
+
+    - family: page430
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p430.ttf
+
+    - family: page431
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p431.ttf
+
+    - family: page432
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p432.ttf
+
+    - family: page433
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p433.ttf
+
+    - family: page434
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p434.ttf
+
+    - family: page435
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p435.ttf
+
+    - family: page436
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p436.ttf
+
+    - family: page437
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p437.ttf
+
+    - family: page438
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p438.ttf
+
+    - family: page439
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p439.ttf
+
+    - family: page440
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p440.ttf
+
+    - family: page441
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p441.ttf
+
+    - family: page442
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p442.ttf
+
+    - family: page443
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p443.ttf
+
+    - family: page444
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p444.ttf
+
+    - family: page445
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p445.ttf
+
+    - family: page446
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p446.ttf
+
+    - family: page447
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p447.ttf
+
+    - family: page448
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p448.ttf
+
+    - family: page449
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p449.ttf
+
+    - family: page450
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p450.ttf
+
+    - family: page451
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p451.ttf
+
+    - family: page452
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p452.ttf
+
+    - family: page453
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p453.ttf
+
+    - family: page454
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p454.ttf
+
+    - family: page455
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p455.ttf
+
+    - family: page456
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p456.ttf
+
+    - family: page457
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p457.ttf
+
+    - family: page458
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p458.ttf
+
+    - family: page459
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p459.ttf
+
+    - family: page460
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p460.ttf
+
+    - family: page461
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p461.ttf
+
+    - family: page462
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p462.ttf
+
+    - family: page463
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p463.ttf
+
+    - family: page464
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p464.ttf
+
+    - family: page465
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p465.ttf
+
+    - family: page466
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p466.ttf
+
+    - family: page467
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p467.ttf
+
+    - family: page468
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p468.ttf
+
+    - family: page469
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p469.ttf
+
+    - family: page470
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p470.ttf
+
+    - family: page471
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p471.ttf
+
+    - family: page472
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p472.ttf
+
+    - family: page473
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p473.ttf
+
+    - family: page474
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p474.ttf
+
+    - family: page475
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p475.ttf
+
+    - family: page476
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p476.ttf
+
+    - family: page477
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p477.ttf
+
+    - family: page478
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p478.ttf
+
+    - family: page479
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p479.ttf
+
+    - family: page480
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p480.ttf
+
+    - family: page481
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p481.ttf
+
+    - family: page482
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p482.ttf
+
+    - family: page483
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p483.ttf
+
+    - family: page484
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p484.ttf
+
+    - family: page485
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p485.ttf
+
+    - family: page486
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p486.ttf
+
+    - family: page487
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p487.ttf
+
+    - family: page488
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p488.ttf
+
+    - family: page489
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p489.ttf
+
+    - family: page490
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p490.ttf
+
+    - family: page491
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p491.ttf
+
+    - family: page492
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p492.ttf
+
+    - family: page493
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p493.ttf
+
+    - family: page494
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p494.ttf
+
+    - family: page495
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p495.ttf
+
+    - family: page496
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p496.ttf
+
+    - family: page497
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p497.ttf
+
+    - family: page498
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p498.ttf
+
+    - family: page499
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p499.ttf
+
+    - family: page500
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p500.ttf
+
+    - family: page501
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p501.ttf
+
+    - family: page502
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p502.ttf
+
+    - family: page503
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p503.ttf
+
+    - family: page504
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p504.ttf
+
+    - family: page505
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p505.ttf
+
+    - family: page506
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p506.ttf
+
+    - family: page507
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p507.ttf
+
+    - family: page508
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p508.ttf
+
+    - family: page509
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p509.ttf
+
+    - family: page510
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p510.ttf
+
+    - family: page511
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p511.ttf
+
+    - family: page512
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p512.ttf
+
+    - family: page513
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p513.ttf
+
+    - family: page514
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p514.ttf
+
+    - family: page515
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p515.ttf
+
+    - family: page516
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p516.ttf
+
+    - family: page517
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p517.ttf
+
+    - family: page518
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p518.ttf
+
+    - family: page519
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p519.ttf
+
+    - family: page520
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p520.ttf
+
+    - family: page521
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p521.ttf
+
+    - family: page522
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p522.ttf
+
+    - family: page523
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p523.ttf
+
+    - family: page524
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p524.ttf
+
+    - family: page525
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p525.ttf
+
+    - family: page526
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p526.ttf
+
+    - family: page527
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p527.ttf
+
+    - family: page528
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p528.ttf
+
+    - family: page529
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p529.ttf
+
+    - family: page530
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p530.ttf
+
+    - family: page531
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p531.ttf
+
+    - family: page532
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p532.ttf
+
+    - family: page533
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p533.ttf
+
+    - family: page534
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p534.ttf
+
+    - family: page535
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p535.ttf
+
+    - family: page536
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p536.ttf
+
+    - family: page537
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p537.ttf
+
+    - family: page538
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p538.ttf
+
+    - family: page539
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p539.ttf
+
+    - family: page540
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p540.ttf
+
+    - family: page541
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p541.ttf
+
+    - family: page542
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p542.ttf
+
+    - family: page543
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p543.ttf
+
+    - family: page544
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p544.ttf
+
+    - family: page545
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p545.ttf
+
+    - family: page546
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p546.ttf
+
+    - family: page547
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p547.ttf
+
+    - family: page548
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p548.ttf
+
+    - family: page549
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p549.ttf
+
+    - family: page550
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p550.ttf
+
+    - family: page551
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p551.ttf
+
+    - family: page552
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p552.ttf
+
+    - family: page553
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p553.ttf
+
+    - family: page554
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p554.ttf
+
+    - family: page555
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p555.ttf
+
+    - family: page556
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p556.ttf
+
+    - family: page557
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p557.ttf
+
+    - family: page558
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p558.ttf
+
+    - family: page559
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p559.ttf
+
+    - family: page560
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p560.ttf
+
+    - family: page561
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p561.ttf
+
+    - family: page562
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p562.ttf
+
+    - family: page563
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p563.ttf
+
+    - family: page564
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p564.ttf
+
+    - family: page565
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p565.ttf
+
+    - family: page566
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p566.ttf
+
+    - family: page567
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p567.ttf
+
+
+    - family: page568
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p568.ttf
+
+    - family: page569
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p569.ttf
+
+    - family: page570
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p570.ttf
+
+    - family: page571
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p571.ttf
+
+    - family: page572
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p572.ttf
+
+    - family: page573
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p573.ttf
+
+    - family: page574
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p574.ttf
+
+    - family: page575
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p575.ttf
+
+    - family: page576
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p576.ttf
+
+    - family: page577
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p577.ttf
+
+    - family: page578
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p578.ttf
+
+    - family: page579
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p579.ttf
+
+    - family: page580
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p580.ttf
+
+    - family: page581
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p581.ttf
+
+    - family: page582
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p582.ttf
+
+    - family: page583
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p583.ttf
+
+    - family: page584
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p584.ttf
+
+    - family: page585
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p585.ttf
+
+    - family: page586
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p586.ttf
+
+    - family: page587
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p587.ttf
+
+    - family: page588
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p588.ttf
+
+    - family: page589
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p589.ttf
+
+    - family: page590
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p590.ttf
+
+    - family: page591
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p591.ttf
+
+    - family: page592
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p592.ttf
+
+    - family: page593
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p593.ttf
+
+    - family: page594
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p594.ttf
+
+    - family: page595
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p595.ttf
+
+    - family: page596
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p596.ttf
+
+    - family: page597
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p597.ttf
+
+    - family: page598
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p598.ttf
+
+    - family: page599
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p599.ttf
+
+    - family: page600
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p600.ttf
+
+    - family: page601
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p601.ttf
+
+    - family: page602
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p602.ttf
+
+    - family: page603
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p603.ttf
+
+    - family: page604
+      fonts:
+        - asset: assets/fonts/quran/hafs/v1/ttf/p604.ttf
+
+    - family: v2_page1
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p1.ttf
+
+    - family: v2_page2
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p2.ttf
+
+    - family: v2_page3
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p3.ttf
+
+    - family: v2_page4
+      fonts:
+        - # noinspection YAMLSchemaValidation
+          asset: assets/fonts/quran/hafs/v2/ttf/p4.ttf
+
+    - family: v2_page5
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p5.ttf
+
+    - family: v2_page6
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p6.ttf
+
+    - family: v2_page7
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p7.ttf
+
+    - family: v2_page8
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p8.ttf
+
+    - family: v2_page9
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p9.ttf
+
+    - family: v2_page10
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p10.ttf
+
+    - family: v2_page11
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p11.ttf
+
+    - family: v2_page12
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p12.ttf
+
+    - family: v2_page13
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p13.ttf
+
+    - family: v2_page14
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p14.ttf
+
+    - family: v2_page15
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p15.ttf
+
+    - family: v2_page16
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p16.ttf
+
+    - family: v2_page17
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p17.ttf
+
+    - family: v2_page18
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p18.ttf
+
+    - family: v2_page19
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p19.ttf
+
+    - family: v2_page20
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p20.ttf
+
+    - family: v2_page21
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p21.ttf
+
+    - family: v2_page22
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p22.ttf
+
+    - family: v2_page23
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p23.ttf
+
+    - family: v2_page24
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p24.ttf
+
+    - family: v2_page25
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p25.ttf
+
+    - family: v2_page26
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p26.ttf
+
+    - family: v2_page27
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p27.ttf
+
+    - family: v2_page28
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p28.ttf
+
+    - family: v2_page29
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p29.ttf
+
+    - family: v2_page30
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p30.ttf
+
+    - family: v2_page31
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p31.ttf
+
+    - family: v2_page32
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p32.ttf
+
+    - family: v2_page33
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p33.ttf
+
+    - family: v2_page34
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p34.ttf
+
+    - family: v2_page35
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p35.ttf
+
+    - family: v2_page36
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p36.ttf
+
+    - family: v2_page37
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p37.ttf
+
+    - family: v2_page38
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p38.ttf
+
+    - family: v2_page39
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p39.ttf
+
+    - family: v2_page40
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p40.ttf
+
+    - family: v2_page41
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p41.ttf
+
+    - family: v2_page42
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p42.ttf
+
+    - family: v2_page43
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p43.ttf
+
+    - family: v2_page44
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p44.ttf
+
+    - family: v2_page45
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p45.ttf
+
+    - family: v2_page46
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p46.ttf
+
+    - family: v2_page47
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p47.ttf
+
+    - family: v2_page48
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p48.ttf
+
+    - family: v2_page49
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p49.ttf
+
+    - family: v2_page50
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p50.ttf
+
+    - family: v2_page51
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p51.ttf
+
+    - family: v2_page52
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p52.ttf
+
+    - family: v2_page53
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p53.ttf
+
+    - family: v2_page54
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p54.ttf
+
+    - family: v2_page55
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p55.ttf
+
+    - family: v2_page56
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p56.ttf
+
+    - family: v2_page57
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p57.ttf
+
+    - family: v2_page58
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p58.ttf
+
+    - family: v2_page59
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p59.ttf
+
+    - family: v2_page60
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p60.ttf
+
+    - family: v2_page61
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p61.ttf
+
+    - family: v2_page62
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p62.ttf
+
+    - family: v2_page63
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p63.ttf
+
+    - family: v2_page64
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p64.ttf
+
+    - family: v2_page65
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p65.ttf
+
+    - family: v2_page66
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p66.ttf
+
+    - family: v2_page67
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p67.ttf
+
+    - family: v2_page68
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p68.ttf
+
+    - family: v2_page69
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p69.ttf
+
+    - family: v2_page70
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p70.ttf
+
+    - family: v2_page71
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p71.ttf
+
+    - family: v2_page72
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p72.ttf
+
+    - family: v2_page73
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p73.ttf
+
+    - family: v2_page74
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p74.ttf
+
+    - family: v2_page75
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p75.ttf
+
+    - family: v2_page76
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p76.ttf
+
+    - family: v2_page77
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p77.ttf
+
+    - family: v2_page78
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p78.ttf
+
+    - family: v2_page79
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p79.ttf
+
+    - family: v2_page80
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p80.ttf
+
+    - family: v2_page81
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p81.ttf
+
+    - family: v2_page82
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p82.ttf
+
+    - family: v2_page83
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p83.ttf
+
+    - family: v2_page84
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p84.ttf
+
+    - family: v2_page85
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p85.ttf
+
+    - family: v2_page86
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p86.ttf
+
+    - family: v2_page87
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p87.ttf
+
+    - family: v2_page88
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p88.ttf
+
+    - family: v2_page89
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p89.ttf
+
+    - family: v2_page90
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p90.ttf
+
+    - family: v2_page91
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p91.ttf
+
+    - family: v2_page92
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p92.ttf
+
+    - family: v2_page93
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p93.ttf
+
+    - family: v2_page94
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p94.ttf
+
+    - family: v2_page95
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p95.ttf
+
+    - family: v2_page96
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p96.ttf
+
+    - family: v2_page97
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p97.ttf
+
+    - family: v2_page98
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p98.ttf
+
+    - family: v2_page99
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p99.ttf
+
+    - family: v2_page100
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p100.ttf
+
+    - family: v2_page101
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p101.ttf
+
+    - family: v2_page102
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p102.ttf
+
+    - family: v2_page103
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p103.ttf
+
+    - family: v2_page104
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p104.ttf
+
+    - family: v2_page105
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p105.ttf
+
+    - family: v2_page106
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p106.ttf
+
+    - family: v2_page107
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p107.ttf
+
+    - family: v2_page108
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p108.ttf
+
+    - family: v2_page109
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p109.ttf
+
+    - family: v2_page110
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p110.ttf
+
+    - family: v2_page111
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p111.ttf
+
+    - family: v2_page112
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p112.ttf
+
+    - family: v2_page113
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p113.ttf
+
+    - family: v2_page114
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p114.ttf
+
+    - family: v2_page115
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p115.ttf
+
+    - family: v2_page116
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p116.ttf
+
+    - family: v2_page117
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p117.ttf
+
+    - family: v2_page118
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p118.ttf
+
+    - family: v2_page119
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p119.ttf
+
+    - family: v2_page120
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p120.ttf
+
+    - family: v2_page121
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p121.ttf
+
+    - family: v2_page122
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p122.ttf
+
+    - family: v2_page123
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p123.ttf
+
+    - family: v2_page124
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p124.ttf
+
+    - family: v2_page125
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p125.ttf
+
+    - family: v2_page126
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p126.ttf
+
+    - family: v2_page127
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p127.ttf
+
+    - family: v2_page128
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p128.ttf
+
+    - family: v2_page129
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p129.ttf
+
+    - family: v2_page130
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p130.ttf
+
+    - family: v2_page131
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p131.ttf
+
+    - family: v2_page132
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p132.ttf
+
+    - family: v2_page133
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p133.ttf
+
+    - family: v2_page134
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p134.ttf
+
+    - family: v2_page135
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p135.ttf
+
+    - family: v2_page136
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p136.ttf
+
+    - family: v2_page137
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p137.ttf
+
+    - family: v2_page138
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p138.ttf
+
+    - family: v2_page139
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p139.ttf
+
+    - family: v2_page140
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p140.ttf
+
+    - family: v2_page141
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p141.ttf
+
+    - family: v2_page142
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p142.ttf
+
+    - family: v2_page143
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p143.ttf
+
+    - family: v2_page144
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p144.ttf
+
+    - family: v2_page145
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p145.ttf
+
+    - family: v2_page146
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p146.ttf
+
+    - family: v2_page147
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p147.ttf
+
+    - family: v2_page148
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p148.ttf
+
+    - family: v2_page149
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p149.ttf
+
+    - family: v2_page150
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p150.ttf
+
+    - family: v2_page151
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p151.ttf
+
+    - family: v2_page152
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p152.ttf
+
+    - family: v2_page153
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p153.ttf
+
+    - family: v2_page154
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p154.ttf
+
+    - family: v2_page155
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p155.ttf
+
+    - family: v2_page156
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p156.ttf
+
+    - family: v2_page157
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p157.ttf
+
+    - family: v2_page158
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p158.ttf
+
+    - family: v2_page159
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p159.ttf
+
+    - family: v2_page160
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p160.ttf
+
+    - family: v2_page161
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p161.ttf
+
+    - family: v2_page162
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p162.ttf
+
+    - family: v2_page163
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p163.ttf
+
+    - family: v2_page164
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p164.ttf
+
+    - family: v2_page165
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p165.ttf
+
+    - family: v2_page166
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p166.ttf
+
+    - family: v2_page167
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p167.ttf
+
+    - family: v2_page168
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p168.ttf
+
+    - family: v2_page169
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p169.ttf
+
+    - family: v2_page170
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p170.ttf
+
+    - family: v2_page171
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p171.ttf
+
+    - family: v2_page172
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p172.ttf
+
+    - family: v2_page173
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p173.ttf
+
+    - family: v2_page174
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p174.ttf
+
+    - family: v2_page175
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p175.ttf
+
+    - family: v2_page176
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p176.ttf
+
+    - family: v2_page177
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p177.ttf
+
+    - family: v2_page178
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p178.ttf
+
+    - family: v2_page179
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p179.ttf
+
+    - family: v2_page180
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p180.ttf
+
+    - family: v2_page181
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p181.ttf
+
+    - family: v2_page182
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p182.ttf
+
+    - family: v2_page183
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p183.ttf
+
+    - family: v2_page184
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p184.ttf
+
+    - family: v2_page185
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p185.ttf
+
+    - family: v2_page186
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p186.ttf
+
+    - family: v2_page187
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p187.ttf
+
+    - family: v2_page188
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p188.ttf
+
+    - family: v2_page189
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p189.ttf
+
+    - family: v2_page190
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p190.ttf
+
+    - family: v2_page191
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p191.ttf
+
+    - family: v2_page192
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p192.ttf
+
+    - family: v2_page193
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p193.ttf
+
+    - family: v2_page194
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p194.ttf
+
+    - family: v2_page195
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p195.ttf
+
+    - family: v2_page196
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p196.ttf
+
+    - family: v2_page197
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p197.ttf
+
+    - family: v2_page198
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p198.ttf
+
+    - family: v2_page199
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p199.ttf
+
+    - family: v2_page200
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p200.ttf
+
+    - family: v2_page201
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p201.ttf
+
+    - family: v2_page202
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p202.ttf
+
+    - family: v2_page203
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p203.ttf
+
+    - family: v2_page204
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p204.ttf
+
+    - family: v2_page205
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p205.ttf
+
+    - family: v2_page206
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p206.ttf
+
+    - family: v2_page207
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p207.ttf
+
+    - family: v2_page208
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p208.ttf
+
+    - family: v2_page209
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p209.ttf
+
+    - family: v2_page210
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p210.ttf
+
+    - family: v2_page211
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p211.ttf
+
+    - family: v2_page212
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p212.ttf
+
+    - family: v2_page213
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p213.ttf
+
+    - family: v2_page214
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p214.ttf
+
+    - family: v2_page215
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p215.ttf
+
+    - family: v2_page216
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p216.ttf
+
+    - family: v2_page217
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p217.ttf
+
+    - family: v2_page218
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p218.ttf
+
+    - family: v2_page219
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p219.ttf
+
+    - family: v2_page220
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p220.ttf
+
+    - family: v2_page221
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p221.ttf
+
+    - family: v2_page222
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p222.ttf
+
+    - family: v2_page223
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p223.ttf
+
+    - family: v2_page224
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p224.ttf
+
+    - family: v2_page225
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p225.ttf
+
+    - family: v2_page226
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p226.ttf
+
+    - family: v2_page227
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p227.ttf
+
+    - family: v2_page228
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p228.ttf
+
+    - family: v2_page229
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p229.ttf
+
+    - family: v2_page230
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p230.ttf
+
+    - family: v2_page231
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p231.ttf
+
+    - family: v2_page232
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p232.ttf
+
+    - family: v2_page233
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p233.ttf
+
+    - family: v2_page234
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p234.ttf
+
+    - family: v2_page235
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p235.ttf
+
+    - family: v2_page236
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p236.ttf
+
+    - family: v2_page237
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p237.ttf
+
+    - family: v2_page238
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p238.ttf
+
+    - family: v2_page239
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p239.ttf
+
+    - family: v2_page240
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p240.ttf
+
+    - family: v2_page241
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p241.ttf
+
+    - family: v2_page242
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p242.ttf
+
+    - family: v2_page243
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p243.ttf
+
+    - family: v2_page244
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p244.ttf
+
+    - family: v2_page245
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p245.ttf
+
+    - family: v2_page246
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p246.ttf
+
+    - family: v2_page247
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p247.ttf
+
+    - family: v2_page248
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p248.ttf
+
+    - family: v2_page249
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p249.ttf
+
+    - family: v2_page250
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p250.ttf
+
+    - family: v2_page251
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p251.ttf
+
+    - family: v2_page252
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p252.ttf
+
+    - family: v2_page253
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p253.ttf
+
+    - family: v2_page254
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p254.ttf
+
+    - family: v2_page255
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p255.ttf
+
+    - family: v2_page256
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p256.ttf
+
+    - family: v2_page257
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p257.ttf
+
+    - family: v2_page258
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p258.ttf
+
+    - family: v2_page259
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p259.ttf
+
+    - family: v2_page260
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p260.ttf
+
+    - family: v2_page261
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p261.ttf
+
+    - family: v2_page262
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p262.ttf
+
+    - family: v2_page263
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p263.ttf
+
+    - family: v2_page264
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p264.ttf
+
+    - family: v2_page265
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p265.ttf
+
+    - family: v2_page266
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p266.ttf
+
+    - family: v2_page267
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p267.ttf
+
+    - family: v2_page268
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p268.ttf
+
+    - family: v2_page269
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p269.ttf
+
+    - family: v2_page270
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p270.ttf
+
+    - family: v2_page271
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p271.ttf
+
+    - family: v2_page272
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p272.ttf
+
+    - family: v2_page273
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p273.ttf
+
+    - family: v2_page274
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p274.ttf
+
+    - family: v2_page275
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p275.ttf
+
+    - family: v2_page276
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p276.ttf
+
+    - family: v2_page277
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p277.ttf
+
+    - family: v2_page278
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p278.ttf
+
+    - family: v2_page279
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p279.ttf
+
+    - family: v2_page280
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p280.ttf
+
+    - family: v2_page281
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p281.ttf
+
+    - family: v2_page282
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p282.ttf
+
+    - family: v2_page283
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p283.ttf
+
+    - family: v2_page284
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p284.ttf
+
+    - family: v2_page285
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p285.ttf
+
+    - family: v2_page286
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p286.ttf
+
+    - family: v2_page287
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p287.ttf
+
+    - family: v2_page288
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p288.ttf
+
+    - family: v2_page289
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p289.ttf
+
+    - family: v2_page290
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p290.ttf
+
+    - family: v2_page291
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p291.ttf
+
+    - family: v2_page292
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p292.ttf
+
+    - family: v2_page293
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p293.ttf
+
+    - family: v2_page294
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p294.ttf
+
+    - family: v2_page295
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p295.ttf
+
+    - family: v2_page296
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p296.ttf
+
+    - family: v2_page297
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p297.ttf
+
+    - family: v2_page298
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p298.ttf
+
+    - family: v2_page299
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p299.ttf
+
+    - family: v2_page300
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p300.ttf
+
+    - family: v2_page301
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p301.ttf
+
+    - family: v2_page302
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p302.ttf
+
+    - family: v2_page303
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p303.ttf
+
+    - family: v2_page304
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p304.ttf
+
+    - family: v2_page305
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p305.ttf
+
+    - family: v2_page306
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p306.ttf
+
+    - family: v2_page307
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p307.ttf
+
+    - family: v2_page308
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p308.ttf
+
+    - family: v2_page309
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p309.ttf
+
+    - family: v2_page310
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p310.ttf
+
+    - family: v2_page311
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p311.ttf
+
+    - family: v2_page312
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p312.ttf
+
+    - family: v2_page313
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p313.ttf
+
+    - family: v2_page314
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p314.ttf
+
+    - family: v2_page315
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p315.ttf
+
+    - family: v2_page316
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p316.ttf
+
+    - family: v2_page317
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p317.ttf
+
+    - family: v2_page318
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p318.ttf
+
+    - family: v2_page319
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p319.ttf
+
+    - family: v2_page320
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p320.ttf
+
+    - family: v2_page321
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p321.ttf
+
+    - family: v2_page322
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p322.ttf
+
+    - family: v2_page323
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p323.ttf
+
+    - family: v2_page324
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p324.ttf
+
+    - family: v2_page325
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p325.ttf
+
+    - family: v2_page326
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p326.ttf
+
+    - family: v2_page327
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p327.ttf
+
+    - family: v2_page328
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p328.ttf
+
+    - family: v2_page329
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p329.ttf
+
+    - family: v2_page330
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p330.ttf
+
+    - family: v2_page331
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p331.ttf
+
+    - family: v2_page332
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p332.ttf
+
+    - family: v2_page333
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p333.ttf
+
+    - family: v2_page334
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p334.ttf
+
+    - family: v2_page335
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p335.ttf
+
+    - family: v2_page336
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p336.ttf
+
+    - family: v2_page337
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p337.ttf
+
+    - family: v2_page338
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p338.ttf
+
+    - family: v2_page339
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p339.ttf
+
+    - family: v2_page340
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p340.ttf
+
+    - family: v2_page341
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p341.ttf
+
+    - family: v2_page342
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p342.ttf
+
+    - family: v2_page343
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p343.ttf
+
+    - family: v2_page344
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p344.ttf
+
+    - family: v2_page345
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p345.ttf
+
+    - family: v2_page346
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p346.ttf
+
+    - family: v2_page347
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p347.ttf
+
+    - family: v2_page348
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p348.ttf
+
+    - family: v2_page349
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p349.ttf
+
+    - family: v2_page350
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p350.ttf
+
+    - family: v2_page351
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p351.ttf
+
+    - family: v2_page352
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p352.ttf
+
+    - family: v2_page353
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p353.ttf
+
+    - family: v2_page354
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p354.ttf
+
+    - family: v2_page355
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p355.ttf
+
+    - family: v2_page356
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p356.ttf
+
+    - family: v2_page357
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p357.ttf
+
+    - family: v2_page358
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p358.ttf
+
+    - family: v2_page359
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p359.ttf
+
+    - family: v2_page360
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p360.ttf
+
+    - family: v2_page361
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p361.ttf
+
+    - family: v2_page362
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p362.ttf
+
+    - family: v2_page363
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p363.ttf
+
+    - family: v2_page364
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p364.ttf
+
+    - family: v2_page365
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p365.ttf
+
+    - family: v2_page366
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p366.ttf
+
+    - family: v2_page367
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p367.ttf
+
+    - family: v2_page368
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p368.ttf
+
+    - family: v2_page369
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p369.ttf
+
+    - family: v2_page370
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p370.ttf
+
+    - family: v2_page371
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p371.ttf
+
+    - family: v2_page372
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p372.ttf
+
+    - family: v2_page373
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p373.ttf
+
+    - family: v2_page374
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p374.ttf
+
+    - family: v2_page375
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p375.ttf
+
+    - family: v2_page376
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p376.ttf
+
+    - family: v2_page377
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p377.ttf
+
+    - family: v2_page378
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p378.ttf
+
+    - family: v2_page379
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p379.ttf
+
+    - family: v2_page380
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p380.ttf
+
+    - family: v2_page381
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p381.ttf
+
+    - family: v2_page382
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p382.ttf
+
+    - family: v2_page383
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p383.ttf
+
+    - family: v2_page384
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p384.ttf
+
+    - family: v2_page385
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p385.ttf
+
+    - family: v2_page386
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p386.ttf
+
+    - family: v2_page387
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p387.ttf
+
+    - family: v2_page388
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p388.ttf
+
+    - family: v2_page389
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p389.ttf
+
+    - family: v2_page390
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p390.ttf
+
+    - family: v2_page391
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p391.ttf
+
+    - family: v2_page392
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p392.ttf
+
+    - family: v2_page393
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p393.ttf
+
+    - family: v2_page394
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p394.ttf
+
+    - family: v2_page395
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p395.ttf
+
+    - family: v2_page396
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p396.ttf
+
+    - family: v2_page397
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p397.ttf
+
+    - family: v2_page398
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p398.ttf
+
+    - family: v2_page399
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p399.ttf
+
+    - family: v2_page400
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p400.ttf
+
+    - family: v2_page401
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p401.ttf
+
+    - family: v2_page402
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p402.ttf
+
+    - family: v2_page403
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p403.ttf
+
+    - family: v2_page404
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p404.ttf
+
+    - family: v2_page405
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p405.ttf
+
+    - family: v2_page406
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p406.ttf
+
+    - family: v2_page407
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p407.ttf
+
+    - family: v2_page408
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p408.ttf
+
+    - family: v2_page409
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p409.ttf
+
+    - family: v2_page410
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p410.ttf
+
+    - family: v2_page411
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p411.ttf
+
+    - family: v2_page412
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p412.ttf
+
+    - family: v2_page413
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p413.ttf
+
+    - family: v2_page414
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p414.ttf
+
+    - family: v2_page415
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p415.ttf
+
+    - family: v2_page416
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p416.ttf
+
+    - family: v2_page417
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p417.ttf
+
+    - family: v2_page418
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p418.ttf
+
+    - family: v2_page419
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p419.ttf
+
+    - family: v2_page420
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p420.ttf
+
+    - family: v2_page421
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p421.ttf
+
+    - family: v2_page422
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p422.ttf
+
+    - family: v2_page423
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p423.ttf
+
+    - family: v2_page424
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p424.ttf
+
+    - family: v2_page425
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p425.ttf
+
+    - family: v2_page426
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p426.ttf
+
+    - family: v2_page427
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p427.ttf
+
+    - family: v2_page428
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p428.ttf
+
+    - family: v2_page429
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p429.ttf
+
+    - family: v2_page430
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p430.ttf
+
+    - family: v2_page431
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p431.ttf
+
+    - family: v2_page432
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p432.ttf
+
+    - family: v2_page433
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p433.ttf
+
+    - family: v2_page434
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p434.ttf
+
+    - family: v2_page435
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p435.ttf
+
+    - family: v2_page436
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p436.ttf
+
+    - family: v2_page437
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p437.ttf
+
+    - family: v2_page438
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p438.ttf
+
+    - family: v2_page439
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p439.ttf
+
+    - family: v2_page440
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p440.ttf
+
+    - family: v2_page441
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p441.ttf
+
+    - family: v2_page442
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p442.ttf
+
+    - family: v2_page443
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p443.ttf
+
+    - family: v2_page444
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p444.ttf
+
+    - family: v2_page445
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p445.ttf
+
+    - family: v2_page446
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p446.ttf
+
+    - family: v2_page447
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p447.ttf
+
+    - family: v2_page448
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p448.ttf
+
+    - family: v2_page449
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p449.ttf
+
+    - family: v2_page450
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p450.ttf
+
+    - family: v2_page451
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p451.ttf
+
+    - family: v2_page452
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p452.ttf
+
+    - family: v2_page453
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p453.ttf
+
+    - family: v2_page454
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p454.ttf
+
+    - family: v2_page455
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p455.ttf
+
+    - family: v2_page456
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p456.ttf
+
+    - family: v2_page457
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p457.ttf
+
+    - family: v2_page458
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p458.ttf
+
+    - family: v2_page459
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p459.ttf
+
+    - family: v2_page460
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p460.ttf
+
+    - family: v2_page461
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p461.ttf
+
+    - family: v2_page462
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p462.ttf
+
+    - family: v2_page463
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p463.ttf
+
+    - family: v2_page464
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p464.ttf
+
+    - family: v2_page465
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p465.ttf
+
+    - family: v2_page466
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p466.ttf
+
+    - family: v2_page467
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p467.ttf
+
+    - family: v2_page468
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p468.ttf
+
+    - family: v2_page469
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p469.ttf
+
+    - family: v2_page470
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p470.ttf
+
+    - family: v2_page471
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p471.ttf
+
+    - family: v2_page472
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p472.ttf
+
+    - family: v2_page473
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p473.ttf
+
+    - family: v2_page474
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p474.ttf
+
+    - family: v2_page475
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p475.ttf
+
+    - family: v2_page476
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p476.ttf
+
+    - family: v2_page477
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p477.ttf
+
+    - family: v2_page478
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p478.ttf
+
+    - family: v2_page479
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p479.ttf
+
+    - family: v2_page480
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p480.ttf
+
+    - family: v2_page481
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p481.ttf
+
+    - family: v2_page482
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p482.ttf
+
+    - family: v2_page483
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p483.ttf
+
+    - family: v2_page484
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p484.ttf
+
+    - family: v2_page485
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p485.ttf
+
+    - family: v2_page486
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p486.ttf
+
+    - family: v2_page487
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p487.ttf
+
+    - family: v2_page488
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p488.ttf
+
+    - family: v2_page489
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p489.ttf
+
+    - family: v2_page490
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p490.ttf
+
+    - family: v2_page491
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p491.ttf
+
+    - family: v2_page492
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p492.ttf
+
+    - family: v2_page493
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p493.ttf
+
+    - family: v2_page494
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p494.ttf
+
+    - family: v2_page495
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p495.ttf
+
+    - family: v2_page496
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p496.ttf
+
+    - family: v2_page497
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p497.ttf
+
+    - family: v2_page498
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p498.ttf
+
+    - family: v2_page499
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p499.ttf
+
+    - family: v2_page500
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p500.ttf
+
+    - family: v2_page501
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p501.ttf
+
+    - family: v2_page502
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p502.ttf
+
+    - family: v2_page503
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p503.ttf
+
+    - family: v2_page504
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p504.ttf
+
+    - family: v2_page505
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p505.ttf
+
+    - family: v2_page506
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p506.ttf
+
+    - family: v2_page507
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p507.ttf
+
+    - family: v2_page508
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p508.ttf
+
+    - family: v2_page509
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p509.ttf
+
+    - family: v2_page510
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p510.ttf
+
+    - family: v2_page511
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p511.ttf
+
+    - family: v2_page512
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p512.ttf
+
+    - family: v2_page513
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p513.ttf
+
+    - family: v2_page514
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p514.ttf
+
+    - family: v2_page515
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p515.ttf
+
+    - family: v2_page516
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p516.ttf
+
+    - family: v2_page517
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p517.ttf
+
+    - family: v2_page518
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p518.ttf
+
+    - family: v2_page519
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p519.ttf
+
+    - family: v2_page520
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p520.ttf
+
+    - family: v2_page521
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p521.ttf
+
+    - family: v2_page522
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p522.ttf
+
+    - family: v2_page523
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p523.ttf
+
+    - family: v2_page524
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p524.ttf
+
+    - family: v2_page525
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p525.ttf
+
+    - family: v2_page526
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p526.ttf
+
+    - family: v2_page527
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p527.ttf
+
+    - family: v2_page528
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p528.ttf
+
+    - family: v2_page529
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p529.ttf
+
+    - family: v2_page530
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p530.ttf
+
+    - family: v2_page531
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p531.ttf
+
+    - family: v2_page532
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p532.ttf
+
+    - family: v2_page533
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p533.ttf
+
+    - family: v2_page534
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p534.ttf
+
+    - family: v2_page535
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p535.ttf
+
+    - family: v2_page536
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p536.ttf
+
+    - family: v2_page537
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p537.ttf
+
+    - family: v2_page538
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p538.ttf
+
+    - family: v2_page539
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p539.ttf
+
+    - family: v2_page540
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p540.ttf
+
+    - family: v2_page541
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p541.ttf
+
+    - family: v2_page542
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p542.ttf
+
+    - family: v2_page543
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p543.ttf
+
+    - family: v2_page544
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p544.ttf
+
+    - family: v2_page545
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p545.ttf
+
+    - family: v2_page546
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p546.ttf
+
+    - family: v2_page547
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p547.ttf
+
+    - family: v2_page548
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p548.ttf
+
+    - family: v2_page549
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p549.ttf
+
+    - family: v2_page550
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p550.ttf
+
+    - family: v2_page551
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p551.ttf
+
+    - family: v2_page552
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p552.ttf
+
+    - family: v2_page553
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p553.ttf
+
+    - family: v2_page554
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p554.ttf
+
+    - family: v2_page555
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p555.ttf
+
+    - family: v2_page556
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p556.ttf
+
+    - family: v2_page557
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p557.ttf
+
+    - family: v2_page558
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p558.ttf
+
+    - family: v2_page559
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p559.ttf
+
+    - family: v2_page560
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p560.ttf
+
+    - family: v2_page561
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p561.ttf
+
+    - family: v2_page562
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p562.ttf
+
+    - family: v2_page563
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p563.ttf
+
+    - family: v2_page564
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p564.ttf
+
+    - family: v2_page565
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p565.ttf
+
+    - family: v2_page566
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p566.ttf
+
+    - family: v2_page567
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p567.ttf
+
+
+    - family: v2_page568
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p568.ttf
+
+    - family: v2_page569
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p569.ttf
+
+    - family: v2_page570
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p570.ttf
+
+    - family: v2_page571
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p571.ttf
+
+    - family: v2_page572
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p572.ttf
+
+    - family: v2_page573
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p573.ttf
+
+    - family: v2_page574
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p574.ttf
+
+    - family: v2_page575
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p575.ttf
+
+    - family: v2_page576
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p576.ttf
+
+    - family: v2_page577
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p577.ttf
+
+    - family: v2_page578
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p578.ttf
+
+    - family: v2_page579
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p579.ttf
+
+    - family: v2_page580
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p580.ttf
+
+    - family: v2_page581
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p581.ttf
+
+    - family: v2_page582
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p582.ttf
+
+    - family: v2_page583
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p583.ttf
+
+    - family: v2_page584
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p584.ttf
+
+    - family: v2_page585
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p585.ttf
+
+    - family: v2_page586
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p586.ttf
+
+    - family: v2_page587
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p587.ttf
+
+    - family: v2_page588
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p588.ttf
+
+    - family: v2_page589
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p589.ttf
+
+    - family: v2_page590
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p590.ttf
+
+    - family: v2_page591
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p591.ttf
+
+    - family: v2_page592
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p592.ttf
+
+    - family: v2_page593
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p593.ttf
+
+    - family: v2_page594
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p594.ttf
+
+    - family: v2_page595
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p595.ttf
+
+    - family: v2_page596
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p596.ttf
+
+    - family: v2_page597
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p597.ttf
+
+    - family: v2_page598
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p598.ttf
+
+    - family: v2_page599
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p599.ttf
+
+    - family: v2_page600
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p600.ttf
+
+    - family: v2_page601
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p601.ttf
+
+    - family: v2_page602
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p602.ttf
+
+    - family: v2_page603
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p603.ttf
+
+    - family: v2_page604
+      fonts:
+        - asset: assets/fonts/quran/hafs/v2/ttf/p604.ttf
+
+    - family: v4_page1
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p1_org2.ttf
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p1.ttf
+
+
+    - family: v4_page2
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p2.ttf
+
+    - family: v4_page3
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p3.ttf
+
+    - family: v4_page4
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p4.ttf
+
+    - family: v4_page5
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p5.ttf
+
+    - family: v4_page6
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p6.ttf
+
+    - family: v4_page7
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p7.ttf
+
+    - family: v4_page8
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p8.ttf
+
+    - family: v4_page9
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p9.ttf
+
+    - family: v4_page10
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p10.ttf
+
+    - family: v4_page11
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p11.ttf
+
+    - family: v4_page12
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p12.ttf
+
+    - family: v4_page13
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p13.ttf
+
+    - family: v4_page14
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p14.ttf
+
+    - family: v4_page15
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p15.ttf
+
+    - family: v4_page16
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p16.ttf
+
+    - family: v4_page17
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p17.ttf
+
+    - family: v4_page18
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p18.ttf
+
+    - family: v4_page19
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p19.ttf
+
+    - family: v4_page20
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p20.ttf
+
+    - family: v4_page21
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p21.ttf
+
+    - family: v4_page22
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p22.ttf
+
+    - family: v4_page23
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p23.ttf
+
+    - family: v4_page24
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p24.ttf
+
+    - family: v4_page25
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p25.ttf
+
+    - family: v4_page26
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p26.ttf
+
+    - family: v4_page27
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p27.ttf
+
+    - family: v4_page28
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p28.ttf
+
+    - family: v4_page29
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p29.ttf
+
+    - family: v4_page30
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p30.ttf
+
+    - family: v4_page31
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p31.ttf
+
+    - family: v4_page32
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p32.ttf
+
+    - family: v4_page33
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p33.ttf
+
+    - family: v4_page34
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p34.ttf
+
+    - family: v4_page35
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p35.ttf
+
+    - family: v4_page36
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p36.ttf
+
+    - family: v4_page37
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p37.ttf
+
+    - family: v4_page38
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p38.ttf
+
+    - family: v4_page39
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p39.ttf
+
+    - family: v4_page40
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p40.ttf
+
+    - family: v4_page41
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p41.ttf
+
+    - family: v4_page42
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p42.ttf
+
+    - family: v4_page43
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p43.ttf
+
+    - family: v4_page44
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p44.ttf
+
+    - family: v4_page45
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p45.ttf
+
+    - family: v4_page46
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p46.ttf
+
+    - family: v4_page47
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p47.ttf
+
+    - family: v4_page48
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p48.ttf
+
+    - family: v4_page49
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p49.ttf
+
+    - family: v4_page50
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p50.ttf
+
+    - family: v4_page51
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p51.ttf
+
+    - family: v4_page52
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p52.ttf
+
+    - family: v4_page53
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p53.ttf
+
+    - family: v4_page54
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p54.ttf
+
+    - family: v4_page55
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p55.ttf
+
+    - family: v4_page56
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p56.ttf
+
+    - family: v4_page57
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p57.ttf
+
+    - family: v4_page58
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p58.ttf
+
+    - family: v4_page59
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p59.ttf
+
+    - family: v4_page60
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p60.ttf
+
+    - family: v4_page61
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p61.ttf
+
+    - family: v4_page62
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p62.ttf
+
+    - family: v4_page63
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p63.ttf
+
+    - family: v4_page64
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p64.ttf
+
+    - family: v4_page65
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p65.ttf
+
+    - family: v4_page66
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p66.ttf
+
+    - family: v4_page67
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p67.ttf
+
+    - family: v4_page68
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p68.ttf
+
+    - family: v4_page69
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p69.ttf
+
+    - family: v4_page70
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p70.ttf
+
+    - family: v4_page71
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p71.ttf
+
+    - family: v4_page72
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p72.ttf
+
+    - family: v4_page73
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p73.ttf
+
+    - family: v4_page74
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p74.ttf
+
+    - family: v4_page75
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p75.ttf
+
+    - family: v4_page76
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p76.ttf
+
+    - family: v4_page77
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p77.ttf
+
+    - family: v4_page78
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p78.ttf
+
+    - family: v4_page79
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p79.ttf
+
+    - family: v4_page80
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p80.ttf
+
+    - family: v4_page81
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p81.ttf
+
+    - family: v4_page82
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p82.ttf
+
+    - family: v4_page83
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p83.ttf
+
+    - family: v4_page84
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p84.ttf
+
+    - family: v4_page85
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p85.ttf
+
+    - family: v4_page86
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p86.ttf
+
+    - family: v4_page87
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p87.ttf
+
+    - family: v4_page88
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p88.ttf
+
+    - family: v4_page89
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p89.ttf
+
+    - family: v4_page90
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p90.ttf
+
+    - family: v4_page91
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p91.ttf
+
+    - family: v4_page92
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p92.ttf
+
+    - family: v4_page93
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p93.ttf
+
+    - family: v4_page94
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p94.ttf
+
+    - family: v4_page95
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p95.ttf
+
+    - family: v4_page96
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p96.ttf
+
+    - family: v4_page97
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p97.ttf
+
+    - family: v4_page98
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p98.ttf
+
+    - family: v4_page99
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p99.ttf
+
+    - family: v4_page100
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p100.ttf
+
+    - family: v4_page101
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p101.ttf
+
+    - family: v4_page102
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p102.ttf
+
+    - family: v4_page103
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p103.ttf
+
+    - family: v4_page104
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p104.ttf
+
+    - family: v4_page105
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p105.ttf
+
+    - family: v4_page106
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p106.ttf
+
+    - family: v4_page107
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p107.ttf
+
+    - family: v4_page108
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p108.ttf
+
+    - family: v4_page109
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p109.ttf
+
+    - family: v4_page110
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p110.ttf
+
+    - family: v4_page111
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p111.ttf
+
+    - family: v4_page112
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p112.ttf
+
+    - family: v4_page113
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p113.ttf
+
+
+    - family: v4_page114
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p114.ttf
+
+    - family: v4_page115
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p115.ttf
+
+    - family: v4_page116
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p116.ttf
+
+    - family: v4_page117
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p117.ttf
+
+    - family: v4_page118
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p118.ttf
+
+    - family: v4_page119
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p119.ttf
+
+    - family: v4_page120
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p120.ttf
+
+    - family: v4_page121
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p121.ttf
+
+    - family: v4_page122
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p122.ttf
+
+    - family: v4_page123
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p123.ttf
+
+    - family: v4_page124
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p124.ttf
+
+    - family: v4_page125
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p125.ttf
+
+    - family: v4_page126
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p126.ttf
+
+    - family: v4_page127
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p127.ttf
+
+    - family: v4_page128
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p128.ttf
+
+    - family: v4_page129
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p129.ttf
+
+    - family: v4_page130
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p130.ttf
+
+    - family: v4_page131
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p131.ttf
+
+    - family: v4_page132
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p132.ttf
+
+    - family: v4_page133
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p133.ttf
+
+    - family: v4_page134
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p134.ttf
+
+    - family: v4_page135
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p135.ttf
+
+    - family: v4_page136
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p136.ttf
+
+    - family: v4_page137
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p137.ttf
+
+    - family: v4_page138
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p138.ttf
+
+    - family: v4_page139
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p139.ttf
+
+    - family: v4_page140
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p140.ttf
+
+    - family: v4_page141
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p141.ttf
+
+    - family: v4_page142
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p142.ttf
+
+    - family: v4_page143
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p143.ttf
+
+    - family: v4_page144
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p144.ttf
+
+    - family: v4_page145
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p145.ttf
+
+    - family: v4_page146
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p146.ttf
+
+    - family: v4_page147
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p147.ttf
+
+    - family: v4_page148
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p148.ttf
+
+    - family: v4_page149
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p149.ttf
+
+    - family: v4_page150
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p150.ttf
+
+    - family: v4_page151
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p151.ttf
+
+    - family: v4_page152
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p152.ttf
+
+    - family: v4_page153
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p153.ttf
+
+    - family: v4_page154
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p154.ttf
+
+    - family: v4_page155
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p155.ttf
+
+    - family: v4_page156
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p156.ttf
+
+    - family: v4_page157
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p157.ttf
+
+    - family: v4_page158
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p158.ttf
+
+    - family: v4_page159
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p159.ttf
+
+    - family: v4_page160
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p160.ttf
+
+    - family: v4_page161
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p161.ttf
+
+    - family: v4_page162
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p162.ttf
+
+    - family: v4_page163
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p163.ttf
+
+    - family: v4_page164
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p164.ttf
+
+    - family: v4_page165
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p165.ttf
+
+    - family: v4_page166
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p166.ttf
+
+    - family: v4_page167
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p167.ttf
+
+    - family: v4_page168
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p168.ttf
+
+    - family: v4_page169
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p169.ttf
+
+    - family: v4_page170
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p170.ttf
+
+    - family: v4_page171
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p171.ttf
+
+    - family: v4_page172
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p172.ttf
+
+    - family: v4_page173
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p173.ttf
+
+    - family: v4_page174
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p174.ttf
+
+    - family: v4_page175
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p175.ttf
+
+    - family: v4_page176
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p176.ttf
+
+    - family: v4_page177
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p177.ttf
+
+    - family: v4_page178
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p178.ttf
+
+    - family: v4_page179
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p179.ttf
+
+    - family: v4_page180
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p180.ttf
+
+    - family: v4_page181
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p181.ttf
+
+    - family: v4_page182
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p182.ttf
+
+    - family: v4_page183
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p183.ttf
+
+    - family: v4_page184
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p184.ttf
+
+    - family: v4_page185
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p185.ttf
+
+    - family: v4_page186
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p186.ttf
+
+    - family: v4_page187
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p187.ttf
+
+    - family: v4_page188
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p188.ttf
+
+    - family: v4_page189
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p189.ttf
+
+    - family: v4_page190
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p190.ttf
+
+    - family: v4_page191
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p191.ttf
+
+    - family: v4_page192
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p192.ttf
+
+    - family: v4_page193
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p193.ttf
+
+    - family: v4_page194
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p194.ttf
+
+    - family: v4_page195
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p195.ttf
+
+    - family: v4_page196
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p196.ttf
+
+    - family: v4_page197
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p197.ttf
+
+    - family: v4_page198
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p198.ttf
+
+    - family: v4_page199
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p199.ttf
+
+    - family: v4_page200
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p200.ttf
+
+    - family: v4_page201
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p201.ttf
+
+    - family: v4_page202
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p202.ttf
+
+    - family: v4_page203
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p203.ttf
+
+    - family: v4_page204
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p204.ttf
+
+    - family: v4_page205
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p205.ttf
+
+    - family: v4_page206
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p206.ttf
+
+    - family: v4_page207
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p207.ttf
+
+    - family: v4_page208
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p208.ttf
+
+    - family: v4_page209
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p209.ttf
+
+    - family: v4_page210
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p210.ttf
+
+    - family: v4_page211
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p211.ttf
+
+    - family: v4_page212
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p212.ttf
+
+    - family: v4_page213
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p213.ttf
+
+    - family: v4_page214
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p214.ttf
+
+    - family: v4_page215
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p215.ttf
+
+    - family: v4_page216
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p216.ttf
+
+    - family: v4_page217
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p217.ttf
+
+    - family: v4_page218
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p218.ttf
+
+    - family: v4_page219
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p219.ttf
+
+    - family: v4_page220
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p220.ttf
+
+    - family: v4_page221
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p221.ttf
+
+    - family: v4_page222
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p222.ttf
+
+    - family: v4_page223
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p223.ttf
+
+    - family: v4_page224
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p224.ttf
+
+    - family: v4_page225
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p225.ttf
+
+    - family: v4_page226
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p226.ttf
+
+    - family: v4_page227
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p227.ttf
+
+    - family: v4_page228
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p228.ttf
+
+    - family: v4_page229
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p229.ttf
+
+    - family: v4_page230
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p230.ttf
+
+    - family: v4_page231
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p231.ttf
+
+    - family: v4_page232
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p232.ttf
+
+    - family: v4_page233
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p233.ttf
+
+    - family: v4_page234
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p234.ttf
+
+    - family: v4_page235
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p235.ttf
+
+    - family: v4_page236
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p236.ttf
+
+    - family: v4_page237
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p237.ttf
+
+    - family: v4_page238
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p238.ttf
+
+    - family: v4_page239
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p239.ttf
+
+    - family: v4_page240
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p240.ttf
+
+    - family: v4_page241
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p241.ttf
+
+    - family: v4_page242
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p242.ttf
+
+    - family: v4_page243
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p243.ttf
+
+    - family: v4_page244
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p244.ttf
+
+    - family: v4_page245
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p245.ttf
+
+    - family: v4_page246
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p246.ttf
+
+    - family: v4_page247
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p247.ttf
+
+    - family: v4_page248
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p248.ttf
+
+    - family: v4_page249
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p249.ttf
+
+    - family: v4_page250
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p250.ttf
+
+    - family: v4_page251
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p251.ttf
+
+    - family: v4_page252
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p252.ttf
+
+    - family: v4_page253
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p253.ttf
+
+    - family: v4_page254
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p254.ttf
+
+    - family: v4_page255
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p255.ttf
+
+    - family: v4_page256
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p256.ttf
+
+    - family: v4_page257
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p257.ttf
+
+    - family: v4_page258
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p258.ttf
+
+    - family: v4_page259
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p259.ttf
+
+    - family: v4_page260
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p260.ttf
+
+    - family: v4_page261
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p261.ttf
+
+    - family: v4_page262
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p262.ttf
+
+    - family: v4_page263
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p263.ttf
+
+    - family: v4_page264
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p264.ttf
+
+    - family: v4_page265
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p265.ttf
+
+    - family: v4_page266
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p266.ttf
+
+    - family: v4_page267
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p267.ttf
+
+    - family: v4_page268
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p268.ttf
+
+    - family: v4_page269
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p269.ttf
+
+    - family: v4_page270
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p270.ttf
+
+    - family: v4_page271
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p271.ttf
+
+    - family: v4_page272
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p272.ttf
+
+    - family: v4_page273
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p273.ttf
+
+    - family: v4_page274
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p274.ttf
+
+    - family: v4_page275
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p275.ttf
+
+    - family: v4_page276
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p276.ttf
+
+    - family: v4_page277
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p277.ttf
+
+    - family: v4_page278
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p278.ttf
+
+    - family: v4_page279
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p279.ttf
+
+    - family: v4_page280
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p280.ttf
+
+    - family: v4_page281
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p281.ttf
+
+    - family: v4_page282
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p282.ttf
+
+    - family: v4_page283
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p283.ttf
+
+    - family: v4_page284
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p284.ttf
+
+    - family: v4_page285
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p285.ttf
+
+    - family: v4_page286
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p286.ttf
+
+    - family: v4_page287
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p287.ttf
+
+    - family: v4_page288
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p288.ttf
+
+    - family: v4_page289
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p289.ttf
+
+    - family: v4_page290
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p290.ttf
+
+    - family: v4_page291
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p291.ttf
+
+    - family: v4_page292
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p292.ttf
+
+    - family: v4_page293
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p293.ttf
+
+    - family: v4_page294
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p294.ttf
+
+    - family: v4_page295
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p295.ttf
+
+    - family: v4_page296
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p296.ttf
+
+    - family: v4_page297
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p297.ttf
+
+    - family: v4_page298
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p298.ttf
+
+    - family: v4_page299
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p299.ttf
+
+    - family: v4_page300
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p300.ttf
+
+    - family: v4_page301
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p301.ttf
+
+    - family: v4_page302
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p302.ttf
+
+    - family: v4_page303
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p303.ttf
+
+    - family: v4_page304
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p304.ttf
+
+    - family: v4_page305
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p305.ttf
+
+    - family: v4_page306
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p306.ttf
+
+    - family: v4_page307
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p307.ttf
+
+    - family: v4_page308
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p308.ttf
+
+    - family: v4_page309
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p309.ttf
+
+    - family: v4_page310
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p310.ttf
+
+    - family: v4_page311
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p311.ttf
+
+    - family: v4_page312
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p312.ttf
+
+    - family: v4_page313
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p313.ttf
+
+    - family: v4_page314
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p314.ttf
+
+    - family: v4_page315
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p315.ttf
+
+    - family: v4_page316
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p316.ttf
+
+    - family: v4_page317
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p317.ttf
+
+    - family: v4_page318
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p318.ttf
+
+    - family: v4_page319
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p319.ttf
+
+    - family: v4_page320
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p320.ttf
+
+    - family: v4_page321
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p321.ttf
+
+    - family: v4_page322
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p322.ttf
+
+    - family: v4_page323
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p323.ttf
+
+    - family: v4_page324
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p324.ttf
+
+    - family: v4_page325
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p325.ttf
+
+    - family: v4_page326
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p326.ttf
+
+    - family: v4_page327
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p327.ttf
+
+    - family: v4_page328
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p328.ttf
+
+    - family: v4_page329
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p329.ttf
+
+    - family: v4_page330
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p330.ttf
+
+    - family: v4_page331
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p331.ttf
+
+    - family: v4_page332
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p332.ttf
+
+    - family: v4_page333
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p333.ttf
+
+    - family: v4_page334
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p334.ttf
+
+    - family: v4_page335
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p335.ttf
+
+    - family: v4_page336
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p336.ttf
+
+    - family: v4_page337
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p337.ttf
+
+    - family: v4_page338
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p338.ttf
+
+    - family: v4_page339
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p339.ttf
+
+    - family: v4_page340
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p340.ttf
+
+    - family: v4_page341
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p341.ttf
+
+    - family: v4_page342
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p342.ttf
+
+    - family: v4_page343
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p343.ttf
+
+    - family: v4_page344
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p344.ttf
+
+    - family: v4_page345
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p345.ttf
+
+    - family: v4_page346
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p346.ttf
+
+    - family: v4_page347
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p347.ttf
+
+    - family: v4_page348
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p348.ttf
+
+    - family: v4_page349
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p349.ttf
+
+    - family: v4_page350
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p350.ttf
+
+    - family: v4_page351
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p351.ttf
+
+    - family: v4_page352
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p352.ttf
+
+    - family: v4_page353
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p353.ttf
+
+    - family: v4_page354
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p354.ttf
+
+    - family: v4_page355
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p355.ttf
+
+    - family: v4_page356
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p356.ttf
+
+    - family: v4_page357
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p357.ttf
+
+    - family: v4_page358
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p358.ttf
+
+    - family: v4_page359
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p359.ttf
+
+    - family: v4_page360
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p360.ttf
+
+    - family: v4_page361
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p361.ttf
+
+    - family: v4_page362
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p362.ttf
+
+    - family: v4_page363
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p363.ttf
+
+    - family: v4_page364
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p364.ttf
+
+    - family: v4_page365
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p365.ttf
+
+    - family: v4_page366
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p366.ttf
+
+    - family: v4_page367
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p367.ttf
+
+    - family: v4_page368
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p368.ttf
+
+    - family: v4_page369
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p369.ttf
+
+    - family: v4_page370
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p370.ttf
+
+    - family: v4_page371
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p371.ttf
+
+    - family: v4_page372
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p372.ttf
+
+    - family: v4_page373
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p373.ttf
+
+    - family: v4_page374
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p374.ttf
+
+    - family: v4_page375
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p375.ttf
+
+    - family: v4_page376
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p376.ttf
+
+    - family: v4_page377
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p377.ttf
+
+    - family: v4_page378
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p378.ttf
+
+    - family: v4_page379
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p379.ttf
+
+    - family: v4_page380
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p380.ttf
+
+    - family: v4_page381
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p381.ttf
+
+    - family: v4_page382
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p382.ttf
+
+    - family: v4_page383
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p383.ttf
+
+    - family: v4_page384
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p384.ttf
+
+    - family: v4_page385
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p385.ttf
+
+    - family: v4_page386
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p386.ttf
+
+    - family: v4_page387
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p387.ttf
+
+    - family: v4_page388
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p388.ttf
+
+    - family: v4_page389
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p389.ttf
+
+    - family: v4_page390
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p390.ttf
+
+    - family: v4_page391
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p391.ttf
+
+    - family: v4_page392
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p392.ttf
+
+    - family: v4_page393
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p393.ttf
+
+    - family: v4_page394
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p394.ttf
+
+    - family: v4_page395
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p395.ttf
+
+    - family: v4_page396
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p396.ttf
+
+    - family: v4_page397
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p397.ttf
+
+    - family: v4_page398
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p398.ttf
+
+    - family: v4_page399
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p399.ttf
+
+    - family: v4_page400
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p400.ttf
+
+    - family: v4_page401
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p401.ttf
+
+    - family: v4_page402
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p402.ttf
+
+    - family: v4_page403
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p403.ttf
+
+    - family: v4_page404
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p404.ttf
+
+    - family: v4_page405
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p405.ttf
+
+    - family: v4_page406
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p406.ttf
+
+    - family: v4_page407
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p407.ttf
+
+    - family: v4_page408
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p408.ttf
+
+    - family: v4_page409
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p409.ttf
+
+    - family: v4_page410
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p410.ttf
+
+    - family: v4_page411
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p411.ttf
+
+    - family: v4_page412
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p412.ttf
+
+    - family: v4_page413
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p413.ttf
+
+    - family: v4_page414
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p414.ttf
+
+    - family: v4_page415
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p415.ttf
+
+    - family: v4_page416
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p416.ttf
+
+    - family: v4_page417
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p417.ttf
+
+    - family: v4_page418
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p418.ttf
+
+    - family: v4_page419
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p419.ttf
+
+    - family: v4_page420
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p420.ttf
+
+    - family: v4_page421
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p421.ttf
+
+    - family: v4_page422
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p422.ttf
+
+    - family: v4_page423
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p423.ttf
+
+    - family: v4_page424
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p424.ttf
+
+    - family: v4_page425
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p425.ttf
+
+    - family: v4_page426
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p426.ttf
+
+    - family: v4_page427
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p427.ttf
+
+    - family: v4_page428
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p428.ttf
+
+    - family: v4_page429
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p429.ttf
+
+    - family: v4_page430
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p430.ttf
+
+    - family: v4_page431
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p431.ttf
+
+    - family: v4_page432
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p432.ttf
+
+    - family: v4_page433
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p433.ttf
+
+    - family: v4_page434
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p434.ttf
+
+    - family: v4_page435
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p435.ttf
+
+    - family: v4_page436
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p436.ttf
+
+    - family: v4_page437
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p437.ttf
+
+    - family: v4_page438
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p438.ttf
+
+    - family: v4_page439
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p439.ttf
+
+    - family: v4_page440
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p440.ttf
+
+    - family: v4_page441
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p441.ttf
+
+    - family: v4_page442
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p442.ttf
+
+    - family: v4_page443
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p443.ttf
+
+    - family: v4_page444
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p444.ttf
+
+    - family: v4_page445
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p445.ttf
+
+    - family: v4_page446
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p446.ttf
+
+    - family: v4_page447
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p447.ttf
+
+    - family: v4_page448
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p448.ttf
+
+    - family: v4_page449
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p449.ttf
+
+    - family: v4_page450
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p450.ttf
+
+    - family: v4_page451
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p451.ttf
+
+    - family: v4_page452
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p452.ttf
+
+    - family: v4_page453
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p453.ttf
+
+    - family: v4_page454
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p454.ttf
+
+    - family: v4_page455
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p455.ttf
+
+    - family: v4_page456
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p456.ttf
+
+    - family: v4_page457
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p457.ttf
+
+    - family: v4_page458
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p458.ttf
+
+    - family: v4_page459
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p459.ttf
+
+    - family: v4_page460
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p460.ttf
+
+    - family: v4_page461
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p461.ttf
+
+    - family: v4_page462
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p462.ttf
+
+    - family: v4_page463
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p463.ttf
+
+    - family: v4_page464
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p464.ttf
+
+    - family: v4_page465
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p465.ttf
+
+    - family: v4_page466
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p466.ttf
+
+    - family: v4_page467
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p467.ttf
+
+    - family: v4_page468
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p468.ttf
+
+    - family: v4_page469
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p469.ttf
+
+    - family: v4_page470
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p470.ttf
+
+    - family: v4_page471
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p471.ttf
+
+    - family: v4_page472
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p472.ttf
+
+    - family: v4_page473
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p473.ttf
+
+    - family: v4_page474
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p474.ttf
+
+    - family: v4_page475
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p475.ttf
+
+    - family: v4_page476
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p476.ttf
+
+    - family: v4_page477
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p477.ttf
+
+    - family: v4_page478
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p478.ttf
+
+    - family: v4_page479
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p479.ttf
+
+    - family: v4_page480
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p480.ttf
+
+    - family: v4_page481
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p481.ttf
+
+    - family: v4_page482
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p482.ttf
+
+    - family: v4_page483
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p483.ttf
+
+    - family: v4_page484
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p484.ttf
+
+    - family: v4_page485
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p485.ttf
+
+    - family: v4_page486
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p486.ttf
+
+    - family: v4_page487
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p487.ttf
+
+    - family: v4_page488
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p488.ttf
+
+    - family: v4_page489
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p489.ttf
+
+    - family: v4_page490
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p490.ttf
+
+    - family: v4_page491
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p491.ttf
+
+    - family: v4_page492
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p492.ttf
+
+    - family: v4_page493
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p493.ttf
+
+    - family: v4_page494
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p494.ttf
+
+    - family: v4_page495
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p495.ttf
+
+    - family: v4_page496
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p496.ttf
+
+    - family: v4_page497
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p497.ttf
+
+    - family: v4_page498
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p498.ttf
+
+    - family: v4_page499
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p499.ttf
+
+    - family: v4_page500
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p500.ttf
+
+    - family: v4_page501
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p501.ttf
+
+    - family: v4_page502
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p502.ttf
+
+    - family: v4_page503
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p503.ttf
+
+    - family: v4_page504
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p504.ttf
+
+    - family: v4_page505
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p505.ttf
+
+    - family: v4_page506
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p506.ttf
+
+    - family: v4_page507
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p507.ttf
+
+    - family: v4_page508
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p508.ttf
+
+    - family: v4_page509
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p509.ttf
+
+    - family: v4_page510
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p510.ttf
+
+    - family: v4_page511
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p511.ttf
+
+    - family: v4_page512
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p512.ttf
+
+    - family: v4_page513
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p513.ttf
+
+    - family: v4_page514
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p514.ttf
+
+    - family: v4_page515
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p515.ttf
+
+    - family: v4_page516
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p516.ttf
+
+    - family: v4_page517
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p517.ttf
+
+    - family: v4_page518
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p518.ttf
+
+    - family: v4_page519
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p519.ttf
+
+    - family: v4_page520
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p520.ttf
+
+    - family: v4_page521
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p521.ttf
+
+    - family: v4_page522
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p522.ttf
+
+    - family: v4_page523
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p523.ttf
+
+    - family: v4_page524
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p524.ttf
+
+    - family: v4_page525
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p525.ttf
+
+    - family: v4_page526
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p526.ttf
+
+    - family: v4_page527
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p527.ttf
+
+    - family: v4_page528
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p528.ttf
+
+    - family: v4_page529
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p529.ttf
+
+    - family: v4_page530
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p530.ttf
+
+    - family: v4_page531
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p531.ttf
+
+    - family: v4_page532
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p532.ttf
+
+    - family: v4_page533
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p533.ttf
+
+    - family: v4_page534
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p534.ttf
+
+    - family: v4_page535
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p535.ttf
+
+    - family: v4_page536
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p536.ttf
+
+    - family: v4_page537
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p537.ttf
+
+    - family: v4_page538
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p538.ttf
+
+    - family: v4_page539
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p539.ttf
+
+    - family: v4_page540
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p540.ttf
+
+    - family: v4_page541
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p541.ttf
+
+    - family: v4_page542
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p542.ttf
+
+    - family: v4_page543
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p543.ttf
+
+    - family: v4_page544
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p544.ttf
+
+    - family: v4_page545
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p545.ttf
+
+    - family: v4_page546
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p546.ttf
+
+    - family: v4_page547
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p547.ttf
+
+    - family: v4_page548
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p548.ttf
+
+    - family: v4_page549
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p549.ttf
+
+    - family: v4_page550
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p550.ttf
+
+    - family: v4_page551
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p551.ttf
+
+    - family: v4_page552
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p552.ttf
+
+    - family: v4_page553
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p553.ttf
+
+    - family: v4_page554
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p554.ttf
+
+    - family: v4_page555
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p555.ttf
+
+    - family: v4_page556
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p556.ttf
+
+    - family: v4_page557
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p557.ttf
+
+    - family: v4_page558
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p558.ttf
+
+    - family: v4_page559
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p559.ttf
+
+    - family: v4_page560
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p560.ttf
+
+    - family: v4_page561
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p561.ttf
+
+    - family: v4_page562
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p562.ttf
+
+    - family: v4_page563
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p563.ttf
+
+    - family: v4_page564
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p564.ttf
+
+    - family: v4_page565
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p565.ttf
+
+    - family: v4_page566
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p566.ttf
+
+    - family: v4_page567
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p567.ttf
+
+
+    - family: v4_page568
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p568.ttf
+
+    - family: v4_page569
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p569.ttf
+
+    - family: v4_page570
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p570.ttf
+
+    - family: v4_page571
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p571.ttf
+
+    - family: v4_page572
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p572.ttf
+
+    - family: v4_page573
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p573.ttf
+
+    - family: v4_page574
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p574.ttf
+
+    - family: v4_page575
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p575.ttf
+
+    - family: v4_page576
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p576.ttf
+
+    - family: v4_page577
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p577.ttf
+
+    - family: v4_page578
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p578.ttf
+
+    - family: v4_page579
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p579.ttf
+
+    - family: v4_page580
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p580.ttf
+
+    - family: v4_page581
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p581.ttf
+
+    - family: v4_page582
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p582.ttf
+
+    - family: v4_page583
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p583.ttf
+
+    - family: v4_page584
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p584.ttf
+
+    - family: v4_page585
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p585.ttf
+
+    - family: v4_page586
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p586.ttf
+
+    - family: v4_page587
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p587.ttf
+
+    - family: v4_page588
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p588.ttf
+
+    - family: v4_page589
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p589.ttf
+
+    - family: v4_page590
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p590.ttf
+
+    - family: v4_page591
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p591.ttf
+
+    - family: v4_page592
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p592.ttf
+
+    - family: v4_page593
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p593.ttf
+
+    - family: v4_page594
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p594.ttf
+
+    - family: v4_page595
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p595.ttf
+
+    - family: v4_page596
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p596.ttf
+
+    - family: v4_page597
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p597.ttf
+
+    - family: v4_page598
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p598.ttf
+
+    - family: v4_page599
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p599.ttf
+
+    - family: v4_page600
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p600.ttf
+
+    - family: v4_page601
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p601.ttf
+
+    - family: v4_page602
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p602.ttf
+
+    - family: v4_page603
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p603.ttf
+
+    - family: v4_page604
+      fonts:
+        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p604.ttf
+
+    - family: surahNames
+      fonts:
+        - asset: assets/fonts/quran/surah-names/v1/sura_names.ttf

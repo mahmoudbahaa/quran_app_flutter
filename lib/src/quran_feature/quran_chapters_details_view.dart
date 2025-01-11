@@ -10,6 +10,7 @@ import '../quran_feature/page_builder.dart';
 import '../settings/settings_controller.dart';
 import '../util/assets_downloader.dart';
 import '../util/enums.dart';
+import '../util/floating_buttons.dart';
 import '../util/quran_player_global_state.dart';
 import '../util/swipe_to.dart';
 import 'quran_player.dart';
@@ -41,6 +42,10 @@ class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
   void initState() {
     _pageNumber = state.pageNumber;
     super.initState();
+  }
+
+  void _update() {
+    setState(() {});
   }
 
   List<Widget> buildPages() {
@@ -113,12 +118,8 @@ class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
                         maxHeight: pageNum < 3 ? height * 0.3 : height * 0.87),
                     child: AutoSizeText.rich(
                       TextSpan(
-                          children: pageBuilder.buildPage(
-                              state,
-                              i,
-                              numPages,
-                              settingsController.textRepresentation,
-                              settingsController.flowMode, () {
+                          children: pageBuilder.buildPage(state, i, numPages,
+                              settingsController.textRepresentation, () {
                         if (mounted) setState(() => {});
                       })),
                       textAlign: TextAlign.center,
@@ -208,78 +209,74 @@ class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
     _pageNumber = state.pageNumber;
 
     return Scaffold(
-      body: AnimatedOpacity(
-        opacity: state.pageTransition != PageTransition.noChange ? 0.0 : 1.0,
-        duration: const Duration(milliseconds: 500),
-        onEnd: () {
-          if (state.pageTransition == PageTransition.nextPage) {
-            setState(() {
-              state.pageTransition = PageTransition.noChange;
-              goNextPage();
-            });
-          } else if (state.pageTransition == PageTransition.previousPage) {
-            setState(() {
-              state.pageTransition = PageTransition.noChange;
-              goPreviousPage();
-            });
-          }
-        },
-        child: SwipeTo(
-          animationDuration: Duration(milliseconds: 0),
-          onRightSwipe: (details) {
-            setState(() {
-              state.pageTransition = PageTransition.nextPage;
-            });
+        body: AnimatedOpacity(
+          opacity: state.pageTransition != PageTransition.noChange ? 0.0 : 1.0,
+          duration: const Duration(milliseconds: 500),
+          onEnd: () {
+            if (state.pageTransition == PageTransition.nextPage) {
+              setState(() {
+                state.pageTransition = PageTransition.noChange;
+                goNextPage();
+              });
+            } else if (state.pageTransition == PageTransition.previousPage) {
+              setState(() {
+                state.pageTransition = PageTransition.noChange;
+                goPreviousPage();
+              });
+            }
           },
-          onLeftSwipe: (details) {
-            setState(() {
-              state.pageTransition = PageTransition.previousPage;
-            });
-          },
-          child: CallbackShortcuts(
-            bindings: <ShortcutActivator, VoidCallback>{
-              // const SingleActivator(LogicalKeyboardKey.equal, control: true):
-              //     () {
-              //   setState(
-              //       () => _fontSize < 200 ? _fontSize += 1 : _fontSize += 0);
-              // },
-              // const SingleActivator(LogicalKeyboardKey.minus, control: true):
-              //     () {
-              //   setState(
-              //       () => _fontSize > 20 ? _fontSize -= 1 : _fontSize += 0);
-              // },
-              // const SingleActivator(LogicalKeyboardKey.digit0, control: true):
-              //     () {
-              //   setState(() => _fontSize = defaultFontSize);
-              // },
-              const SingleActivator(LogicalKeyboardKey.arrowLeft,
-                  includeRepeats: false): () => setState(goNextPage),
-              const SingleActivator(LogicalKeyboardKey.arrowRight,
-                  includeRepeats: false): () => setState(goPreviousPage),
+          child: SwipeTo(
+            animationDuration: Duration(milliseconds: 0),
+            onRightSwipe: (details) {
+              setState(() {
+                state.pageTransition = PageTransition.nextPage;
+              });
             },
-            child: Column(children: [
-              Expanded(
-                child: Focus(
-                  autofocus: true,
-                  child: Row(
-                    children: buildPages(),
+            onLeftSwipe: (details) {
+              setState(() {
+                state.pageTransition = PageTransition.previousPage;
+              });
+            },
+            child: CallbackShortcuts(
+              bindings: <ShortcutActivator, VoidCallback>{
+                // const SingleActivator(LogicalKeyboardKey.equal, control: true):
+                //     () {
+                //   setState(
+                //       () => _fontSize < 200 ? _fontSize += 1 : _fontSize += 0);
+                // },
+                // const SingleActivator(LogicalKeyboardKey.minus, control: true):
+                //     () {
+                //   setState(
+                //       () => _fontSize > 20 ? _fontSize -= 1 : _fontSize += 0);
+                // },
+                // const SingleActivator(LogicalKeyboardKey.digit0, control: true):
+                //     () {
+                //   setState(() => _fontSize = defaultFontSize);
+                // },
+                const SingleActivator(LogicalKeyboardKey.arrowLeft,
+                    includeRepeats: false): () => setState(goNextPage),
+                const SingleActivator(LogicalKeyboardKey.arrowRight,
+                    includeRepeats: false): () => setState(goPreviousPage),
+              },
+              child: Column(children: [
+                Expanded(
+                  child: Focus(
+                    autofocus: true,
+                    child: Row(
+                      textDirection: TextDirection.rtl,
+                      children: buildPages(),
+                    ),
                   ),
                 ),
-              ),
-              QuranPlayer(
-                settingsController: settingsController,
-                state: state,
-                parent: this,
-              ),
-            ]),
+                QuranPlayer(
+                  settingsController: settingsController,
+                  state: state,
+                  parent: this,
+                ),
+              ]),
+            ),
           ),
         ),
-      ),
-      floatingActionButton: FittedBox(
-        child: FloatingActionButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Icon(Icons.navigate_before)),
-      ),
-    );
+        floatingActionButton: FloatingButtons(state: state, update: _update));
   }
 }

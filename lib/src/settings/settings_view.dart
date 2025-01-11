@@ -17,7 +17,7 @@ class SettingsView extends StatelessWidget {
 
   final SettingsController controller;
   final double labelWidth = 200;
-  final double dropDownWidth = 300;
+  final double dropDownWidth = 330;
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +29,13 @@ class SettingsView extends StatelessWidget {
       if (recitation['style'] != null) {
         style = ' (${recitation['style']})';
       }
+      String recitationName =
+          Localizations.localeOf(context).languageCode == 'ar'
+              ? recitation['translated_name']['name']
+              : recitation['reciter_name'];
       recitationsItems.add(DropdownMenuItem(
         value: recitation['id'] as int,
-        child: Text('${recitation['translated_name']['name']}$style'),
+        child: Text('$recitationName$style'),
       ));
     }
 
@@ -104,29 +108,6 @@ class SettingsView extends StatelessWidget {
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 ConstrainedBox(
                     constraints: BoxConstraints(minWidth: labelWidth),
-                    child: Text(AppLocalizations.of(context)!.flowMode)),
-                ConstrainedBox(
-                    constraints: BoxConstraints(minWidth: dropDownWidth),
-                    child: DropdownButton<bool>(
-                      // Read the selected themeMode from the controller
-                      value: controller.flowMode,
-                      // Call the updateThemeMode method any time the user selects a theme.
-                      onChanged: controller.updateFlowMode,
-                      items: [
-                        DropdownMenuItem(
-                          value: false,
-                          child: Text(AppLocalizations.of(context)!.off),
-                        ),
-                        DropdownMenuItem(
-                          value: true,
-                          child: Text(AppLocalizations.of(context)!.on),
-                        ),
-                      ],
-                    )),
-              ]),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                ConstrainedBox(
-                    constraints: BoxConstraints(minWidth: labelWidth),
                     child: Text(
                         AppLocalizations.of(context)!.numberOfPagesOnScreen)),
                 ConstrainedBox(
@@ -139,19 +120,19 @@ class SettingsView extends StatelessWidget {
                     items: [
                       DropdownMenuItem(
                         value: 1,
-                        child: Text(ArabicNumber().convertToLocaleNumber(1)),
+                        child: ArabicNumber().convertToLocaleNumber(1),
                       ),
                       DropdownMenuItem(
                         value: 2,
-                        child: Text(ArabicNumber().convertToLocaleNumber(2)),
+                        child: ArabicNumber().convertToLocaleNumber(2),
                       ),
                       DropdownMenuItem(
                         value: 3,
-                        child: Text(ArabicNumber().convertToLocaleNumber(3)),
+                        child: ArabicNumber().convertToLocaleNumber(3),
                       ),
                       DropdownMenuItem(
                         value: 4,
-                        child: Text(ArabicNumber().convertToLocaleNumber(4)),
+                        child: ArabicNumber().convertToLocaleNumber(4),
                       ),
                     ],
                   ),

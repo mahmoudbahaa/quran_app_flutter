@@ -20,14 +20,12 @@ class SettingsController with ChangeNotifier {
   late ThemeMode _themeMode;
   late TextRepresentation _textRepresentation;
   late int _numPages;
-  late bool _flowMode;
   late int _recitationId;
   late AppLocale _appLocale;
 
   // Allow Widgets to read the user's preferred ThemeMode.
   ThemeMode get themeMode => _themeMode;
   TextRepresentation get textRepresentation => _textRepresentation;
-  bool get flowMode => _flowMode;
   int get numPages => _numPages;
   int get recitationId => _recitationId;
   AppLocale get appLocale => _appLocale;
@@ -37,7 +35,6 @@ class SettingsController with ChangeNotifier {
   /// settings from the service.
   Future<void> loadSettings() async {
     _themeMode = await _settingsService.themeMode();
-    _flowMode = await _settingsService.flowMode();
     _textRepresentation = await _settingsService.textRepresentation();
     _numPages = await _settingsService.numPages();
     _recitationId = await _settingsService.recitationId();
@@ -73,15 +70,6 @@ class SettingsController with ChangeNotifier {
     _textRepresentation = newTextRepresentation;
     notifyListeners();
     await _settingsService.updateTextRepresentation(newTextRepresentation);
-  }
-
-  /// Update and persist the ThemeMode based on the user's selection.
-  Future<void> updateFlowMode(bool? flowMode) async {
-    if (flowMode == null) return;
-    if (flowMode == _flowMode) return;
-    _flowMode = flowMode;
-    notifyListeners();
-    await _settingsService.updateFlowMode(flowMode);
   }
 
   /// Update and persist the ThemeMode based on the user's selection.

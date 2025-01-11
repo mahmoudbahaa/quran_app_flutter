@@ -42,8 +42,6 @@ class SettingsService {
   Future<ThemeMode> themeMode() async =>
       ThemeMode.values[await getValue('themeMode', 0)];
 
-  Future<bool> flowMode() async => await getValue('flowMode', false);
-
   Future<TextRepresentation> textRepresentation() async =>
       TextRepresentation.values[await getValue('textRepresentation', 0)];
 

@@ -1,13 +1,13 @@
 enum AppLocale { ar, en }
 
 const List<String> appLocales = ['العربية', 'English'];
-const List<String> rtlLanguages = <String>[
-  'ar', // Arabic
-  'fa', // Farsi
-  'he', // Hebrew
-  'ps', // Pashto
-  'ur', // Urdu
-];
+// const List<String> rtlLanguages = <String>[
+//   'ar', // Arabic
+//   'fa', // Farsi
+//   'he', // Hebrew
+//   'ps', // Pashto
+//   'ur', // Urdu
+// ];
 
 enum TextType {
   surahName,

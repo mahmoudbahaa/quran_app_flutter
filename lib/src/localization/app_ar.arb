@@ -13,9 +13,14 @@
   "version1": "النسخة الأولى",
   "version2": "النسخة الثانية",
   "tagweed": "نسخة التجويد",
-  "flowMode": "الوضع الإنسيابي",
   "on": "مفعل",
   "off": "غير مفعل",
   "numberOfPagesOnScreen": "عدد الصفحات في الشاشة",
-  "recitation": "القارء"
+  "recitation": "القارء",
+  "JuzPrefix": "",
+  "verse": "الأية",
+  "chapters": "السور",
+  "juz": "الأجزاء",
+  "goToPage": "إذهب لصفحة",
+  "pageNumber": "رقم الصفحة"
 }

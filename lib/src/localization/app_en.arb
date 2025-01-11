@@ -13,9 +13,13 @@
   "version1": "Version 1",
   "version2": "Version 1",
   "tagweed": "Tagweed",
-  "flowMode": "Flow Mode",
   "on": "on",
   "off": "off",
   "numberOfPagesOnScreen": "Number of pages on screen",
-  "recitation": "Recitation"
+  "recitation": "Recitation",
+  "verse": "Ayah",
+  "chapters": "Surahs",
+  "juz": "Juz'",
+  "goToPage": "go to page",
+  "pageNumber": "Page Number"
 }

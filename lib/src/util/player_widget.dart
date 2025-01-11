@@ -1,8 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart';
 
 import 'common.dart';
@@ -89,7 +87,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
           icon: const Icon(Icons.volume_up),
           padding: EdgeInsets.zero,
           constraints: BoxConstraints(),
-          iconSize: 24.0,
+          iconSize: 32.0,
           onPressed: () {
             showSliderDialog(
               context: context,
@@ -108,7 +106,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
           padding: EdgeInsets.zero,
           constraints: BoxConstraints(),
           onPressed: _play,
-          iconSize: 24.0,
+          iconSize: 32.0,
           icon: _isPlaying
               ? const Icon(Icons.pause)
               : const Icon(Icons.play_arrow),
@@ -120,7 +118,8 @@ class _PlayerWidgetState extends State<PlayerWidget> {
             padding: EdgeInsets.zero,
             constraints: BoxConstraints(),
             icon: Text('${player.state.rate.toStringAsFixed(1)}x',
-                style: const TextStyle(fontWeight: FontWeight.bold)),
+                style:
+                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             iconSize: 32.0,
             onPressed: () {
               showSliderDialog(
@@ -136,43 +135,33 @@ class _PlayerWidgetState extends State<PlayerWidget> {
             },
           ),
         ),
-        Text(
-          _position != null
-              ? '$_positionText/$_totalDuration'
-              : _duration != null
-                  ? '$_durationText/$_totalDuration'
-                  : '',
-          style: const TextStyle(fontSize: 16.0),
-        ),
         Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(
-                left: rtlLanguages
-                        .contains(AppLocalizations.of(context)?.localeName)
-                    ? 60
-                    : 0,
-                right: rtlLanguages
-                        .contains(AppLocalizations.of(context)?.localeName)
-                    ? 0
-                    : 60),
-            child: Slider(
-              onChanged: (value) {
-                final duration = _duration;
-                if (duration == null) {
-                  return;
-                }
-                final position = value * duration.inMilliseconds;
-                player.seek(Duration(milliseconds: position.round()));
-              },
-              value: (_position != null &&
-                      _duration != null &&
-                      _position!.inMilliseconds > 0 &&
-                      _position!.inMilliseconds < _duration!.inMilliseconds)
-                  ? _position!.inMilliseconds / _duration!.inMilliseconds
-                  : 0.0,
-            ),
+          child: Slider(
+            onChanged: (value) {
+              final duration = _duration;
+              if (duration == null) {
+                return;
+              }
+              final position = value * duration.inMilliseconds;
+              player.seek(Duration(milliseconds: position.round()));
+            },
+            value: (_position != null &&
+                    _duration != null &&
+                    _position!.inMilliseconds > 0 &&
+                    _position!.inMilliseconds < _duration!.inMilliseconds)
+                ? _position!.inMilliseconds / _duration!.inMilliseconds
+                : 0.0,
           ),
         ),
+        Text(
+          _position != null
+              ? '($_positionText/$_totalDuration)'
+              : _duration != null
+                  ? '($_durationText/$_totalDuration)'
+                  : '',
+          style: const TextStyle(fontSize: 20.0),
+        ),
+        SizedBox(width: 8),
       ],
     );
   }

@@ -51,14 +51,19 @@ class MyApp extends StatelessWidget {
               // SettingsController to display the correct theme.
               theme: ThemeData(
                 useMaterial3: true,
-                fontFamily: 'uthmanic',
-                // colorSchemeSeed: Colors.white,
+                fontFamily:
+                    rtlLanguages.contains(settingsController.appLocale.name)
+                        ? 'uthmanic'
+                        : DefaultTextStyle.of(context).style.fontFamily,
+                brightness: Brightness.light,
                 // colorSchemeSeed: Colors.blueGrey,
               ),
               darkTheme: ThemeData(
                 useMaterial3: true,
-                fontFamily: 'uthmanic',
-                textTheme: TextTheme(),
+                fontFamily:
+                    rtlLanguages.contains(settingsController.appLocale.name)
+                        ? 'uthmanic'
+                        : DefaultTextStyle.of(context).style.fontFamily,
                 // colorSchemeSeed: Colors.blue,
                 brightness: Brightness.dark,
               ),

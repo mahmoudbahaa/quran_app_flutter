@@ -64,13 +64,8 @@ class PageBuilder {
     }
   }
 
-  List<TextSpan> buildPage(
-      QuranPlayerGlobalState state,
-      int offset,
-      int numPages,
-      TextRepresentation textRepresentation,
-      bool flowMode,
-      Function update) {
+  List<TextSpan> buildPage(QuranPlayerGlobalState state, int offset,
+      int numPages, TextRepresentation textRepresentation, Function update) {
     final List<TextSpan> children = List.empty(growable: true);
     int pageNumber =
         offset + 1 + ((state.pageNumber - 1) / numPages).floor() * numPages;
@@ -92,7 +87,7 @@ class PageBuilder {
     int highlightWord = state.wordNumber - 1;
 
     int lineNumber = -1;
-    int curLineNumber = -1;
+    // int curLineNumber = -1;
     // int surahNumber = quran.getPageData(pageNumber)[0]['surah'];
 
     final data = getCachedVersesWordsData(pageNumber, textRepresentation);
@@ -146,7 +141,7 @@ class PageBuilder {
           lineNumber = curLineNumber;
         } else if (lineNumber != curLineNumber) {
           lineNumber = curLineNumber;
-          if (!flowMode) sep = '\n';
+          sep = '\n';
         }
 
         TextType type = (highlightSurah == surahNumber - 1 &&

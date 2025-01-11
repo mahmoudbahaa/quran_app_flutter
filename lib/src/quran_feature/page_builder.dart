@@ -79,7 +79,6 @@ class PageBuilder {
       children.add(TextSpan(
           text: 'جاري تحميل الصفحة, برجاء الإنتظار',
           style: TextStyle(
-            fontFamily: 'uthmanic3',
             height: 1.7,
           )));
       return children;
@@ -134,7 +133,7 @@ class PageBuilder {
           }
 
           if (surahNumber != 1 && surahNumber != 9) {
-            children.add(getText('﷽\n', 'uthmanic3', TextType.bismallah,
+            children.add(getText('﷽\n', 'uthmanic', TextType.bismallah,
                 surahNumber, 1, 1, state, textRepresentation, setState));
           }
         }

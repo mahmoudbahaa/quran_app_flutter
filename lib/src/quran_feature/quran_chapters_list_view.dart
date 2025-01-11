@@ -58,13 +58,11 @@ class QuranChaptersListView extends StatelessWidget {
               ? ''
               : ' (${surahTranslations[Get.locale?.languageCode][index]})';
           return ListTile(
-              title: Text('$surahPrefix$surahName$surahTranslation',
-                  style: TextStyle(fontFamily: 'uthmanic3')),
+              title: Text('$surahPrefix$surahName$surahTranslation'),
               leading: CircleAvatar(
                 // Display the Flutter Logo image asset.
                 // foregroundImage: const AssetImage('assets/images/flutter_logo.png'),
-                child: Text(ArabicNumber().convertToLocaleNumber(index + 1),
-                    style: TextStyle(fontFamily: 'uthmanic')),
+                child: Text(ArabicNumber().convertToLocaleNumber(index + 1)),
               ),
               onTap: () async {
                 state.surahNumber = index + 1;

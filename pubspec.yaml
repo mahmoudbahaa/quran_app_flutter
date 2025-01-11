@@ -119,15 +119,7 @@ flutter:
   fonts:
     - family: uthmanic
       fonts:
-        - asset: assets/fonts/UthmanTN1_Ver10.otf
-
-    - family: uthmanic2
-      fonts:
-        - asset: assets/fonts/UthmanicHafs_V20.ttf
-
-    - family: uthmanic3
-      fonts:
-        - asset: assets/fonts/uthmanic_hafs_v22.ttf
+        - asset: assets/fonts/UthmanicHafs1Ver18.ttf
 
     - family: surahNames
       fonts:

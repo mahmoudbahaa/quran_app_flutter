@@ -39,7 +39,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   bool get _isPaused => !player.state.playing;
 
   String get _totalDuration =>
-      player.state.duration.toString().split('.').first ?? '';
+      player.state.duration.toString().split('.').first;
 
   String get _durationText => _duration?.toString().split('.').first ?? '';
 
@@ -142,21 +142,24 @@ class _PlayerWidgetState extends State<PlayerWidget> {
           style: const TextStyle(fontSize: 16.0),
         ),
         Expanded(
-          child: Slider(
-            onChanged: (value) {
-              final duration = _duration;
-              if (duration == null) {
-                return;
-              }
-              final position = value * duration.inMilliseconds;
-              player.seek(Duration(milliseconds: position.round()));
-            },
-            value: (_position != null &&
-                    _duration != null &&
-                    _position!.inMilliseconds > 0 &&
-                    _position!.inMilliseconds < _duration!.inMilliseconds)
-                ? _position!.inMilliseconds / _duration!.inMilliseconds
-                : 0.0,
+          child: Padding(
+            padding: EdgeInsets.only(left: 60),
+            child: Slider(
+              onChanged: (value) {
+                final duration = _duration;
+                if (duration == null) {
+                  return;
+                }
+                final position = value * duration.inMilliseconds;
+                player.seek(Duration(milliseconds: position.round()));
+              },
+              value: (_position != null &&
+                      _duration != null &&
+                      _position!.inMilliseconds > 0 &&
+                      _position!.inMilliseconds < _duration!.inMilliseconds)
+                  ? _position!.inMilliseconds / _duration!.inMilliseconds
+                  : 0.0,
+            ),
           ),
         ),
       ],

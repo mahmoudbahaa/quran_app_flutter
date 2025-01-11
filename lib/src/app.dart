@@ -9,16 +9,14 @@ import 'settings/settings_controller.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
-  const MyApp({
-    super.key,
-    required this.settingsController,
-  });
+  const MyApp(
+      {super.key, required this.settingsController, required this.state});
 
   final SettingsController settingsController;
+  final QuranPlayerGlobalState state;
 
   @override
   Widget build(BuildContext context) {
-    Get.put(QuranPlayerGlobalState());
     // Glue the SettingsController to the MaterialApp.
     //
     // The ListenableBuilder Widget listens to the SettingsController for changes.
@@ -26,7 +24,8 @@ class MyApp extends StatelessWidget {
     return ListenableBuilder(
         listenable: settingsController,
         builder: (BuildContext context, Widget? child) => GetMaterialApp(
-              home: QuranChaptersListView(controller: settingsController),
+              home: QuranChaptersListView(
+                  controller: settingsController, state: state),
               // Provide the generated AppLocalizations to the MaterialApp. This
               // allows descendant Widgets to display the correct translations
               // depending on the user's locale.

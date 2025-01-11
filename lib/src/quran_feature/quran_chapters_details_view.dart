@@ -14,31 +14,34 @@ import '../util/swipe_to.dart';
 import 'quran_player.dart';
 
 /// Displays detailed information about a SampleItem.
-class QuranChapterDetailsView extends StatelessWidget {
-  const QuranChapterDetailsView({super.key, required this.settingsController});
+class QuranChapterDetailsView extends StatefulWidget {
+  const QuranChapterDetailsView(
+      {super.key, required this.settingsController, required this.state});
 
-  static const routeName = '/chapter_details';
   final SettingsController settingsController;
+  final QuranPlayerGlobalState state;
+
+  @override
+  State<QuranChapterDetailsView> createState() {
+    return _QuranChapterDetailsView();
+  }
+}
+
+class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
   final double defaultFontSize = 36;
   final double _fontSize = 500;
   final PageBuilder pageBuilder = const PageBuilder();
+  QuranPlayerGlobalState get state => widget.state;
+  SettingsController get settingsController => widget.settingsController;
 
-  List<Widget> buildPages(QuranPlayerGlobalState state) {
+  List<Widget> buildPages() {
     List<Widget> pages = <Widget>[];
 
     int numPages = settingsController.numPages;
     for (int i = 0; i < numPages; i++) {
       int pageNum =
-          i + 1 + ((state.pageNumber.value - 1) / numPages).floor() * numPages;
-      if (pageNum > 604) break;
-      if (i > 0) {
-        // pages.add(SizedBox(width: 5));
-        // pages.add(VerticalDivider(
-        //     color: Colors.green,
-        //     thickness: 5,
-        //     width: 20));
-        // pages.add(SizedBox(width: 5));
-      }
+          i + 1 + ((state.pageNumber - 1) / numPages).floor() * numPages;
+      if (pageNum > quran.totalPagesCount) break;
 
       final constraint = BoxConstraints(
         minHeight: 5.0,
@@ -55,10 +58,6 @@ class QuranChapterDetailsView extends StatelessWidget {
                 : 700,
       );
 
-      // final padding = settingsController.textRepresentation ==
-      //         TextRepresentation.codeV2Colored
-      //     ? 43.0
-      //     : 28.0;
       final Widget child = ConstrainedBox(
         constraints: constraint,
         child: Stack(children: [
@@ -111,7 +110,8 @@ class QuranChapterDetailsView extends StatelessWidget {
                               i,
                               numPages,
                               settingsController.textRepresentation,
-                              settingsController.flowMode)),
+                              settingsController.flowMode,
+                              setState)),
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: _fontSize),
                       maxLines: pageNum == 1 ? 8 : 15,
@@ -137,142 +137,144 @@ class QuranChapterDetailsView extends StatelessWidget {
     return pages;
   }
 
-  Future<void> goNextPage(QuranPlayerGlobalState state) async {
+  Future<void> goNextPage() async {
     if (state.pageNumber >=
-        (quran.totalPagesCount - settingsController.numPages)) return;
+        (quran.totalPagesCount - settingsController.numPages)) {
+      return;
+    }
 
     if (settingsController.numPages == 1) {
-      state.pageNumber.value = state.pageNumber.value + 1;
+      state.pageNumber = state.pageNumber + 1;
     } else {
-      state.pageNumber.value =
-          ((state.pageNumber.value / settingsController.numPages).floor() + 1) *
+      state.pageNumber =
+          ((state.pageNumber / settingsController.numPages).floor() + 1) *
                   settingsController.numPages +
               1;
     }
 
     for (int i = 0; i < settingsController.numPages; i++) {
       await QuranFontsLoader().loadPageFont(
-          state.pageNumber.value + i, settingsController.textRepresentation);
+          state.pageNumber + i, settingsController.textRepresentation);
     }
 
-    dynamic pageData = quran.getPageData(state.pageNumber.value).first;
-    state.surahNumber.value = pageData['surah'];
-    state.verseNumber.value = pageData['start'];
-    state.wordNumber.value = -1;
-    state.pause.value = true;
-    state.update();
+    dynamic pageData = quran.getPageData(state.pageNumber).first;
+    state.surahNumber = pageData['surah'];
+    state.verseNumber = pageData['start'];
+    state.wordNumber = -1;
+    state.pause = true;
+    setState(() {});
   }
 
-  Future<void> goPreviousPage(QuranPlayerGlobalState state) async {
+  Future<void> goPreviousPage() async {
     if (state.pageNumber <= settingsController.numPages) return;
 
     if (settingsController.numPages == 1) {
-      state.pageNumber.value = state.pageNumber.value - 1;
+      state.pageNumber = state.pageNumber - 1;
     } else {
-      state.pageNumber.value =
-          ((state.pageNumber.value / settingsController.numPages).floor() - 1) *
+      state.pageNumber =
+          ((state.pageNumber / settingsController.numPages).floor() - 1) *
                   settingsController.numPages +
               1;
     }
 
     for (int i = 0; i < settingsController.numPages; i++) {
       await QuranFontsLoader().loadPageFont(
-          state.pageNumber.value + i, settingsController.textRepresentation);
+          state.pageNumber + i, settingsController.textRepresentation);
     }
 
-    dynamic pageData = quran.getPageData(state.pageNumber.value).first;
-    state.surahNumber.value = pageData['surah'];
-    state.verseNumber.value = pageData['start'];
-    state.wordNumber.value = -1;
-    state.pause.value = true;
-    state.update();
+    dynamic pageData = quran.getPageData(state.pageNumber).first;
+    state.surahNumber = pageData['surah'];
+    state.verseNumber = pageData['start'];
+    state.wordNumber = -1;
+    state.pause = true;
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    QuranPlayerGlobalState state = Get.find();
-
-    return GetX<QuranPlayerGlobalState>(
-        builder: (_) => Scaffold(
-              // appBar: AppBar(
-              //   title: Text(
-              //       '${quran.getSurahNameArabic(state.surahNumber)} (${state.pageNumber})'),
-              //   actions: [
-              //     IconButton(
-              //       icon: const Icon(Icons.settings),
-              //       onPressed: () {
-              //         // Navigate to the settings page. If the user leaves and returns
-              //         // to the app after it has been killed while running in the
-              //         // background, the navigation stack is restored.
-              //         Navigator.restorablePushNamed(context, SettingsView.routeName);
-              //       },
-              //     ),
-              //   ],
-              // ),
-              body: AnimatedOpacity(
-                opacity: state.pageTransition.value != PageTransition.noChange
-                    ? 0.0
-                    : 1.0,
-                duration: const Duration(milliseconds: 1000),
-                onEnd: () {
-                  if (state.pageTransition.value == PageTransition.nextPage) {
-                    goNextPage(state).then((value) {
-                      state.loadingPage.value = !state.loadingPage.value;
-                      state.update();
-                    });
-                    state.pageTransition.value = PageTransition.noChange;
-                  } else if (state.pageTransition.value ==
-                      PageTransition.previousPage) {
-                    goPreviousPage(state).then((value) {
-                      state.loadingPage.value = !state.loadingPage.value;
-                      state.update();
-                    });
-                    state.pageTransition.value = PageTransition.noChange;
-                  }
-                },
-                child: SwipeTo(
-                  animationDuration: Duration(milliseconds: 0),
-                  onRightSwipe: (details) {
-                    state.pageTransition.value = PageTransition.nextPage;
-                    state.update();
-                  },
-                  onLeftSwipe: (details) {
-                    state.pageTransition.value = PageTransition.previousPage;
-                    state.update();
-                  },
-                  child: CallbackShortcuts(
-                    bindings: <ShortcutActivator, VoidCallback>{
-                      // const SingleActivator(LogicalKeyboardKey.equal, control: true):
-                      //     () {
-                      //   setState(
-                      //       () => _fontSize < 200 ? _fontSize += 1 : _fontSize += 0);
-                      // },
-                      // const SingleActivator(LogicalKeyboardKey.minus, control: true):
-                      //     () {
-                      //   setState(
-                      //       () => _fontSize > 20 ? _fontSize -= 1 : _fontSize += 0);
-                      // },
-                      // const SingleActivator(LogicalKeyboardKey.digit0, control: true):
-                      //     () {
-                      //   setState(() => _fontSize = defaultFontSize);
-                      // },
-                      const SingleActivator(LogicalKeyboardKey.arrowLeft): () =>
-                          goNextPage(state),
-                      const SingleActivator(LogicalKeyboardKey.arrowRight):
-                          () => goPreviousPage(state),
-                    },
-                    child: Column(children: [
-                      Expanded(child: Row(children: buildPages(state))),
-                      QuranPlayer(settingsController: settingsController),
-                    ]),
-                  ),
-                ),
+    return Scaffold(
+      // appBar: AppBar(
+      //   title: Text(
+      //       '${quran.getSurahNameArabic(state.surahNumber)} (${state.pageNumber})'),
+      //   actions: [
+      //     IconButton(
+      //       icon: const Icon(Icons.settings),
+      //       onPressed: () {
+      //         // Navigate to the settings page. If the user leaves and returns
+      //         // to the app after it has been killed while running in the
+      //         // background, the navigation stack is restored.
+      //         Navigator.restorablePushNamed(context, SettingsView.routeName);
+      //       },
+      //     ),
+      //   ],
+      // ),
+      body: AnimatedOpacity(
+        opacity: state.pageTransition != PageTransition.noChange ? 0.0 : 1.0,
+        duration: const Duration(milliseconds: 500),
+        onEnd: () {
+          if (state.pageTransition == PageTransition.nextPage) {
+            setState(() => state.pageTransition = PageTransition.noChange);
+            goNextPage().then((value) {
+              setState(() {});
+            });
+          } else if (state.pageTransition == PageTransition.previousPage) {
+            setState(() {
+              state.pageTransition = PageTransition.noChange;
+            });
+            goPreviousPage().then((value) {
+              setState(() {});
+            });
+          }
+        },
+        child: SwipeTo(
+          animationDuration: Duration(milliseconds: 0),
+          onRightSwipe: (details) {
+            setState(() {
+              state.pageTransition = PageTransition.nextPage;
+            });
+          },
+          onLeftSwipe: (details) {
+            setState(() {
+              state.pageTransition = PageTransition.previousPage;
+            });
+          },
+          child: CallbackShortcuts(
+            bindings: <ShortcutActivator, VoidCallback>{
+              // const SingleActivator(LogicalKeyboardKey.equal, control: true):
+              //     () {
+              //   setState(
+              //       () => _fontSize < 200 ? _fontSize += 1 : _fontSize += 0);
+              // },
+              // const SingleActivator(LogicalKeyboardKey.minus, control: true):
+              //     () {
+              //   setState(
+              //       () => _fontSize > 20 ? _fontSize -= 1 : _fontSize += 0);
+              // },
+              // const SingleActivator(LogicalKeyboardKey.digit0, control: true):
+              //     () {
+              //   setState(() => _fontSize = defaultFontSize);
+              // },
+              const SingleActivator(LogicalKeyboardKey.arrowLeft): () =>
+                  goNextPage(),
+              const SingleActivator(LogicalKeyboardKey.arrowRight): () =>
+                  goPreviousPage(),
+            },
+            child: Column(children: [
+              Expanded(child: Row(children: buildPages())),
+              QuranPlayer(
+                settingsController: settingsController,
+                state: state,
+                parent: this,
               ),
-              floatingActionButton: FittedBox(
-                child: FloatingActionButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: const Icon(Icons.navigate_before)),
-              ),
-            ));
+            ]),
+          ),
+        ),
+      ),
+      floatingActionButton: FittedBox(
+        child: FloatingActionButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Icon(Icons.navigate_before)),
+      ),
+    );
   }
 }

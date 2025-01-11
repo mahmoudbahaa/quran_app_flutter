@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:media_kit/media_kit.dart';
-import 'package:quran_app_flutter/src/util/quran_player_global_state.dart';
 
 import 'src/app.dart';
 import 'src/settings/settings_controller.dart';
 import 'src/settings/settings_service.dart';
+import 'src/util/quran_player_global_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

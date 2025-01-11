@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:quran/quran.dart' as quran;
-import 'package:quran_app_flutter/src/quran_feature/page_builder.dart';
-import 'package:quran_app_flutter/src/util/page_transition.dart';
-import 'package:quran_app_flutter/src/util/text_representation.dart';
 
+import '../quran_feature/page_builder.dart';
 import '../settings/settings_controller.dart';
+import '../util/enums.dart';
 import '../util/quran_fonts_loader.dart';
 import '../util/quran_player_global_state.dart';
 import '../util/swipe_to.dart';

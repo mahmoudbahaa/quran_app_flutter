@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../util/text_representation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../util/enums.dart';
 
 /// A service that stores and retrieves user settings.
 ///
@@ -35,6 +36,9 @@ class SettingsService {
   }
 
   /// Loads the User's preferred ThemeMode from local or remote storage.
+  Future<AppLocale> appLocale() async =>
+      AppLocale.values[await getValue('localization', 0)];
+
   Future<ThemeMode> themeMode() async =>
       ThemeMode.values[await getValue('themeMode', 0)];
 
@@ -47,12 +51,15 @@ class SettingsService {
 
   Future<int> recitationId() async => await getValue('recitationId', 7);
 
+  Future<void> updateLocalization(AppLocale localization) async =>
+      await setValue('localization', localization.index);
+
   Future<void> updateThemeMode(ThemeMode theme) async =>
       await setValue('themeMode', theme.index);
 
   /// Persists the user's preferred ThemeMode to local or remote storage.
   Future<void> updateTextRepresentation(
-      TextRepresentation textRepresentation) async =>
+          TextRepresentation textRepresentation) async =>
       await setValue('textRepresentation', textRepresentation.index);
 
   /// Persists the user's preferred ThemeMode to local or remote storage.

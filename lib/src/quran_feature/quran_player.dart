@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:media_kit/media_kit.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:quran/quran.dart' as quran;
-import 'package:quran_app_flutter/src/quran_feature/quran_chapters_details_view.dart';
+import '../quran_feature/quran_chapters_details_view.dart';
 import 'package:universal_io/io.dart';
 
 import '../settings/settings_controller.dart';

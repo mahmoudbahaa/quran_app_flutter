@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
+import '../util/enums.dart';
 import 'settings_service.dart';
-import '../util/text_representation.dart';
 
 /// A class that many Widgets can interact with to read user settings, update
 /// user settings, or listen to user settings changes.
@@ -21,6 +22,7 @@ class SettingsController with ChangeNotifier {
   late int _numPages;
   late bool _flowMode;
   late int _recitationId;
+  late AppLocale _appLocale;
 
   // Allow Widgets to read the user's preferred ThemeMode.
   ThemeMode get themeMode => _themeMode;
@@ -28,6 +30,7 @@ class SettingsController with ChangeNotifier {
   bool get flowMode => _flowMode;
   int get numPages => _numPages;
   int get recitationId => _recitationId;
+  AppLocale get appLocale => _appLocale;
 
   /// Load the user's settings from the SettingsService. It may load from a
   /// local database or the internet. The controller only knows it can load the
@@ -38,9 +41,19 @@ class SettingsController with ChangeNotifier {
     _textRepresentation = await _settingsService.textRepresentation();
     _numPages = await _settingsService.numPages();
     _recitationId = await _settingsService.recitationId();
+    _appLocale = await _settingsService.appLocale();
 
     // Important! Inform listeners a change has occurred.
     notifyListeners();
+  }
+
+  Future<void> updateAppLocale(AppLocale? appLocale) async {
+    if (appLocale == null) return;
+    if (appLocale == _appLocale) return;
+    _appLocale = appLocale;
+    notifyListeners();
+    await _settingsService.updateLocalization(appLocale);
+    Get.updateLocale(Locale(appLocale.name));
   }
 
   /// Update and persist the ThemeMode based on the user's selection.
@@ -53,7 +66,8 @@ class SettingsController with ChangeNotifier {
   }
 
   /// Update and persist the TextRepresentation based on the user's selection.
-  Future<void> updateTextRepresentation(TextRepresentation? newTextRepresentation) async {
+  Future<void> updateTextRepresentation(
+      TextRepresentation? newTextRepresentation) async {
     if (newTextRepresentation == null) return;
     if (newTextRepresentation == _textRepresentation) return;
     _textRepresentation = newTextRepresentation;

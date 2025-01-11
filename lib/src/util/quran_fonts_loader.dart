@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
-import 'package:quran_app_flutter/src/util/text_representation.dart';
+
+import 'enums.dart';
 
 class QuranFontsLoader {
   const QuranFontsLoader();

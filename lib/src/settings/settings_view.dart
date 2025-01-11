@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../util/text_representation.dart';
 
-import 'settings_controller.dart';
 import '../data/recitations.dart';
+import '../util/enums.dart';
+import 'settings_controller.dart';
 
 /// Displays the various settings that can be customized by the user.
 ///

@@ -1,5 +1,6 @@
 import 'package:media_kit/media_kit.dart';
-import 'package:quran_app_flutter/src/util/page_transition.dart';
+
+import 'enums.dart';
 
 class QuranPlayerGlobalState {
   dynamic verseTimings;

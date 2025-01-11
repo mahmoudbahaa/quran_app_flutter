@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quran/quran.dart' as quran;
-import 'package:quran_app_flutter/src/util/quran_fonts_loader.dart';
 
 import '../data/verses_v1.dart';
 import '../data/verses_v2.dart';
@@ -10,9 +9,9 @@ import '../data/verses_v4.dart';
 import '../data/words_v1.dart';
 import '../data/words_v2.dart';
 import '../data/words_v4.dart';
+import '../util/enums.dart';
+import '../util/quran_fonts_loader.dart';
 import '../util/quran_player_global_state.dart';
-import '../util/text_representation.dart';
-import '../util/text_type.dart';
 
 class PageBuilder {
   const PageBuilder();

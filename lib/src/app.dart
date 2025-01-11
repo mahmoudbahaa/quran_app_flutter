@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
-import 'package:quran_app_flutter/src/util/quran_player_global_state.dart';
 
 import 'quran_feature/quran_chapters_list_view.dart';
 import 'settings/settings_controller.dart';
+import 'util/quran_player_global_state.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
@@ -35,12 +35,9 @@ class MyApp extends StatelessWidget {
                 GlobalWidgetsLocalizations.delegate,
                 GlobalCupertinoLocalizations.delegate,
               ],
-              supportedLocales: const [
-                Locale('en', ''), // English, no country code
-                Locale('ar', ''), // Arabic, no country code
-              ],
+              supportedLocales: AppLocalizations.supportedLocales,
 
-              locale: const Locale('ar', ''),
+              locale: Locale(settingsController.appLocale.name, ''),
               // Use AppLocalizations to configure the correct application title
               // depending on the user's locale.
               //
@@ -65,6 +62,7 @@ class MyApp extends StatelessWidget {
                 brightness: Brightness.dark,
               ),
               themeMode: settingsController.themeMode,
+              debugShowCheckedModeBanner: false,
             ));
   }
 }

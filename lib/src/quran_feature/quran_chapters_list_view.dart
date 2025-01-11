@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get/get.dart';
 import 'package:quran/quran.dart' as quran;
-import 'package:quran_app_flutter/src/settings/settings_controller.dart';
-import 'package:quran_app_flutter/src/util/arabic_number.dart';
 
 import '../data/surah_names.dart';
+import '../settings/language_selection_view.dart';
+import '../settings/settings_controller.dart';
 import '../settings/settings_view.dart';
+import '../util/arabic_number.dart';
 import '../util/quran_fonts_loader.dart';
 import '../util/quran_player_global_state.dart';
 import 'quran_chapters_details_view.dart';
@@ -23,11 +25,16 @@ class QuranChaptersListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Quran Chapters'),
+        title: Text(AppLocalizations.of(context)!.appTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () => Get.to(() => SettingsView(controller: controller)),
+          ),
+          IconButton(
+            icon: const Icon(Icons.language),
+            onPressed: () =>
+                Get.to(() => LanguageSelectionView(controller: controller)),
           ),
         ],
       ),
@@ -45,13 +52,18 @@ class QuranChaptersListView extends StatelessWidget {
         restorationId: 'sampleItemListView',
         itemCount: quran.totalSurahCount,
         itemBuilder: (BuildContext context, int index) {
+          String surahPrefix = AppLocalizations.of(context)!.surahPrefix;
+          String surahName = surahNames[Get.locale?.languageCode][index];
+          String surahTranslation = Get.locale?.languageCode == 'ar'
+              ? ''
+              : ' (${surahTranslations[Get.locale?.languageCode][index]})';
           return ListTile(
-              title: Text('$surahPrefix${surahNames[index]}',
+              title: Text('$surahPrefix$surahName$surahTranslation',
                   style: TextStyle(fontFamily: 'uthmanic3')),
               leading: CircleAvatar(
                 // Display the Flutter Logo image asset.
                 // foregroundImage: const AssetImage('assets/images/flutter_logo.png'),
-                child: Text(ArabicNumber().convertToArabicNumber(index + 1),
+                child: Text(ArabicNumber().convertToLocaleNumber(index + 1),
                     style: TextStyle(fontFamily: 'uthmanic')),
               ),
               onTap: () async {

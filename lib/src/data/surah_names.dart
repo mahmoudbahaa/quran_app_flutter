@@ -1,232 +1,353 @@
-final surahNames =
-[
-'الفَاتِحَةِ'
-,
-'البَقَرَةِ'
-,
-'آلِ عِمۡرَانَ'
-,
-'النِّسَاءِ'
-,
-'المَائـِدَةِ'
-,
-'الأَنۡعَامِ'
-,
-'الأَعۡرَافِ'
-,
-'الأَنفَالِ'
-,
-'التَّوۡبَةِ'
-,
-'يُونُسَ'
-,
-'هُودٍ'
-,
-'يُوسُفَ'
-,
-'الرَّعۡدِ'
-,
-'إِبۡرَاهِيمَ'
-,
-'الحِجۡرِ'
-,
-'النَّحۡلِ'
-,
-'الإِسۡرَاءِ'
-,
-'الكَهۡفِ'
-,
-'مَرۡيَمَ'
-,
-'طه'
-,
-'الأَنبِيَاءِ'
-,
-'الحَجِّ'
-,
-'المُؤۡمِنُونَ'
-,
-'النُّورِ'
-,
-'الفُرۡقَانِ'
-,
-'الشُّعَرَاءِ'
-,
-'النَّمۡلِ'
-,
-'القَصَصِ'
-,
-'العَنكَبُوتِ'
-,
-'الرُّومِ'
-,
-'لُقۡمَانَ'
-,
-'السَّجۡدَةِ'
-,
-'الأَحۡزَابِ'
-,
-'سَبَإٍ'
-,
-'فَاطِرٍ'
-,
-'يسٓ'
-,
-'الصَّافَّاتِ'
-,
-'صٓ'
-,
-'الزُّمَرِ'
-,
-'غَافِرٍ'
-,
-'فُصِّلَتۡ'
-,
-'الشُّورَىٰ'
-,
-'الزُّخۡرُفِ'
-,
-'الدُّخَانِ'
-,
-'الجَاثِيَةِ'
-,
-'الأَحۡقَافِ'
-,
-'مُحَمَّدٍ'
-,
-'الفَتۡحِ'
-,
-'الحُجُرَاتِ'
-,
-'قٓ'
-,
-'الذَّارِيَاتِ'
-,
-'الطُّورِ'
-,
-'النَّجۡمِ'
-,
-'القَمَرِ'
-,
-'الرَّحۡمَٰن'
-,
-'الوَاقِعَةِ'
-,
-'الحَدِيدِ'
-,
-'المُجَادلَةِ'
-,
-'الحَشۡرِ'
-,
-'المُمۡتَحنَةِ'
-,
-'الصَّفِّ'
-,
-'الجُمُعَةِ'
-,
-'المُنَافِقُونَ'
-,
-'التَّغَابُنِ'
-,
-'الطَّلَاقِ'
-,
-'التَّحۡرِيمِ'
-,
-'المُلۡكِ'
-,
-'القَلَمِ'
-,
-'الحَاقَّةِ'
-,
-'المَعَارِجِ'
-,
-'نُوحٍ'
-,
-'الجِنِّ'
-,
-'المُزَّمِّلِ'
-,
-'المُدَّثِّرِ'
-,
-'القِيَامَةِ'
-,
-'الإِنسَانِ'
-,
-'المُرۡسَلَاتِ'
-,
-'النَّبَإِ'
-,
-'النَّازِعَاتِ'
-,
-'عَبَسَ'
-,
-'التَّكۡوِيرِ'
-,
-'الانفِطَارِ'
-,
-'المُطَفِّفِينَ'
-,
-'الانشِقَاقِ'
-,
-'البُرُوجِ'
-,
-'الطَّارِقِ'
-,
-'الأَعۡلَىٰ'
-,
-'الغَاشِيَةِ'
-,
-'الفَجۡرِ'
-,
-'البَلَدِ'
-,
-'الشَّمۡسِ'
-,
-'اللَّيۡلِ'
-,
-'الضُّحَىٰ'
-,
-'الشَّرۡحِ'
-,
-'التِّينِ'
-,
-'العَلَقِ'
-,
-'القَدۡرِ'
-,
-'البَيِّنَةِ'
-,
-'الزَّلۡزَلَةِ'
-,
-'العَادِيَاتِ'
-,
-'القَارِعَةِ'
-,
-'التَّكَاثُرِ'
-,
-'العَصۡرِ'
-,
-'الهُمَزَةِ'
-,
-'الفِيلِ'
-,
-'قُرَيۡشٍ'
-,
-'المَاعُونِ'
-,
-'الكَوۡثَرِ'
-,
-'الكَافِرُونَ'
-,
-'النَّصۡرِ'
-,
-'المَسَدِ'
-,
-'الإِخۡلَاصِ'
-,
-'الفَلَقِ'
-,
-'النَّاسِ'
-];
+final dynamic surahNames = {
+  'ar': [
+    'الفَاتِحَةِ',
+    'البَقَرَةِ',
+    'آلِ عِمۡرَانَ',
+    'النِّسَاءِ',
+    'المَائـِدَةِ',
+    'الأَنۡعَامِ',
+    'الأَعۡرَافِ',
+    'الأَنفَالِ',
+    'التَّوۡبَةِ',
+    'يُونُسَ',
+    'هُودٍ',
+    'يُوسُفَ',
+    'الرَّعۡدِ',
+    'إِبۡرَاهِيمَ',
+    'الحِجۡرِ',
+    'النَّحۡلِ',
+    'الإِسۡرَاءِ',
+    'الكَهۡفِ',
+    'مَرۡيَمَ',
+    'طه',
+    'الأَنبِيَاءِ',
+    'الحَجِّ',
+    'المُؤۡمِنُونَ',
+    'النُّورِ',
+    'الفُرۡقَانِ',
+    'الشُّعَرَاءِ',
+    'النَّمۡلِ',
+    'القَصَصِ',
+    'العَنكَبُوتِ',
+    'الرُّومِ',
+    'لُقۡمَانَ',
+    'السَّجۡدَةِ',
+    'الأَحۡزَابِ',
+    'سَبَإٍ',
+    'فَاطِرٍ',
+    'يسٓ',
+    'الصَّافَّاتِ',
+    'صٓ',
+    'الزُّمَرِ',
+    'غَافِرٍ',
+    'فُصِّلَتۡ',
+    'الشُّورَىٰ',
+    'الزُّخۡرُفِ',
+    'الدُّخَانِ',
+    'الجَاثِيَةِ',
+    'الأَحۡقَافِ',
+    'مُحَمَّدٍ',
+    'الفَتۡحِ',
+    'الحُجُرَاتِ',
+    'قٓ',
+    'الذَّارِيَاتِ',
+    'الطُّورِ',
+    'النَّجۡمِ',
+    'القَمَرِ',
+    'الرَّحۡمَٰن',
+    'الوَاقِعَةِ',
+    'الحَدِيدِ',
+    'المُجَادلَةِ',
+    'الحَشۡرِ',
+    'المُمۡتَحنَةِ',
+    'الصَّفِّ',
+    'الجُمُعَةِ',
+    'المُنَافِقُونَ',
+    'التَّغَابُنِ',
+    'الطَّلَاقِ',
+    'التَّحۡرِيمِ',
+    'المُلۡكِ',
+    'القَلَمِ',
+    'الحَاقَّةِ',
+    'المَعَارِجِ',
+    'نُوحٍ',
+    'الجِنِّ',
+    'المُزَّمِّلِ',
+    'المُدَّثِّرِ',
+    'القِيَامَةِ',
+    'الإِنسَانِ',
+    'المُرۡسَلَاتِ',
+    'النَّبَإِ',
+    'النَّازِعَاتِ',
+    'عَبَسَ',
+    'التَّكۡوِيرِ',
+    'الانفِطَارِ',
+    'المُطَفِّفِينَ',
+    'الانشِقَاقِ',
+    'البُرُوجِ',
+    'الطَّارِقِ',
+    'الأَعۡلَىٰ',
+    'الغَاشِيَةِ',
+    'الفَجۡرِ',
+    'البَلَدِ',
+    'الشَّمۡسِ',
+    'اللَّيۡلِ',
+    'الضُّحَىٰ',
+    'الشَّرۡحِ',
+    'التِّينِ',
+    'العَلَقِ',
+    'القَدۡرِ',
+    'البَيِّنَةِ',
+    'الزَّلۡزَلَةِ',
+    'العَادِيَاتِ',
+    'القَارِعَةِ',
+    'التَّكَاثُرِ',
+    'العَصۡرِ',
+    'الهُمَزَةِ',
+    'الفِيلِ',
+    'قُرَيۡشٍ',
+    'المَاعُونِ',
+    'الكَوۡثَرِ',
+    'الكَافِرُونَ',
+    'النَّصۡرِ',
+    'المَسَدِ',
+    'الإِخۡلَاصِ',
+    'الفَلَقِ',
+    'النَّاسِ'
+  ],
+  'en': [
+    'Al-Fātihah',
+    'Al-Baqarah',
+    'Āli-ʿImrān',
+    'An-Nisāʾ',
+    'Al-Māʾidah',
+    'Al-Anʿām',
+    'Al-Aʿrāf',
+    'Al-Anfāl',
+    'At-Tawbah',
+    'Yūnus',
+    'Hūd',
+    'Yūsuf',
+    'Ar-Raʿd',
+    'Ibrāhīm',
+    'Al-Ḥijr',
+    'An-Naḥl',
+    'Al-Isrāʾ',
+    'Al-Kahf',
+    'Maryam',
+    'Ṭā-Hā',
+    'Al-Anbiyāʾ',
+    'Al-Ḥajj',
+    'Al-Muʾminūn',
+    'An-Nūr',
+    'Al-Furqān',
+    'Ash-Shuʿarāʾ',
+    'An-Naml',
+    'Al-Qaṣaṣ',
+    'Al-ʿAnkabūt',
+    'Ar-Rūm',
+    'Luqmān',
+    'As-Sajdah',
+    'Al-Aḥzāb',
+    'Sabaʾ',
+    'Fāṭir',
+    'Yā-Sīn',
+    'Aṣ-Ṣāffāt',
+    'Ṣād',
+    'Az-Zumar',
+    'Ghāfir',
+    'Fuṣṣilat',
+    'Ash-Shūrā',
+    'Az-Zukhruf',
+    'Ad-Dukhān',
+    'Al-Jāthiyah',
+    'Al-Aḥqāf',
+    'Muḥammad',
+    'Al-Fatḥ',
+    'Al-Ḥujurāt',
+    'Qāf',
+    'Adh-Dhāriyāt',
+    'Aṭ-Ṭūr',
+    'An-Najm',
+    'Al-Qamar',
+    'Ar-Raḥmān',
+    'Al-Wāqiʿah',
+    'Al-Ḥadīd',
+    'Al-Mujādilah',
+    'Al-Ḥashr',
+    'Al-Mumtaḥanah',
+    'Aṣ-Ṣaff',
+    'Al-Jumuʿah',
+    'Al-Munāfiqūn',
+    'At-Taghābun',
+    'Aṭ-Ṭalāq',
+    'At-Taḥrīm',
+    'Al-Mulk',
+    'Al-Qalam',
+    'Al-Ḥāqqah',
+    'Al-Maʿārij',
+    'Nūḥ',
+    'Al-Jinn',
+    'Al-Muzzammil',
+    'Al-Muddaththir',
+    'Al-Qiyāmah',
+    'Al-Insān',
+    'Al-Mursalāt',
+    'An-Nabaʾ',
+    'An-Nāziʿāt',
+    'ʿAbasa',
+    'At-Takwīr',
+    'Al-Infiṭār',
+    'Al-Muṭaffifīn',
+    'Al-Inshiqāq',
+    'Al-Burūj',
+    'Aṭ-Ṭāriq',
+    'Al-Aʿlā',
+    'Al-Ghāshiyah',
+    'Al-Fajr',
+    'Al-Balad',
+    'Ash-Shams',
+    'Al-Layl',
+    'Aḍ-Ḍuḥā',
+    'Ash-Sharḥ',
+    'At-Tīn',
+    'Al-ʿAlaq',
+    'Al-Qadr',
+    'Al-Bayyinah',
+    'Az-Zalzalah',
+    'Al-ʿĀdiyāt',
+    'Al-Qāriʿah',
+    'At-Takāthur',
+    'Al-ʿAṣr',
+    'Al-Humazah',
+    'Al-Fīl',
+    'Quraysh',
+    'Al-Māʿūn',
+    'Al-Kawthar',
+    'Al-Kāfirūn',
+    'An-Naṣr',
+    'Al-Masad',
+    'Al-Ikhlāṣ',
+    'Al-Falaq',
+    'An-Nās',
+  ]
+};
 
-final surahPrefix = 'سُورَةُ ';
+final dynamic surahTranslations = {
+  'en': [
+    'The Opening',
+    'The Cow',
+    'The Family of Imran',
+    'The Women',
+    'The Table Spread With Food',
+    'The Cattle',
+    'The Heights (or The Wall with Elevations)',
+    'The Spoils of War',
+    'The Repentance',
+    'Jonah',
+    '(Prophet) Hūd',
+    '(Prophet) Joseph',
+    'The Thunder',
+    'Abraham',
+    'The Rocky Tract',
+    'The Bees',
+    'The Journey by Night',
+    'The Cave',
+    'Mary',
+    'Ta-Ha',
+    'The Prophets',
+    'The Pilgrimage',
+    'The Believers',
+    'The Light',
+    'The Criterion',
+    'The Poets',
+    'The Ants',
+    'The Narration',
+    'The Spider',
+    'The Romans',
+    'Luqmān',
+    'The Prostration',
+    'The Confederates',
+    'Sheba',
+    'The Originator of Creation',
+    'Ya Sin',
+    'Those Ranged in Ranks',
+    'The Letter &quot;Saad&quot;',
+    'The Groups',
+    'The Forgiver',
+    'They are explained in detail',
+    'The Consultation',
+    'The Gold Adornments',
+    'The Smoke',
+    'The Kneeling',
+    'The Curved Sand‑hills',
+    'Muḥammad صَلَّى ٱللَّهُ عَلَيۡهِ وَسَلَّمَ',
+    'The Victory',
+    'The Dwellings',
+    'The Letter &quot;Qaf&quot;',
+    'The Winds that Scatter',
+    'The Mount',
+    'The Star',
+    'The Moon',
+    'The Most Gracious',
+    'The Event',
+    'Iron',
+    'The Woman Who Disputes',
+    'The Gathering',
+    'The Woman to be examined',
+    'The Row or the Rank',
+    'Friday',
+    'The Hypocrites',
+    'Mutual Loss and Gain',
+    'The Divorce',
+    'The Prohibition',
+    'Dominion',
+    'The Pen',
+    'The Inevitable',
+    'The Ways of Ascent',
+    'Noah',
+    'The Jinn',
+    'The One wrapped in Garments',
+    'The One Enveloped',
+    'The Resurrection',
+    'Man',
+    'Those sent forth',
+    'The News',
+    'Those Who Pull Out',
+    'He Frowned',
+    'Winding Round and losing its Light',
+    'The Cleaving',
+    'Those Who Deal in Fraud',
+    'The Splitting Asunder',
+    'The Big Stars “Burūj”',
+    'The Night‑Comer',
+    'The Most High',
+    'The Overwhelming',
+    'The Break of Day or the Dawn',
+    'The City',
+    'The Sun',
+    'The Night',
+    'The Forenoon ‑ “After Sunrise”',
+    'The Opening Forth',
+    'The Fig',
+    'The Clot',
+    'The Night of Decree',
+    'The Clear Evidence',
+    'The Earthquake',
+    'Those That Run',
+    'The Striking Hour',
+    'The piling Up — The Emulous Desire',
+    'The Time',
+    'The Slanderer',
+    'The Elephant',
+    'Quraish',
+    'The Small Kindnesses',
+    'A River in Paradise',
+    'The Disbelievers',
+    'The Help',
+    'The Palm Fibre',
+    'The Purity',
+    'The Daybreak',
+    'Mankind'
+  ],
+};

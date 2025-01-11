@@ -2,5 +2,6 @@
   "appTitle": "برنامج القرآن الكريم",
   "@appTitle": {
     "description": "برنامج القرآن الكريم"
-  }
+  },
+  "surahPrefix": "سُورَةُ "
 }

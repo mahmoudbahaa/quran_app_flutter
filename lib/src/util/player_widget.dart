@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart';
 
 import 'common.dart';
@@ -143,7 +145,15 @@ class _PlayerWidgetState extends State<PlayerWidget> {
         ),
         Expanded(
           child: Padding(
-            padding: EdgeInsets.only(left: 60),
+            padding: EdgeInsets.only(
+                left: rtlLanguages
+                        .contains(AppLocalizations.of(context)?.localeName)
+                    ? 60
+                    : 0,
+                right: rtlLanguages
+                        .contains(AppLocalizations.of(context)?.localeName)
+                    ? 0
+                    : 60),
             child: Slider(
               onChanged: (value) {
                 final duration = _duration;

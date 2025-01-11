@@ -22,6 +22,8 @@ enum TextRepresentation {
   codeV4,
 }
 
+final mushafIds = [2, 1, 19];
+
 enum PageTransition {
   nextPage,
   previousPage,

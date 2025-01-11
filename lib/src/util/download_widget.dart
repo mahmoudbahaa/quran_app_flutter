@@ -74,7 +74,7 @@ class _DownloadWidgetState extends State<DownloadWidget> {
                   // animation: true,
                   percent: downloadProgressNotifier.value / 100,
                   center: Text(
-                    "${downloadProgressNotifier.value}%",
+                    '${downloadProgressNotifier.value}%',
                     style: const TextStyle(
                         fontSize: 20.0, fontWeight: FontWeight.w600),
                   ),

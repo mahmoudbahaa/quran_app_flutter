@@ -71,7 +71,7 @@ class SwipeTo extends StatefulWidget {
     this.offsetDx = 0.3,
     this.swipeSensitivity = 5,
   }) : assert(swipeSensitivity >= 5 && swipeSensitivity <= 35,
-            "swipeSensitivity value must be between 5 to 35");
+            'swipeSensitivity value must be between 5 to 35');
 
   @override
   State<SwipeTo> createState() => _SwipeToState();
@@ -106,12 +106,12 @@ class _SwipeToState extends State<SwipeTo> with SingleTickerProviderStateMixin {
     );
     _onSwipeLeft = widget.onLeftSwipe ??
         (details) {
-          log("Left Swipe Not Provided");
+          log('Left Swipe Not Provided');
         };
 
     _onSwipeRight = widget.onRightSwipe ??
         (details) {
-          log("Right Swipe Not Provided");
+          log('Right Swipe Not Provided');
         };
     _controller.addListener(() {
       setState(() {});

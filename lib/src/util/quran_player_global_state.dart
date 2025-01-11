@@ -1,11 +1,9 @@
-import 'package:media_kit/media_kit.dart';
-
 import 'enums.dart';
 
 class QuranPlayerGlobalState {
   dynamic verseTimings;
 
-  final Player player = Player();
+  // final Player player = Player();
 
   bool pause = true;
 

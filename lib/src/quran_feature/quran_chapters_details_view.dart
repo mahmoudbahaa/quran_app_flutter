@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +8,7 @@ import 'package:quran/quran.dart' as quran;
 
 import '../quran_feature/page_builder.dart';
 import '../settings/settings_controller.dart';
+import '../util/assets_downloader.dart';
 import '../util/enums.dart';
 import '../util/quran_player_global_state.dart';
 import '../util/swipe_to.dart';
@@ -28,17 +31,24 @@ class QuranChapterDetailsView extends StatefulWidget {
 class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
   final double defaultFontSize = 36;
   final double _fontSize = 500;
+  late int _pageNumber;
+
   final PageBuilder pageBuilder = const PageBuilder();
   QuranPlayerGlobalState get state => widget.state;
   SettingsController get settingsController => widget.settingsController;
+
+  @override
+  void initState() {
+    _pageNumber = state.pageNumber;
+    super.initState();
+  }
 
   List<Widget> buildPages() {
     List<Widget> pages = <Widget>[];
 
     int numPages = settingsController.numPages;
     for (int i = 0; i < numPages; i++) {
-      int pageNum =
-          i + 1 + ((state.pageNumber - 1) / numPages).floor() * numPages;
+      int pageNum = i + 1 + ((_pageNumber - 1) / numPages).floor() * numPages;
       if (pageNum > quran.totalPagesCount) break;
 
       final constraint = BoxConstraints(
@@ -55,6 +65,13 @@ class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
                 ? 630
                 : 700,
       );
+
+      String? imagePath = AssetsDownloader().getImagePath(pageNum);
+      if (imagePath == null) {
+        AssetsDownloader().loadImage(pageNum).then((_) {
+          if (mounted) setState(() {});
+        });
+      }
 
       final Widget child = ConstrainedBox(
         constraints: constraint,
@@ -73,15 +90,8 @@ class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
                 ? Container(color: Colors.transparent)
                 : SizedBox.shrink(),
           ),
-          DecoratedBox(
-            // BoxDecoration takes the image
-            decoration: BoxDecoration(
-                // Image set to background of the body
-                image: DecorationImage(
-                    invertColors: false, //Get.isDarkMode,
-                    image: AssetImage('assets/images/hollow/$pageNum.png'),
-                    fit: BoxFit.contain)),
-            child: Align(
+          Builder(builder: (context) {
+            final child = Align(
               alignment: Alignment.center,
               child: Builder(builder: (context) {
                 final aspectRatio = 700 / 475;
@@ -108,8 +118,9 @@ class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
                               i,
                               numPages,
                               settingsController.textRepresentation,
-                              settingsController.flowMode,
-                              setState)),
+                              settingsController.flowMode, () {
+                        if (mounted) setState(() => {});
+                      })),
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: _fontSize),
                       maxLines: pageNum == 1 ? 8 : 15,
@@ -120,8 +131,20 @@ class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
                   ),
                 );
               }),
-            ),
-          ),
+            );
+
+            if (imagePath == null) return child;
+
+            return DecoratedBox(
+              // BoxDecoration takes the image
+              decoration: BoxDecoration(
+                // Image set to background of the body
+                image: DecorationImage(
+                    image: FileImage(File(imagePath)), fit: BoxFit.contain),
+              ),
+              child: child,
+            );
+          }),
         ]),
       );
 
@@ -135,9 +158,11 @@ class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
     return pages;
   }
 
-  Future<void> goNextPage() async {
-    if (state.pageNumber >=
-        (quran.totalPagesCount - settingsController.numPages)) {
+  void goNextPage() {
+    if (!AssetsDownloader().isFontLoaded(
+            state.pageNumber, settingsController.textRepresentation) ||
+        state.pageNumber >=
+            (quran.totalPagesCount - settingsController.numPages)) {
       return;
     }
 
@@ -150,67 +175,52 @@ class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
               1;
     }
 
-    dynamic pageData = quran.getPageData(state.pageNumber).first;
-    state.surahNumber = pageData['surah'];
-    state.verseNumber = pageData['start'];
+    state.surahNumber = -1;
+    state.verseNumber = -1;
     state.wordNumber = -1;
     state.pause = true;
-    setState(() {});
   }
 
-  Future<void> goPreviousPage() async {
-    if (state.pageNumber <= settingsController.numPages) return;
+  void goPreviousPage() {
+    if (!AssetsDownloader().isFontLoaded(
+            state.pageNumber, settingsController.textRepresentation) ||
+        state.pageNumber <= settingsController.numPages) {
+      return;
+    }
 
     if (settingsController.numPages == 1) {
       state.pageNumber = state.pageNumber - 1;
     } else {
       state.pageNumber =
-          ((state.pageNumber / settingsController.numPages).floor() - 1) *
+          ((_pageNumber / settingsController.numPages).floor() - 1) *
                   settingsController.numPages +
               1;
     }
 
-    dynamic pageData = quran.getPageData(state.pageNumber).first;
-    state.surahNumber = pageData['surah'];
-    state.verseNumber = pageData['start'];
+    state.surahNumber = -1;
+    state.verseNumber = -1;
     state.wordNumber = -1;
     state.pause = true;
-    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    _pageNumber = state.pageNumber;
+
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text(
-      //       '${quran.getSurahNameArabic(state.surahNumber)} (${state.pageNumber})'),
-      //   actions: [
-      //     IconButton(
-      //       icon: const Icon(Icons.settings),
-      //       onPressed: () {
-      //         // Navigate to the settings page. If the user leaves and returns
-      //         // to the app after it has been killed while running in the
-      //         // background, the navigation stack is restored.
-      //         Navigator.restorablePushNamed(context, SettingsView.routeName);
-      //       },
-      //     ),
-      //   ],
-      // ),
       body: AnimatedOpacity(
         opacity: state.pageTransition != PageTransition.noChange ? 0.0 : 1.0,
         duration: const Duration(milliseconds: 500),
         onEnd: () {
           if (state.pageTransition == PageTransition.nextPage) {
-            setState(() => state.pageTransition = PageTransition.noChange);
-            goNextPage().then((value) {
-              setState(() {});
+            setState(() {
+              state.pageTransition = PageTransition.noChange;
+              goNextPage();
             });
           } else if (state.pageTransition == PageTransition.previousPage) {
             setState(() {
               state.pageTransition = PageTransition.noChange;
-            });
-            goPreviousPage().then((value) {
-              setState(() {});
+              goPreviousPage();
             });
           }
         },
@@ -242,13 +252,20 @@ class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
               //     () {
               //   setState(() => _fontSize = defaultFontSize);
               // },
-              const SingleActivator(LogicalKeyboardKey.arrowLeft): () =>
-                  goNextPage(),
-              const SingleActivator(LogicalKeyboardKey.arrowRight): () =>
-                  goPreviousPage(),
+              const SingleActivator(LogicalKeyboardKey.arrowLeft,
+                  includeRepeats: false): () => setState(goNextPage),
+              const SingleActivator(LogicalKeyboardKey.arrowRight,
+                  includeRepeats: false): () => setState(goPreviousPage),
             },
             child: Column(children: [
-              Expanded(child: Row(children: buildPages())),
+              Expanded(
+                child: Focus(
+                  autofocus: true,
+                  child: Row(
+                    children: buildPages(),
+                  ),
+                ),
+              ),
               QuranPlayer(
                 settingsController: settingsController,
                 state: state,

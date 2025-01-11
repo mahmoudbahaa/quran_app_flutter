@@ -1,31 +1,31 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:quran/quran.dart' as quran;
 
-import '../data/verses_v1.dart';
-import '../data/verses_v2.dart';
-import '../data/verses_v4.dart';
-import '../data/words_v1.dart';
-import '../data/words_v2.dart';
-import '../data/words_v4.dart';
+import '../util/assets_downloader.dart';
 import '../util/enums.dart';
-import '../util/quran_fonts_loader.dart';
 import '../util/quran_player_global_state.dart';
 
 class PageBuilder {
   const PageBuilder();
 
+  static Map<String, dynamic> allData = {};
+
+  final prefixes = const ['', 'v2_', 'v4_'];
+  final codeKeys = const ['code_v1', 'code_v2', 'code_v2'];
+
   TextSpan getText(
       String element,
       String fontFamily,
       TextType type,
-      int surahNumber,
-      int verseNumber,
-      int wordNumber,
       QuranPlayerGlobalState state,
+      QuranPlayerGlobalState newState,
       TextRepresentation textRepresentation,
-      Function setState) {
+      Function update) {
+    final pageNumber = newState.pageNumber;
+    final surahNumber = newState.surahNumber;
+    final verseNumber = newState.verseNumber;
+    final wordNumber = newState.wordNumber;
     if (type == TextType.verse) {
       return TextSpan(
         text: element,
@@ -35,13 +35,13 @@ class PageBuilder {
         ),
         recognizer: LongPressGestureRecognizer()
           ..onLongPress = () {
-            state.surahNumber = surahNumber;
-            state.verseNumber = verseNumber;
-            state.wordNumber = wordNumber;
-            state.pageNumber =
-                getPageNumber(surahNumber, verseNumber, textRepresentation);
+            state
+              ..pageNumber = pageNumber
+              ..surahNumber = surahNumber
+              ..verseNumber = verseNumber
+              ..wordNumber = wordNumber;
             state.playing = false;
-            setState(() => {});
+            update();
           },
       );
     } else if (type == TextType.highlightedVerse) {
@@ -70,77 +70,77 @@ class PageBuilder {
       int numPages,
       TextRepresentation textRepresentation,
       bool flowMode,
-      Function setState) {
+      Function update) {
     final List<TextSpan> children = List.empty(growable: true);
     int pageNumber =
         offset + 1 + ((state.pageNumber - 1) / numPages).floor() * numPages;
 
-    if (!QuranFontsLoader().isFontLoaded(pageNumber, textRepresentation)) {
+    if (!AssetsDownloader().isFontLoaded(pageNumber, textRepresentation)) {
       children.add(TextSpan(
           text: 'جاري تحميل الصفحة, برجاء الإنتظار',
           style: TextStyle(
             height: 1.7,
           )));
-      QuranFontsLoader()
+      AssetsDownloader()
           .loadPageFont(pageNumber, textRepresentation)
-          .then((value) => setState(() => {}));
+          .then((value) => update());
       return children;
     }
 
-    int highlightSurah = -1;
-    int highlightVerse = -1;
-    int highlightWord = -1;
+    int highlightSurah = state.surahNumber - 1;
+    int highlightVerse = state.verseNumber - 1;
+    int highlightWord = state.wordNumber - 1;
 
-    highlightSurah = state.surahNumber - 1;
-    highlightVerse = state.verseNumber - 1;
-    highlightWord = state.wordNumber - 1;
-
-    int currentPageNumber = -1;
     int lineNumber = -1;
     int curLineNumber = -1;
-    int surahNumber = quran.getPageData(pageNumber)[0]['surah'];
+    // int surahNumber = quran.getPageData(pageNumber)[0]['surah'];
 
-    int i = -1;
+    final data = getCachedVersesWordsData(pageNumber, textRepresentation);
+    if (data == null) {
+      children.add(TextSpan(
+          text: 'جاري تحميل الصفحة, برجاء الإنتظار',
+          style: TextStyle(
+            height: 1.7,
+          )));
+      loadVersesWordsData(pageNumber, textRepresentation).then((_) => update());
+      return children;
+    }
+
+    final versesData = data['verses'];
     String surahSep = '';
-    while (true) {
-      i++;
-      if (i >= quran.getVerseCount(surahNumber)) {
-        if (surahNumber < 114 &&
-            pageNumber ==
-                getPageNumber(surahNumber + 1, 1, textRepresentation)) {
-          i = -1;
-          surahNumber++;
-          lineNumber = -1;
-          continue;
-        } else {
-          break;
+    for (int i = 0; i < versesData.length; i++) {
+      final verseData = versesData[i];
+      String verseKey = verseData['verse_key'];
+      int surahNumber = int.parse(verseKey.split(':').first);
+      int verseNumber = int.parse(verseKey.split(':')[1]);
+
+      QuranPlayerGlobalState newState = QuranPlayerGlobalState();
+      newState
+        ..pageNumber = pageNumber
+        ..surahNumber = surahNumber
+        ..verseNumber = 1
+        ..wordNumber = 1;
+
+      if (verseNumber == 1) {
+        if (surahNumber > 2) {
+          String surahCode =
+              '$surahSep${surahNumber.toString().padLeft(3, '0')}surah\n';
+          children.add(getText(surahCode, 'surahNames', TextType.surahName,
+              state, newState, textRepresentation, update));
+        }
+
+        if (surahNumber != 1 && surahNumber != 9) {
+          children.add(getText('﷽\n', 'uthmanic', TextType.bismallah, state,
+              newState, textRepresentation, update));
         }
       }
 
-      currentPageNumber = getPageNumber(surahNumber, i + 1, textRepresentation);
-      if (pageNumber != currentPageNumber) continue;
+      final wordsData = verseData['words'];
 
-      final verseWords =
-          getVersesWordsData(surahNumber, i + 1, textRepresentation);
-      for (int j = 0; j < verseWords.length; j++) {
-        curLineNumber = verseWords[j]['line_number'];
-
-        if (i == 0 && j == 0) {
-          if ((curLineNumber != 2 || surahNumber == 9) &&
-              surahNumber != 1 &&
-              surahNumber != 2) {
-            String surahCode =
-                '$surahSep${surahNumber.toString().padLeft(3, '0')}surah\n';
-            children.add(getText(surahCode, 'surahNames', TextType.surahName,
-                surahNumber, 1, 1, state, textRepresentation, setState));
-          }
-
-          if (surahNumber != 1 && surahNumber != 9) {
-            children.add(getText('﷽\n', 'uthmanic', TextType.bismallah,
-                surahNumber, 1, 1, state, textRepresentation, setState));
-          }
-        }
-
+      newState.verseNumber = i + 1;
+      for (int j = 0; j < wordsData.length; j++) {
+        final wordData = wordsData[j];
+        final curLineNumber = wordData['line_number'];
         String sep = '';
         if (lineNumber == -1) {
           lineNumber = curLineNumber;
@@ -154,62 +154,40 @@ class PageBuilder {
                 j == highlightWord)
             ? TextType.highlightedVerse
             : TextType.verse;
-        String key = textRepresentation == TextRepresentation.codeV1
-            ? 'code_v1'
-            : 'code_v2';
-        String prefix;
-        if (textRepresentation == TextRepresentation.codeV1) {
-          prefix = '';
-        } else if (textRepresentation == TextRepresentation.codeV2) {
-          prefix = 'v2_';
-        } else {
-          prefix = 'v4_';
-        }
 
+        String key = codeKeys[textRepresentation.index];
+        String prefix = prefixes[textRepresentation.index];
         final suffix = (curLineNumber == 1 || i == 0) &&
                 j == 0 &&
                 textRepresentation != TextRepresentation.codeV1
             ? ' '
             : '';
 
-        final wordCode = '$sep${verseWords[j][key]}$suffix';
+        final wordCode = '$sep${wordData[key]}$suffix';
         final font = '${prefix}page$pageNumber';
-        TextSpan wordSpan = getText(wordCode, font, type, surahNumber, i + 1,
-            j + 1, state, textRepresentation, setState);
+        newState.wordNumber = j + 1;
+        TextSpan wordSpan = getText(
+            wordCode, font, type, state, newState, textRepresentation, update);
         children.add(wordSpan);
       }
 
       surahSep = '\n';
     }
 
-    if (lineNumber == 14) {
-      String surahCode =
-          '$surahSep${surahNumber.toString().padLeft(3, '0')}surah\n';
-      children.add(getText(surahCode, 'surahNames', TextType.surahName,
-          surahNumber, 1, 1, state, textRepresentation, setState));
-    }
-
     return children;
   }
 
-  int getPageNumber(
-      int surahNumber, int verseNumber, TextRepresentation textRepresentation) {
-    final dynamic code = textRepresentation == TextRepresentation.codeV1
-        ? versesV1
-        : textRepresentation == TextRepresentation.codeV2
-            ? versesV2
-            : versesV4;
-    return code[surahNumber - 1]['verses']![verseNumber - 1]['page_number']!;
+  dynamic getCachedVersesWordsData(
+      int pageNumber, TextRepresentation textRepresentation) {
+    String key = '${pageNumber}_${textRepresentation.index}';
+    return allData[key];
   }
 
-  getVersesWordsData(
-      int surahNumber, int verseNumber, TextRepresentation textRepresentation) {
-    final dynamic code = textRepresentation == TextRepresentation.codeV1
-        ? wordsV1
-        : textRepresentation == TextRepresentation.codeV2
-            ? wordsV2
-            : wordsV4;
-
-    return code[surahNumber - 1]['verses'][verseNumber - 1]['words'];
+  Future<void> loadVersesWordsData(
+      int pageNumber, TextRepresentation textRepresentation) async {
+    dynamic data =
+        await AssetsDownloader().getWordsData(pageNumber, textRepresentation);
+    String key = '${pageNumber}_${textRepresentation.index}';
+    allData[key] = data;
   }
 }

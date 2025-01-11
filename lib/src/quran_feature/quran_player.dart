@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:media_kit/media_kit.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:quran/quran.dart' as quran;
 import 'package:universal_io/io.dart';
 
 import '../quran_feature/quran_chapters_details_view.dart';
 import '../settings/settings_controller.dart';
 import '../util/download_widget.dart';
+import '../util/file_utils.dart';
 import '../util/player_widget.dart';
 import '../util/quran_player_global_state.dart';
 
@@ -31,7 +31,7 @@ class QuranPlayer extends StatefulWidget {
 }
 
 class QuranPlayerState extends State<QuranPlayer> {
-  Player get player => PlayerWidget.player;
+  Player get player => Player();
   int? surahNumber;
   int? recitationId;
   int verseNumber = -1;
@@ -45,6 +45,7 @@ class QuranPlayerState extends State<QuranPlayer> {
   //late bool _update =  update;
 
   Future<void> setSource() async {
+    if (filePath == null) return;
     await player.stop();
     // await player.setAudioSource(AudioSource.uri(Uri.parse(url)));
     // await player.open(AudioSource.file(filePath));
@@ -98,17 +99,9 @@ class QuranPlayerState extends State<QuranPlayer> {
       if (kIsWeb) {
         filePath = downloadUrl;
       } else {
-        Directory directory;
-        if (Platform.isAndroid) {
-          directory = (await getExternalStorageDirectory())!;
-        } else {
-          directory = (await getApplicationCacheDirectory());
-        }
-
-        filePath =
-            '${directory.path}/${settingsController.recitationId}_$fileName';
-        bool exists = File(filePath!).existsSync();
-        if (!exists) {
+        File file = await FileUtils()
+            .getFile('${settingsController.recitationId}_$fileName');
+        if (!file.existsSync()) {
           parent.setState(() => state.downloading = true);
           return;
         }
@@ -223,14 +216,14 @@ class QuranPlayerState extends State<QuranPlayer> {
     super.dispose();
   }
 
-  Future<void> preBuild() async {
-    if (state.pause) {
-      state.pause = false;
-      await player.pause();
-    } else if (!state.playing) {
-      await changeSource(true);
-    }
-  }
+  // Future<void> preBuild() async {
+  //   if (state.pause) {
+  //     state.pause = false;
+  //     await player.pause();
+  //   } else if (!state.playing) {
+  //     await changeSource(true);
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -241,9 +234,10 @@ class QuranPlayerState extends State<QuranPlayer> {
           state: state,
           parent: this);
     } else {
-      preBuild();
+      // preBuild();
       return PlayerWidget(
           state: state,
+          player: player,
           update: () async {
             await changeSource(true);
           });

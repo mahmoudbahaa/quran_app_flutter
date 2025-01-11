@@ -11,15 +11,16 @@ import 'quran_player_global_state.dart';
 // The PlayerWidget is a copy of "/lib/components/player_widget.dart".
 //#region PlayerWidget
 class PlayerWidget extends StatefulWidget {
-  static final Player player = Player();
-  final Function update;
-  final QuranPlayerGlobalState state;
-
   const PlayerWidget({
     super.key,
     required this.state,
     required this.update,
+    required this.player,
   });
+
+  final Function update;
+  final QuranPlayerGlobalState state;
+  final Player player;
 
   @override
   State<StatefulWidget> createState() {
@@ -47,7 +48,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
 
   String get _positionText => _position?.toString().split('.').first ?? '';
 
-  Player get player => PlayerWidget.player;
+  Player get player => widget.player;
 
   @override
   void initState() {

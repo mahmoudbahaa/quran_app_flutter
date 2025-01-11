@@ -125,7 +125,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "windows_build.tar.gz"
-          tag: v0.0.1+1
+          tag: v0.0.1+2
           token: ${{ secrets.TOKEN }}
           allowUpdates: true
         # End Creating Relases

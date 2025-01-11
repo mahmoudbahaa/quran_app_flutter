@@ -129,10 +129,6 @@ flutter:
       fonts:
         - asset: assets/fonts/uthmanic_hafs_v22.ttf
 
-    - family: v4_page604
+    - family: surahNames
       fonts:
-        - asset: assets/fonts/quran/hafs/v4/colrv1/ttf/p604.ttf
-
-#    - family: surahNames
-#      fonts:
-#        - asset: assets/fonts/quran/surah-names/v1/sura_names.ttf
+        - asset: assets/fonts/quran/surah-names/v1/sura_names.ttf

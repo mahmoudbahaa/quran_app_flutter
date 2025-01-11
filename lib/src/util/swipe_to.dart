@@ -57,7 +57,7 @@ class SwipeTo extends StatefulWidget {
   final int swipeSensitivity;
 
   const SwipeTo({
-    Key? key,
+    super.key,
     required this.child,
     this.onRightSwipe,
     this.onLeftSwipe,
@@ -70,12 +70,11 @@ class SwipeTo extends StatefulWidget {
     this.animationDuration = const Duration(milliseconds: 150),
     this.offsetDx = 0.3,
     this.swipeSensitivity = 5,
-  })  : assert(swipeSensitivity >= 5 && swipeSensitivity <= 35,
-  "swipeSensitivity value must be between 5 to 35"),
-        super(key: key);
+  }) : assert(swipeSensitivity >= 5 && swipeSensitivity <= 35,
+            "swipeSensitivity value must be between 5 to 35");
 
   @override
-  _SwipeToState createState() => _SwipeToState();
+  State<SwipeTo> createState() => _SwipeToState();
 }
 
 class _SwipeToState extends State<SwipeTo> with SingleTickerProviderStateMixin {
@@ -106,12 +105,12 @@ class _SwipeToState extends State<SwipeTo> with SingleTickerProviderStateMixin {
       Tween<double>(begin: 0.0, end: 0.0),
     );
     _onSwipeLeft = widget.onLeftSwipe ??
-            (details) {
+        (details) {
           log("Left Swipe Not Provided");
         };
 
     _onSwipeRight = widget.onRightSwipe ??
-            (details) {
+        (details) {
           log("Right Swipe Not Provided");
         };
     _controller.addListener(() {
@@ -191,7 +190,7 @@ class _SwipeToState extends State<SwipeTo> with SingleTickerProviderStateMixin {
                       widget.iconOnRightSwipe,
                       size: widget.iconSize,
                       color:
-                      widget.iconColor ?? Theme.of(context).iconTheme.color,
+                          widget.iconColor ?? Theme.of(context).iconTheme.color,
                     ),
               ),
               AnimatedOpacity(
@@ -203,7 +202,7 @@ class _SwipeToState extends State<SwipeTo> with SingleTickerProviderStateMixin {
                       widget.iconOnLeftSwipe,
                       size: widget.iconSize,
                       color:
-                      widget.iconColor ?? Theme.of(context).iconTheme.color,
+                          widget.iconColor ?? Theme.of(context).iconTheme.color,
                     ),
               ),
             ],

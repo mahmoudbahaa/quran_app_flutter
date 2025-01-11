@@ -25,7 +25,8 @@ class PageBuilder {
       int verseNumber,
       int wordNumber,
       QuranPlayerGlobalState state,
-      TextRepresentation textRepresentation) {
+      TextRepresentation textRepresentation,
+      Function setState) {
     if (type == TextType.verse) {
       return TextSpan(
         text: element,
@@ -35,13 +36,13 @@ class PageBuilder {
         ),
         recognizer: LongPressGestureRecognizer()
           ..onLongPress = () {
-            state.surahNumber.value = surahNumber;
-            state.verseNumber.value = verseNumber;
-            state.wordNumber.value = wordNumber;
-            state.pageNumber.value =
+            state.surahNumber = surahNumber;
+            state.verseNumber = verseNumber;
+            state.wordNumber = wordNumber;
+            state.pageNumber =
                 getPageNumber(surahNumber, verseNumber, textRepresentation);
-            state.playing.value = false;
-            state.update();
+            state.playing = false;
+            setState(() => {});
           },
       );
     } else if (type == TextType.highlightedVerse) {
@@ -64,12 +65,16 @@ class PageBuilder {
     }
   }
 
-  List<TextSpan> buildPage(QuranPlayerGlobalState state, int offset,
-      int numPages, TextRepresentation textRepresentation, bool flowMode) {
+  List<TextSpan> buildPage(
+      QuranPlayerGlobalState state,
+      int offset,
+      int numPages,
+      TextRepresentation textRepresentation,
+      bool flowMode,
+      Function setState) {
     final List<TextSpan> children = List.empty(growable: true);
-    int pageNumber = offset +
-        1 +
-        ((state.pageNumber.value - 1) / numPages).floor() * numPages;
+    int pageNumber =
+        offset + 1 + ((state.pageNumber - 1) / numPages).floor() * numPages;
 
     if (!QuranFontsLoader().isFontLoaded(pageNumber, textRepresentation)) {
       children.add(TextSpan(
@@ -85,9 +90,9 @@ class PageBuilder {
     int highlightVerse = -1;
     int highlightWord = -1;
 
-    highlightSurah = state.surahNumber.value - 1;
-    highlightVerse = state.verseNumber.value - 1;
-    highlightWord = state.wordNumber.value - 1;
+    highlightSurah = state.surahNumber - 1;
+    highlightVerse = state.verseNumber - 1;
+    highlightWord = state.wordNumber - 1;
 
     int currentPageNumber = -1;
     int lineNumber = -1;
@@ -126,12 +131,12 @@ class PageBuilder {
             String surahCode =
                 '$surahSep${surahNumber.toString().padLeft(3, '0')}surah\n';
             children.add(getText(surahCode, 'surahNames', TextType.surahName,
-                surahNumber, 1, 1, state, textRepresentation));
+                surahNumber, 1, 1, state, textRepresentation, setState));
           }
 
           if (surahNumber != 1 && surahNumber != 9) {
             children.add(getText('﷽\n', 'uthmanic3', TextType.bismallah,
-                surahNumber, 1, 1, state, textRepresentation));
+                surahNumber, 1, 1, state, textRepresentation, setState));
           }
         }
 
@@ -169,7 +174,7 @@ class PageBuilder {
         final wordCode = '$sep${verseWords[j][key]}$suffix';
         final font = '${prefix}page$pageNumber';
         TextSpan wordSpan = getText(wordCode, font, type, surahNumber, i + 1,
-            j + 1, state, textRepresentation);
+            j + 1, state, textRepresentation, setState);
         children.add(wordSpan);
       }
 
@@ -180,7 +185,7 @@ class PageBuilder {
       String surahCode =
           '$surahSep${surahNumber.toString().padLeft(3, '0')}surah\n';
       children.add(getText(surahCode, 'surahNames', TextType.surahName,
-          surahNumber, 1, 1, state, textRepresentation));
+          surahNumber, 1, 1, state, textRepresentation, setState));
     }
 
     return children;

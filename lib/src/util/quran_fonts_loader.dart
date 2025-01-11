@@ -71,10 +71,10 @@ class QuranFontsLoader {
         // Load the font into Flutter
         await fontLoader.load();
       } else {
-        print('Failed to load font: ${response.statusCode}');
+        // print('Failed to load font: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error loading font: $e');
+      // print('Error loading font: $e');
     }
   }
 }

@@ -1,34 +1,26 @@
-import 'package:get/get.dart';
 import 'package:media_kit/media_kit.dart';
 import 'package:quran_app_flutter/src/util/page_transition.dart';
 
-class QuranPlayerGlobalState extends GetxController {
+class QuranPlayerGlobalState {
   dynamic verseTimings;
 
   final Player player = Player();
 
-  final Rx<bool> pause = true.obs;
+  bool pause = true;
 
-  final Rx<bool> downloading = false.obs;
+  bool downloading = false;
 
-  final Rx<bool> downloaded = false.obs;
+  bool playing = false;
 
-  final Rx<bool> playing = false.obs;
-  // updatePlaying(bool playing) => this.playing.value = playing;
+  int pageNumber = -1;
 
-  final Rx<int> pageNumber = (-1).obs;
-  // updatePageNumber(int pageNumber) => this.pageNumber = pageNumber;
+  int surahNumber = -1;
 
-  final Rx<int> surahNumber = (-1).obs;
-  // updateSurahNumber(int surahNumber) => this.surahNumber.value = surahNumber;
+  int verseNumber = -1;
 
-  final Rx<int> verseNumber = (-1).obs;
-  // updateVerseNumber(int verseNumber) => this.verseNumber = verseNumber;
+  int wordNumber = -1;
 
-  final Rx<int> wordNumber = (-1).obs;
-  // updateWordNumber(int wordNumber) => this.wordNumber = wordNumber;
+  PageTransition pageTransition = PageTransition.noChange;
 
-  final Rx<PageTransition> pageTransition = PageTransition.noChange.obs;
-
-  final Rx<bool> loadingPage = false.obs;
+  bool loadingPage = false;
 }

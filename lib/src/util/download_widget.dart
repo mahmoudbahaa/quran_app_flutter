@@ -1,21 +1,24 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:quran_app_flutter/src/quran_feature/quran_player.dart';
 import 'package:quran_app_flutter/src/util/quran_player_global_state.dart';
 
 // The PlayerWidget is a copy of "/lib/components/player_widget.dart".
 //#region PlayerWidget
 class DownloadWidget extends StatefulWidget {
-  final String downloadUrl;
-  final String filePath;
-  final QuranPlayerGlobalState state;
-
   const DownloadWidget({
     super.key,
     required this.downloadUrl,
     required this.filePath,
     required this.state,
+    required this.parent,
   });
+
+  final String downloadUrl;
+  final String filePath;
+  final QuranPlayerGlobalState state;
+  final QuranPlayerState parent;
 
   @override
   State<StatefulWidget> createState() {
@@ -28,6 +31,7 @@ class _DownloadWidgetState extends State<DownloadWidget> {
 
   String get downloadUrl => widget.downloadUrl;
   String get filePath => widget.filePath;
+  QuranPlayerState get parent => widget.parent;
   double? actualBytes;
   double? totalBytes;
 
@@ -37,10 +41,12 @@ class _DownloadWidgetState extends State<DownloadWidget> {
 
     Dio().download(downloadUrl, filePath,
         onReceiveProgress: (actualBytes, int totalBytes) {
-      if ( actualBytes == totalBytes) widget.state.downloaded.value = true;
       this.actualBytes = actualBytes / 1024 / 1024;
       this.totalBytes = totalBytes / 1024 / 1024;
       downloadProgressNotifier.value = (actualBytes / totalBytes * 100).floor();
+    }).then((value) {
+      widget.state.downloading = false;
+      parent.setSource().then((value) => parent.seek(true));
     });
   }
 
@@ -69,13 +75,9 @@ class _DownloadWidgetState extends State<DownloadWidget> {
                   center: Text(
                     "${downloadProgressNotifier.value}%",
                     style: const TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black),
+                        fontSize: 20.0, fontWeight: FontWeight.w600),
                   ),
-                  backgroundColor: Colors.grey.shade300,
                   circularStrokeCap: CircularStrokeCap.round,
-                  progressColor: Colors.blueAccent,
                 ),
                 const SizedBox(
                   height: 32,
@@ -102,10 +104,7 @@ class _DownloadWidgetState extends State<DownloadWidget> {
                 Text(
                   textDirection: TextDirection.ltr,
                   "${actualBytes == null ? '0.0' : actualBytes!.toStringAsFixed(1)} MB/${totalBytes == null ? '0.0' : totalBytes!.toStringAsFixed(1)} MB",
-                  style: const TextStyle(
-                      fontSize: 20.0,
-                      // fontWeight: FontWeight.w600,
-                      color: Colors.black),
+                  style: const TextStyle(fontSize: 20.0),
                 ),
               ],
             );

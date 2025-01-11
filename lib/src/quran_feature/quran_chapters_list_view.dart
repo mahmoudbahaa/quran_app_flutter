@@ -12,18 +12,15 @@ import 'quran_chapters_details_view.dart';
 
 /// Displays a list of SampleItems.
 class QuranChaptersListView extends StatelessWidget {
-  const QuranChaptersListView({
-    super.key,
-    required this.controller,
-  });
+  const QuranChaptersListView(
+      {super.key, required this.controller, required this.state});
 
   final SettingsController controller;
+  final QuranPlayerGlobalState state;
   static const routeName = '/';
 
   @override
   Widget build(BuildContext context) {
-    final QuranPlayerGlobalState state = Get.find();
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Quran Chapters'),
@@ -58,16 +55,15 @@ class QuranChaptersListView extends StatelessWidget {
                     style: TextStyle(fontFamily: 'uthmanic')),
               ),
               onTap: () async {
-                state.surahNumber.value = index + 1;
-                state.pageNumber.value =
-                    quran.getPageNumber(state.surahNumber.value, 1);
+                state.surahNumber = index + 1;
+                state.pageNumber = quran.getPageNumber(state.surahNumber, 1);
                 // dynamic pageData = quran.getPageData(state.pageNumber).first;
-                state.verseNumber.value = 1;
-                state.wordNumber.value = -1;
+                state.verseNumber = 1;
+                state.wordNumber = -1;
                 await QuranFontsLoader().loadPageFont(
-                    state.pageNumber.value, controller.textRepresentation);
-                Get.to(() =>
-                    QuranChapterDetailsView(settingsController: controller));
+                    state.pageNumber, controller.textRepresentation);
+                Get.to(() => QuranChapterDetailsView(
+                    settingsController: controller, state: state));
               });
         },
       ),

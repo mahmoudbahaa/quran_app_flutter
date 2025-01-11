@@ -9,10 +9,13 @@ import 'enums.dart';
 class QuranFontsLoader {
   const QuranFontsLoader();
 
+  // final site = 'github.com/mahmoudbahaa/quran_app_flutter/raw/refs/heads/main/assets';
+  final site = 'quran.com';
   final codeFontBaseUrl = const [
-    'https://github.com/mahmoudbahaa/quran_app_flutter/raw/refs/heads/main/assets/fonts/quran/hafs/v1/ttf/p',
-    'https://github.com/mahmoudbahaa/quran_app_flutter/raw/refs/heads/main/assets/fonts/quran/hafs/v2/ttf/p',
-    'https://github.com/mahmoudbahaa/quran_app_flutter/raw/refs/heads/main/assets/fonts/quran/hafs/v4/colrv1/ttf/p'
+    'https://quran.com/fonts/quran/hafs/v1/ttf/p',
+    'https://quran.com/fonts/quran/hafs/v2/ttf/p',
+    'https://quran.com/fonts/quran/hafs/v4/colrv1/ttf/p',
+    // 'https://quran.com/fonts/quran/hafs/v4/ot-svg/sepia/ttf/p',
   ];
 
   final codeFontPrefix = const ['', 'v2_', 'v4_'];

@@ -81,6 +81,9 @@ class PageBuilder {
           style: TextStyle(
             height: 1.7,
           )));
+      QuranFontsLoader()
+          .loadPageFont(pageNumber, textRepresentation)
+          .then((value) => setState(() => {}));
       return children;
     }
 

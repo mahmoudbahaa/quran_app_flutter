@@ -7,13 +7,12 @@ import 'package:http/http.dart' as http;
 import 'package:media_kit/media_kit.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:quran/quran.dart' as quran;
-import '../quran_feature/quran_chapters_details_view.dart';
 import 'package:universal_io/io.dart';
 
+import '../quran_feature/quran_chapters_details_view.dart';
 import '../settings/settings_controller.dart';
 import '../util/download_widget.dart';
 import '../util/player_widget.dart';
-import '../util/quran_fonts_loader.dart';
 import '../util/quran_player_global_state.dart';
 
 class QuranPlayer extends StatefulWidget {
@@ -149,8 +148,6 @@ class QuranPlayerState extends State<QuranPlayer> {
             state.wordNumber = word;
             state.pageNumber =
                 quran.getPageNumber(surahNumber, state.verseNumber);
-            QuranFontsLoader().loadPageFont(
-                state.pageNumber, settingsController.textRepresentation);
             parent.setState(() {});
             return;
           }
@@ -167,8 +164,6 @@ class QuranPlayerState extends State<QuranPlayer> {
         state.wordNumber = -1;
         state.pageNumber =
             quran.getPageNumber(surahNumber + 1, state.verseNumber);
-        QuranFontsLoader().loadPageFont(
-            state.pageNumber, settingsController.textRepresentation);
         parent.setState(() {});
         changeSource(true);
       }

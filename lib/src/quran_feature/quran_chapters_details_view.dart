@@ -7,7 +7,6 @@ import 'package:quran/quran.dart' as quran;
 import '../quran_feature/page_builder.dart';
 import '../settings/settings_controller.dart';
 import '../util/enums.dart';
-import '../util/quran_fonts_loader.dart';
 import '../util/quran_player_global_state.dart';
 import '../util/swipe_to.dart';
 import 'quran_player.dart';
@@ -151,11 +150,6 @@ class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
               1;
     }
 
-    for (int i = 0; i < settingsController.numPages; i++) {
-      await QuranFontsLoader().loadPageFont(
-          state.pageNumber + i, settingsController.textRepresentation);
-    }
-
     dynamic pageData = quran.getPageData(state.pageNumber).first;
     state.surahNumber = pageData['surah'];
     state.verseNumber = pageData['start'];
@@ -174,11 +168,6 @@ class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
           ((state.pageNumber / settingsController.numPages).floor() - 1) *
                   settingsController.numPages +
               1;
-    }
-
-    for (int i = 0; i < settingsController.numPages; i++) {
-      await QuranFontsLoader().loadPageFont(
-          state.pageNumber + i, settingsController.textRepresentation);
     }
 
     dynamic pageData = quran.getPageData(state.pageNumber).first;

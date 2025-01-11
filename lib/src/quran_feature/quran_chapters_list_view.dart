@@ -8,7 +8,6 @@ import '../settings/language_selection_view.dart';
 import '../settings/settings_controller.dart';
 import '../settings/settings_view.dart';
 import '../util/arabic_number.dart';
-import '../util/quran_fonts_loader.dart';
 import '../util/quran_player_global_state.dart';
 import 'quran_chapters_details_view.dart';
 
@@ -70,8 +69,6 @@ class QuranChaptersListView extends StatelessWidget {
                 // dynamic pageData = quran.getPageData(state.pageNumber).first;
                 state.verseNumber = 1;
                 state.wordNumber = -1;
-                await QuranFontsLoader().loadPageFont(
-                    state.pageNumber, controller.textRepresentation);
                 Get.to(() => QuranChapterDetailsView(
                     settingsController: controller, state: state));
               });

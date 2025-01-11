@@ -49,6 +49,7 @@ jobs:
         name: Build MacOS
         run: flutter build macos --release
 
+#       TODO: fix ios build
 #     - if: startsWith(matrix.os, 'macos')
 #       name: Build MacOS
 #       run: flutter build ios --release --no-codesign
@@ -68,7 +69,7 @@ jobs:
       - if: startsWith(matrix.os, 'macos')
         name: Compress Archives
         run: |
-            tar -czf macos_build.tar.gz -C build macos
+            tar -czf macos_build.tar.gz -C build/macos/Build/Products/ Release
 #           tar -czf ios_build.tar.gz -C build ios
 
       - if: startsWith(matrix.os, 'windows')

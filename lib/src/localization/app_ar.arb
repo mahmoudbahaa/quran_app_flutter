@@ -3,5 +3,19 @@
   "@appTitle": {
     "description": "برنامج القرآن الكريم"
   },
-  "surahPrefix": "سُورَةُ "
+  "surahPrefix": "سُورَةُ ",
+  "settings": "الإعدادات",
+  "theme": "الشكل والألوان",
+  "system": "النظام",
+  "light": "فاتح",
+  "dark": "غامق",
+  "quranTextRepresentation": "تمثيل كتابة المصحف",
+  "version1": "النسخة الأولى",
+  "version2": "النسخة الثانية",
+  "tagweed": "نسخة التجويد",
+  "flowMode": "الوضع الإنسيابي",
+  "on": "مفعل",
+  "off": "غير مفعل",
+  "numberOfPagesOnScreen": "عدد الصفحات في الشاشة",
+  "recitation": "القارء"
 }

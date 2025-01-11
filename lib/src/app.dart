@@ -51,13 +51,14 @@ class MyApp extends StatelessWidget {
               // SettingsController to display the correct theme.
               theme: ThemeData(
                 useMaterial3: true,
-                fontFamily: 'uthmanic3',
+                fontFamily: 'uthmanic',
                 // colorSchemeSeed: Colors.white,
                 // colorSchemeSeed: Colors.blueGrey,
               ),
               darkTheme: ThemeData(
                 useMaterial3: true,
-                fontFamily: 'uthmanic3',
+                fontFamily: 'uthmanic',
+                textTheme: TextTheme(),
                 // colorSchemeSeed: Colors.blue,
                 brightness: Brightness.dark,
               ),

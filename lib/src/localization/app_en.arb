@@ -3,5 +3,19 @@
   "@appTitle": {
     "description": "Quran App"
   },
-  "surahPrefix": "Surah "
+  "surahPrefix": "Surah ",
+  "settings": "Settings",
+  "theme": "Theme",
+  "system": "System",
+  "light": "Light",
+  "dark": "Dark",
+  "quranTextRepresentation": "Quran Text Representation",
+  "version1": "Version 1",
+  "version2": "Version 1",
+  "tagweed": "Tagweed",
+  "flowMode": "Flow Mode",
+  "on": "on",
+  "off": "off",
+  "numberOfPagesOnScreen": "Number of pages on screen",
+  "recitation": "Recitation"
 }

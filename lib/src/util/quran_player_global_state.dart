@@ -1,4 +1,4 @@
-import 'enums.dart';
+import '../models/enums.dart';
 
 class QuranPlayerGlobalState {
   dynamic verseTimings;
@@ -21,5 +21,5 @@ class QuranPlayerGlobalState {
 
   PageTransition pageTransition = PageTransition.noChange;
 
-  bool loadingPage = false;
+  bool loading = false;
 }

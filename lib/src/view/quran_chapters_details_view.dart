@@ -5,14 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:quran/quran.dart' as quran;
+import 'package:quran_app_flutter/src/home/assets_loader/assets_loader_controller.dart';
 
-import '../quran_feature/page_builder.dart';
+import '../models/enums.dart';
 import '../settings/settings_controller.dart';
-import '../util/assets_downloader.dart';
-import '../util/enums.dart';
 import '../util/floating_buttons.dart';
 import '../util/quran_player_global_state.dart';
 import '../util/swipe_to.dart';
+import '../view/page_builder.dart';
 import 'quran_player.dart';
 
 /// Displays detailed information about a SampleItem.
@@ -71,9 +71,13 @@ class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
                 : 700,
       );
 
-      String? imagePath = AssetsDownloader().getImagePath(pageNum);
+      String? imagePath =
+          AssetsLoaderController(settingsController: settingsController)
+              .getImagePath(pageNum);
       if (imagePath == null) {
-        AssetsDownloader().loadImage(pageNum).then((_) {
+        AssetsLoaderController(settingsController: settingsController)
+            .loadImage(pageNum)
+            .then((_) {
           if (mounted) setState(() {});
         });
       }
@@ -118,30 +122,32 @@ class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
                         maxHeight: pageNum < 3 ? height * 0.3 : height * 0.87),
                     child: AutoSizeText.rich(
                       TextSpan(
-                          children: pageBuilder.buildPage(state, i, numPages,
-                              settingsController.textRepresentation, () {
+                          children: pageBuilder.buildPage(
+                              state, i, numPages, settingsController, () {
                         if (mounted) setState(() => {});
                       })),
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: _fontSize),
                       maxLines: pageNum == 1 ? 8 : 15,
-                      stepGranularity: 0.1,
-                      minFontSize: 1,
-                      maxFontSize: numPages == 4 ? 28 : 500,
+                      stepGranularity: 1,
+                      maxFontSize: numPages == 4 ? 28 : 98,
                     ),
                   ),
                 );
               }),
             );
 
-            if (imagePath == null) return child;
+            if (imagePath == null || imagePath.startsWith('http')) return child;
 
             return DecoratedBox(
               // BoxDecoration takes the image
               decoration: BoxDecoration(
                 // Image set to background of the body
                 image: DecorationImage(
-                    image: FileImage(File(imagePath)), fit: BoxFit.contain),
+                    image: imagePath.startsWith('http')
+                        ? NetworkImage(imagePath)
+                        : FileImage(File(imagePath)),
+                    fit: BoxFit.contain),
               ),
               child: child,
             );
@@ -160,8 +166,8 @@ class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
   }
 
   void goNextPage() {
-    if (!AssetsDownloader().isFontLoaded(
-            state.pageNumber, settingsController.textRepresentation) ||
+    if (!AssetsLoaderController(settingsController: settingsController)
+            .isFontLoaded(state.pageNumber) ||
         state.pageNumber >=
             (quran.totalPagesCount - settingsController.numPages)) {
       return;
@@ -183,8 +189,8 @@ class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
   }
 
   void goPreviousPage() {
-    if (!AssetsDownloader().isFontLoaded(
-            state.pageNumber, settingsController.textRepresentation) ||
+    if (!AssetsLoaderController(settingsController: settingsController)
+            .isFontLoaded(state.pageNumber) ||
         state.pageNumber <= settingsController.numPages) {
       return;
     }

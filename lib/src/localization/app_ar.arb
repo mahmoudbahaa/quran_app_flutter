@@ -22,5 +22,9 @@
   "chapters": "السور",
   "juz": "الأجزاء",
   "goToPage": "إذهب لصفحة",
-  "pageNumber": "رقم الصفحة"
+  "pageNumber": "رقم الصفحة",
+  "loadAtStartupStyle": "التحميل عند البداية",
+  "cachedOnly": "الذاكرة فقط",
+  "all": "الجميع",
+  "loading": "جاري التحميل"
 }

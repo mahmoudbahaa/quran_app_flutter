@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../util/enums.dart';
+import '../models/enums.dart';
 import 'settings_service.dart';
 
 /// A class that many Widgets can interact with to read user settings, update
@@ -19,6 +19,7 @@ class SettingsController with ChangeNotifier {
   // also persisting the changes with the SettingsService.
   late ThemeMode _themeMode;
   late TextRepresentation _textRepresentation;
+  late bool _loadCachedOnly;
   late int _numPages;
   late int _recitationId;
   late AppLocale _appLocale;
@@ -26,6 +27,7 @@ class SettingsController with ChangeNotifier {
   // Allow Widgets to read the user's preferred ThemeMode.
   ThemeMode get themeMode => _themeMode;
   TextRepresentation get textRepresentation => _textRepresentation;
+  bool get loadCachedOnly => _loadCachedOnly;
   int get numPages => _numPages;
   int get recitationId => _recitationId;
   AppLocale get appLocale => _appLocale;
@@ -36,6 +38,7 @@ class SettingsController with ChangeNotifier {
   Future<void> loadSettings() async {
     _themeMode = await _settingsService.themeMode();
     _textRepresentation = await _settingsService.textRepresentation();
+    _loadCachedOnly = await _settingsService.loadCachedOnly();
     _numPages = await _settingsService.numPages();
     _recitationId = await _settingsService.recitationId();
     _appLocale = await _settingsService.appLocale();
@@ -70,6 +73,14 @@ class SettingsController with ChangeNotifier {
     _textRepresentation = newTextRepresentation;
     notifyListeners();
     await _settingsService.updateTextRepresentation(newTextRepresentation);
+  }
+
+  Future<void> updateLoadCachedOnly(bool? newLoadCachedOnly) async {
+    if (newLoadCachedOnly == null) return;
+    if (newLoadCachedOnly == _loadCachedOnly) return;
+    _loadCachedOnly = newLoadCachedOnly;
+    notifyListeners();
+    await _settingsService.updateLoadCachedOnly(newLoadCachedOnly);
   }
 
   /// Update and persist the ThemeMode based on the user's selection.

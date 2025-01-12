@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../util/enums.dart';
+import '../models/enums.dart';
 
 /// A service that stores and retrieves user settings.
 ///
@@ -45,6 +45,8 @@ class SettingsService {
   Future<TextRepresentation> textRepresentation() async =>
       TextRepresentation.values[await getValue('textRepresentation', 0)];
 
+  Future<bool> loadCachedOnly() async => await getValue('loadCachedOnly', true);
+
   Future<int> numPages() async => await getValue('numPages', 1);
 
   Future<int> recitationId() async => await getValue('recitationId', 7);
@@ -55,16 +57,16 @@ class SettingsService {
   Future<void> updateThemeMode(ThemeMode theme) async =>
       await setValue('themeMode', theme.index);
 
-  /// Persists the user's preferred ThemeMode to local or remote storage.
   Future<void> updateTextRepresentation(
           TextRepresentation textRepresentation) async =>
       await setValue('textRepresentation', textRepresentation.index);
 
-  /// Persists the user's preferred ThemeMode to local or remote storage.
+  Future<void> updateLoadCachedOnly(bool loadCachedOnly) async =>
+      await setValue('loadCachedOnly', loadCachedOnly);
+
   Future<void> updateFlowMode(bool flowMode) async =>
       await setValue('flowMode', flowMode);
 
-  /// Persists the user's preferred ThemeMode to local or remote storage.
   Future<void> updateNumPages(int numPages) async =>
       await setValue('numPages', numPages);
 

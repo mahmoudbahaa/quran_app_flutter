@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:quran_app_flutter/src/util/arabic_number.dart';
 
-import '../data/recitations.dart';
-import '../util/enums.dart';
+import '../localization/app_localizations.dart';
+import '../models/enums.dart';
+import '../models/recitations.dart';
 import 'settings_controller.dart';
 
 /// Displays the various settings that can be customized by the user.
@@ -73,6 +73,30 @@ class SettingsView extends StatelessWidget {
                         DropdownMenuItem(
                           value: ThemeMode.dark,
                           child: Text(AppLocalizations.of(context)!.dark),
+                        ),
+                      ],
+                    )),
+              ]),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                ConstrainedBox(
+                    constraints: BoxConstraints(minWidth: labelWidth),
+                    child:
+                        Text(AppLocalizations.of(context)!.loadAtStartupStyle)),
+                ConstrainedBox(
+                    constraints: BoxConstraints(minWidth: dropDownWidth),
+                    child: DropdownButton<bool>(
+                      // Read the selected themeMode from the controller
+                      value: controller.loadCachedOnly,
+                      // Call the updateThemeMode method any time the user selects a theme.
+                      onChanged: controller.updateLoadCachedOnly,
+                      items: [
+                        DropdownMenuItem(
+                          value: true,
+                          child: Text(AppLocalizations.of(context)!.cachedOnly),
+                        ),
+                        DropdownMenuItem(
+                          value: false,
+                          child: Text(AppLocalizations.of(context)!.all),
                         ),
                       ],
                     )),

@@ -21,5 +21,9 @@
   "chapters": "Surahs",
   "juz": "Juz'",
   "goToPage": "go to page",
-  "pageNumber": "Page Number"
+  "pageNumber": "Page Number",
+  "loadAtStartupStyle": "Load at startup",
+  "cachedOnly": "Cached only",
+  "all": "all",
+  "loading": "Loading"
 }

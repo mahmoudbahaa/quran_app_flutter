@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:quran_app_flutter/src/util/enums.dart';
+import 'package:quran_app_flutter/src/models/enums.dart';
 
 import 'settings_controller.dart';
 

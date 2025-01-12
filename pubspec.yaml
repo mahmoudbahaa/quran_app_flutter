@@ -35,9 +35,12 @@ dependencies:
   quran: ^1.3.3
   auto_size_text: ^3.0.0
   http: ^1.2.2
-  background_downloader: ^8.8.1
+  background_downloader: ^8.9.0
   universal_io: ^2.2.2
   get: ^4.6.6
+  queue: ^3.4.0
+#    dynamic_parallel_queue: ^1.0.3+2
+
 #  just_audio: ^0.9.42
 #  audio_session: ^0.1.23
 #  swipe_to: ^1.0.6
@@ -83,7 +86,7 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  generate: true
+#  generate: true
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
@@ -124,3 +127,7 @@ flutter:
     - family: surahNames
       fonts:
         - asset: assets/fonts/quran/surah-names/v1/sura_names.ttf
+
+    - family: page175
+      fonts:
+        - asset: assets/fonts/quran/page175.ttf

@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
-import '../quran_feature/quran_player.dart';
 import '../util/quran_player_global_state.dart';
+import '../view/quran_player.dart';
 
 // The PlayerWidget is a copy of "/lib/components/player_widget.dart".
 //#region PlayerWidget

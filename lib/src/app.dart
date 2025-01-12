@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 
-import 'quran_feature/quran_chapters_list_view.dart';
+import 'home/home_view.dart';
+import 'localization/app_localizations.dart';
 import 'settings/settings_controller.dart';
 import 'util/quran_player_global_state.dart';
 

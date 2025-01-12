@@ -8,12 +8,12 @@ import 'package:media_kit/media_kit.dart';
 import 'package:quran/quran.dart' as quran;
 import 'package:universal_io/io.dart';
 
-import '../quran_feature/quran_chapters_details_view.dart';
 import '../settings/settings_controller.dart';
 import '../util/download_widget.dart';
 import '../util/file_utils.dart';
 import '../util/player_widget.dart';
 import '../util/quran_player_global_state.dart';
+import '../view/quran_chapters_details_view.dart';
 
 class QuranPlayer extends StatefulWidget {
   const QuranPlayer(
@@ -99,8 +99,8 @@ class QuranPlayerState extends State<QuranPlayer> {
       if (kIsWeb) {
         filePath = downloadUrl;
       } else {
-        File file = await FileUtils()
-            .getFile('${settingsController.recitationId}_$fileName');
+        File file = (await FileUtils()
+            .getFile('${settingsController.recitationId}_$fileName'))!;
         if (!file.existsSync()) {
           parent.setState(() => state.downloading = true);
           return;

@@ -45,7 +45,8 @@ class SettingsService {
   Future<TextRepresentation> textRepresentation() async =>
       TextRepresentation.values[await getValue('textRepresentation', 0)];
 
-  Future<bool> loadCachedOnly() async => await getValue('loadCachedOnly', true);
+  Future<bool> loadCachedOnly() async =>
+      await getValue('loadCachedOnly', false);
 
   Future<int> numPages() async => await getValue('numPages', 1);
 

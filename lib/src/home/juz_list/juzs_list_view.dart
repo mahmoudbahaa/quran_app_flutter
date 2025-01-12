@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quran/quran.dart' as quran;
+import 'package:quran_app_flutter/src/home/juz_list/juzs_list_controller.dart';
 
-import '../../localization/app_localizations.dart';
-import '../../models/rub_hizb_info.dart';
-import '../../models/surah_names.dart';
 import '../../settings/settings_controller.dart';
 import '../../util/arabic_number.dart';
 import '../../util/circular_precent.dart';
 import '../../util/quran_player_global_state.dart';
-import '../../view/quran_chapters_details_view.dart';
 
 class JuzsListView extends StatelessWidget {
   const JuzsListView(
@@ -17,74 +14,23 @@ class JuzsListView extends StatelessWidget {
 
   final QuranPlayerGlobalState state;
   final SettingsController settingsController;
-  final maxVerseWords = 5;
-  final fontSize = 20.0;
-
-  int _getSurahNumber(int hizbNumber, int quarterNumber) {
-    final int key = (hizbNumber - 1) * 4 + (quarterNumber - 1);
-    final String verseKey = rubHizbInfo[key]['verse_key'] as String;
-    return int.parse(verseKey.split(':')[0]);
-  }
-
-  String _getSurahName(BuildContext context, int index) {
-    String surahPrefix = AppLocalizations.of(context)!.surahPrefix;
-    String surahName = surahNames[Get.locale?.languageCode][index];
-    return '$surahPrefix$surahName';
-  }
-
-  int _getPageNumber(int hizbNumber, int quarterNumber) {
-    final int key = (hizbNumber - 1) * 4 + (quarterNumber - 1);
-    return rubHizbInfo[key]['page_number'] as int;
-  }
-
-  void goToPage(int pageNumber, int surahNumber) {
-    state.surahNumber = surahNumber;
-    state.pageNumber = pageNumber;
-    state.verseNumber = 1;
-    state.wordNumber = -1;
-    Get.to(() => QuranChapterDetailsView(
-        settingsController: settingsController, state: state));
-  }
+  final fontSize = 18.0;
+  final JuzsListController controller = const JuzsListController();
 
   List<Widget> _getRubHizbVerseReview(
       int hizbNumber, int quarterNumber, BuildContext context) {
-    final int key = (hizbNumber - 1) * 4 + (quarterNumber - 1);
-    final String verseKey = rubHizbInfo[key]['verse_key'] as String;
-    final int pageNumber = _getPageNumber(hizbNumber, quarterNumber);
-    final int surahNumber = int.parse(verseKey.split(':')[0]);
-    final int verseNumber = int.parse(verseKey.split(':')[1]);
-    final String verse = quran.getVerse(surahNumber, verseNumber);
-    final List<String> words = verse.split(' ');
-    String versePreview = '';
-    if (words.length <= maxVerseWords) {
-      versePreview = verse;
-    } else {
-      String sep = '';
-      for (int i = 0; i < maxVerseWords; i++) {
-        versePreview = '$versePreview$sep${words[i]}';
-        sep = ' ';
-      }
-
-      versePreview = '$versePreview ﮳﮳﮳';
-    }
-
-    String getSurahName(BuildContext context, int index) {
-      String surahPrefix = AppLocalizations.of(context)!.surahPrefix;
-      String surahName = surahNames[Get.locale?.languageCode][index];
-      return '$surahPrefix$surahName';
-    }
-
-    String verseInfo =
-        '${getSurahName(context, surahNumber - 1)} ${AppLocalizations.of(context)!.verse} ';
+    RubHizbVerseInfo rubHizbVerseInfo =
+        controller.getRubHizbPreview(hizbNumber, quarterNumber, context);
     List<Widget> widgets = [];
     widgets.add(Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(versePreview,
+      Text(rubHizbVerseInfo.versePreview,
           textDirection: TextDirection.rtl,
-          style: TextStyle(fontFamily: 'uthmanic', fontSize: fontSize - 3)),
+          style: TextStyle(fontFamily: 'uthmanic', fontSize: fontSize - 2)),
       Row(children: <Widget>[
-        Text(verseInfo, style: TextStyle(fontSize: fontSize - 3)),
-        ArabicNumber()
-            .convertToLocaleNumber(verseNumber, fontSize: fontSize - 3),
+        Text(rubHizbVerseInfo.verseInfo,
+            style: TextStyle(fontSize: fontSize - 6)),
+        ArabicNumber().convertToLocaleNumber(rubHizbVerseInfo.verseNumber,
+            fontSize: fontSize - 6),
       ])
     ]));
     widgets.add(Expanded(
@@ -94,8 +40,9 @@ class JuzsListView extends StatelessWidget {
                   .contains(Localizations.localeOf(context).languageCode)
               ? Alignment.centerLeft
               : Alignment.centerRight,
-          child: ArabicNumber()
-              .convertToLocaleNumber(pageNumber, fontSize: fontSize)),
+          child: ArabicNumber().convertToLocaleNumber(
+              rubHizbVerseInfo.pageNumber,
+              fontSize: fontSize)),
     ));
 
     return widgets;
@@ -107,8 +54,11 @@ class JuzsListView extends StatelessWidget {
     for (int i = 1; i <= quran.totalJuzCount; i++) {
       children.add(
         GestureDetector(
-          onTap: () => goToPage(
-              _getPageNumber(i * 2 - 1, 1), _getSurahNumber(i * 2 - 1, 1)),
+          onTap: () => controller.goToPage(
+              controller.getPageNumber(i * 2 - 1, 1),
+              controller.getSurahNumber(i * 2 - 1, 1),
+              settingsController,
+              state),
           child: DecoratedBox(
             decoration: BoxDecoration(color: Theme.of(context).disabledColor),
             child: Padding(
@@ -134,8 +84,9 @@ class JuzsListView extends StatelessWidget {
             circle = CustomPaint(
               painter: CircularPercent(
                   percentage: (quarterNumber - 1) * 0.25,
-                  color: Theme.of(context).colorScheme.inversePrimary,
-                  backgroundColor: Theme.of(context).colorScheme.primary),
+                  color: Theme.of(context).colorScheme.primary,
+                  backgroundColor:
+                      Theme.of(context).colorScheme.inversePrimary),
               child: SizedBox(width: 35, height: 35),
             );
           }
@@ -143,8 +94,11 @@ class JuzsListView extends StatelessWidget {
           List<Widget> widgets =
               _getRubHizbVerseReview(hizbNumber, quarterNumber, context);
           children.add(GestureDetector(
-              onTap: () => goToPage(_getPageNumber(hizbNumber, quarterNumber),
-                  _getSurahNumber(hizbNumber, quarterNumber)),
+              onTap: () => controller.goToPage(
+                  controller.getPageNumber(hizbNumber, quarterNumber),
+                  controller.getSurahNumber(hizbNumber, quarterNumber),
+                  settingsController,
+                  state),
               child: Padding(
                 padding: EdgeInsets.only(left: 20, right: 20),
                 child: Row(

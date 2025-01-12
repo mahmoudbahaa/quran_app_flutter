@@ -13,7 +13,7 @@ import '../util/download_widget.dart';
 import '../util/file_utils.dart';
 import '../util/player_widget.dart';
 import '../util/quran_player_global_state.dart';
-import '../view/quran_chapters_details_view.dart';
+import 'quran_page_view.dart';
 
 class QuranPlayer extends StatefulWidget {
   const QuranPlayer(

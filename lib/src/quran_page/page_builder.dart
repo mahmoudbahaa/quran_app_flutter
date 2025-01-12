@@ -12,7 +12,6 @@ class PageBuilder {
 
   final prefixes = const ['', 'v2_', 'v4_'];
   final codeKeys = const ['code_v1', 'code_v2', 'code_v2'];
-  // final loadingFontSize = 100.0;
 
   TextSpan getText(
       String element,
@@ -66,6 +65,8 @@ class PageBuilder {
 
   List<TextSpan> buildPage(QuranPlayerGlobalState state, int offset,
       int numPages, SettingsController settingsController, Function update) {
+    final AssetsLoaderController assetsLoaderController =
+        AssetsLoaderController(settingsController: settingsController);
     final List<TextSpan> children = List.empty(growable: true);
     int pageNumber =
         offset + 1 + ((state.pageNumber - 1) / numPages).floor() * numPages;
@@ -93,8 +94,7 @@ class PageBuilder {
     int surahNumber = -1;
     // int surahNumber = quran.getPageData(pageNumber)[0]['surah'];
 
-    final data = AssetsLoaderController(settingsController: settingsController)
-        .getCachedVersesWordsData(pageNumber);
+    final data = assetsLoaderController.getCachedVersesWordsData(pageNumber);
     if (data == null) {
       children.add(TextSpan(
           text: 'جاري تحميل الصفحة, برجاء الإنتظار',
@@ -102,7 +102,7 @@ class PageBuilder {
             height: 1.7,
             // fontSize: loadingFontSize,
           )));
-      AssetsLoaderController(settingsController: settingsController)
+      assetsLoaderController
           .loadVersesWordsData(pageNumber)
           .then((_) => update());
       return children;

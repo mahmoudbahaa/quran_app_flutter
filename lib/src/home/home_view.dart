@@ -4,14 +4,14 @@ import 'package:quran/quran.dart' as quran;
 import 'package:quran_app_flutter/src/home/surah_list/surahs_list_view.dart';
 
 import '../localization/app_localizations.dart';
+import '../quran_page/quran_page_view.dart';
 import '../settings/language_selection_view.dart';
 import '../settings/settings_controller.dart';
 import '../settings/settings_view.dart';
 import '../util/common.dart';
 import '../util/quran_player_global_state.dart';
-import '../view/quran_chapters_details_view.dart';
 import 'assets_loader/assets_loader_widget.dart';
-import 'juz_list/juszs_list_view.dart';
+import 'juz_list/juzs_list_view.dart';
 
 /// Displays a list of SampleItems.
 class QuranChaptersListView extends StatefulWidget {

@@ -59,11 +59,11 @@ class AssetsLoaderService {
         await fontLoader.load();
         return true;
       } else {
-        print('Failed to load font: ${response.statusCode}');
+        // print('Failed to load font: ${response.statusCode}');
         return false;
       }
     } catch (e) {
-      print('Error loading font: $e');
+      // print('Error loading font: $e');
       return false;
     }
   }
@@ -99,7 +99,6 @@ class AssetsLoaderService {
   Future<String?> loadImage(
       int pageNumber, TextRepresentation textRepresentation, cacheOnly) async {
     String url = _getPageImageUrl(pageNumber);
-    String key = 'background_$pageNumber';
     File? file = await FileUtils().getFile('images/background/$pageNumber.png');
     if (file != null && file.existsSync()) {
       return file.path;

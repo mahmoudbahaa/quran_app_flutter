@@ -52,8 +52,8 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   void initState() {
     super.initState();
     // Use initial values from player
-    setState(() => _duration = player.state.duration);
-    setState(() => _position = player.state.position);
+    _duration = player.state.duration;
+    _position = player.state.position;
     _initStreams();
   }
 
@@ -72,98 +72,110 @@ class _PlayerWidgetState extends State<PlayerWidget> {
     _positionSubscription?.cancel();
     _playerCompleteSubscription?.cancel();
     _playerStateChangeSubscription?.cancel();
+    player.stop();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      spacing: 0,
-      mainAxisSize: MainAxisSize.min,
-      // mainAxisAlignment: MainAxisAlignment.start, // <-- alignments
-      children: [
-        // Opens volume slider dialog
-        IconButton(
-          icon: const Icon(Icons.volume_up),
-          padding: EdgeInsets.zero,
-          constraints: BoxConstraints(),
-          iconSize: 32.0,
+    bool isLandScape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
+    final Widget durationWidget = Text(
+      _position != null
+          ? '($_positionText/$_totalDuration)'
+          : _duration != null
+              ? '($_durationText/$_totalDuration)'
+              : '',
+      style: const TextStyle(fontSize: 12.0),
+    );
+
+    final children = [
+      // Opens volume slider dialog
+      IconButton(
+        onPressed: () {
+          showSliderDialog(
+            context: context,
+            title: 'Adjust volume',
+            divisions: 10,
+            min: 0.0,
+            max: 100.0,
+            value: player.state.volume,
+            stream: player.stream.volume,
+            onChanged: player.setVolume,
+          );
+        },
+        icon: const Icon(Icons.volume_up),
+      ),
+      IconButton(
+          onPressed: _play,
+          icon: _isPlaying
+              ? const Icon(Icons.pause)
+              : const Icon(Icons.play_arrow)),
+      // Opens speed slider dialog
+      StreamBuilder<double>(
+        stream: player.stream.rate,
+        builder: (context, snapshot) => IconButton(
           onPressed: () {
             showSliderDialog(
               context: context,
-              title: 'Adjust volume',
-              divisions: 10,
-              min: 0.0,
-              max: 100.0,
-              value: player.state.volume,
-              stream: player.stream.volume,
-              onChanged: player.setVolume,
+              title: 'Adjust speed',
+              divisions: 5,
+              min: 0.8,
+              max: 1.3,
+              value: player.state.rate,
+              stream: player.stream.rate,
+              onChanged: player.setRate,
             );
           },
+          icon: Text('${player.state.rate.toStringAsFixed(1)}x',
+              style:
+                  const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
         ),
-        IconButton(
-          key: const Key('play_pause_button'),
-          padding: EdgeInsets.zero,
-          constraints: BoxConstraints(),
-          onPressed: _play,
-          iconSize: 32.0,
-          icon: _isPlaying
-              ? const Icon(Icons.pause)
-              : const Icon(Icons.play_arrow),
-        ),
-        // Opens speed slider dialog
-        StreamBuilder<double>(
-          stream: player.stream.rate,
-          builder: (context, snapshot) => IconButton(
-            padding: EdgeInsets.zero,
-            constraints: BoxConstraints(),
-            icon: Text('${player.state.rate.toStringAsFixed(1)}x',
-                style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-            iconSize: 32.0,
-            onPressed: () {
-              showSliderDialog(
-                context: context,
-                title: 'Adjust speed',
-                divisions: 5,
-                min: 0.8,
-                max: 1.3,
-                value: player.state.rate,
-                stream: player.stream.rate,
-                onChanged: player.setRate,
-              );
-            },
-          ),
-        ),
-        Expanded(
-          child: Slider(
-            onChanged: (value) {
-              final duration = _duration;
-              if (duration == null) {
-                return;
-              }
-              final position = value * duration.inMilliseconds;
-              player.seek(Duration(milliseconds: position.round()));
-            },
-            value: (_position != null &&
-                    _duration != null &&
-                    _position!.inMilliseconds > 0 &&
-                    _position!.inMilliseconds < _duration!.inMilliseconds)
-                ? _position!.inMilliseconds / _duration!.inMilliseconds
-                : 0.0,
-          ),
-        ),
-        Text(
-          _position != null
-              ? '($_positionText/$_totalDuration)'
-              : _duration != null
-                  ? '($_durationText/$_totalDuration)'
-                  : '',
-          style: const TextStyle(fontSize: 20.0),
-        ),
-        SizedBox(width: 8),
-      ],
+      ),
+      isLandScape
+          ? Padding(padding: EdgeInsets.only(right: 20), child: durationWidget)
+          : Expanded(
+              child: Align(
+                  alignment: Alignment.centerRight, child: durationWidget),
+            ),
+    ];
+
+    final slider = Slider(
+      padding: EdgeInsets.zero,
+      onChanged: (value) {
+        final duration = _duration;
+        if (duration == null) {
+          return;
+        }
+        final position = value * duration.inMilliseconds;
+        player.seek(Duration(milliseconds: position.round()));
+      },
+      value: (_position != null &&
+              _duration != null &&
+              _position!.inMilliseconds > 0 &&
+              _position!.inMilliseconds < _duration!.inMilliseconds)
+          ? _position!.inMilliseconds / _duration!.inMilliseconds
+          : 0.0,
     );
+
+    Widget mainWidget;
+    if (isLandScape) {
+      Widget last = children.removeLast();
+      children.add(Expanded(child: slider));
+      children.add(last);
+      mainWidget = Row(spacing: 10, children: children);
+    } else {
+      mainWidget = Column(
+        spacing: 0,
+        children: [
+          Row(spacing: 0, children: children),
+          slider,
+        ],
+      );
+    }
+
+    return mainWidget;
   }
 
   void _initStreams() {

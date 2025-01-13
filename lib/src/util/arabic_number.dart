@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class ArabicNumber {
   const ArabicNumber();
 
-  Text convertToLocaleNumber(int number, {double fontSize = -1}) {
-    if (Get.locale?.languageCode != 'ar') return Text('$number');
+  String convertToLocaleNumber(int number) {
+    if (Get.locale?.languageCode != 'ar') return number.toString();
     String res = '';
     String num = number.toString();
 
@@ -14,8 +13,6 @@ class ArabicNumber {
       res += arabicNumbers[int.parse(num[i])];
     }
 
-    if (fontSize < 0) return Text(res, style: TextStyle(fontFamily: 'Roboto'));
-    return Text(res,
-        style: TextStyle(fontFamily: 'Roboto', fontSize: fontSize));
+    return res;
   }
 }

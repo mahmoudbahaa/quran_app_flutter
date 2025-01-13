@@ -1,17 +1,21 @@
+import 'dart:io';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:quran/quran.dart' as quran;
-import 'package:quran_app_flutter/src/home/assets_loader/assets_loader_controller.dart';
-import 'package:quran_app_flutter/src/quran_page/quran_page_controller.dart';
+import 'package:quran_app_flutter/src/common/app_top_bar.dart';
+import 'package:quran_app_flutter/src/util/arabic_number.dart';
+import 'package:simple_gesture_detector/simple_gesture_detector.dart';
 
+import '../common/quran_info_controller.dart';
+import '../home/assets_loader/assets_loader_controller.dart';
 import '../models/enums.dart';
 import '../settings/settings_controller.dart';
-import '../util/floating_buttons.dart';
 import '../util/quran_player_global_state.dart';
-import '../util/swipe_to.dart';
 import 'page_builder.dart';
+import 'quran_player.dart';
 
 /// Displays detailed information about a SampleItem.
 class QuranChapterDetailsView extends StatefulWidget {
@@ -30,13 +34,25 @@ class QuranChapterDetailsView extends StatefulWidget {
 class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
   final double defaultFontSize = 36;
   final double _fontSize = 500;
+  bool showPlayer = false;
+  bool showAppBar = false;
+  int get startPageNum =>
+      ((state.pageNumber - 1) / widget.settingsController.numPages).floor() *
+          widget.settingsController.numPages +
+      1;
+  _QuranChapterDetailsView();
 
   final PageBuilder pageBuilder = const PageBuilder();
   QuranPlayerGlobalState get state => widget.state;
 
-  final QuranPageController controller = const QuranPageController();
+  final QuranInfoController controller = const QuranInfoController();
   SettingsController get settingsController => widget.settingsController;
   late AssetsLoaderController assetsLoaderController;
+
+  int getNumPages(Orientation orientation) {
+    if (Platform.isAndroid && orientation == Orientation.portrait) return 1;
+    return settingsController.numPages;
+  }
 
   @override
   void initState() {
@@ -45,25 +61,14 @@ class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
         AssetsLoaderController(settingsController: settingsController);
   }
 
-  void _update() {
-    setState(() {});
-  }
-
-  List<Widget> buildPages() {
+  List<Widget> buildPages(BuildContext context, Orientation orientation) {
     List<Widget> pages = <Widget>[];
 
-    int numPages = settingsController.numPages;
-    for (int i = 0; i < numPages; i++) {
-      int pageNum =
-          i + 1 + ((state.pageNumber - 1) / numPages).floor() * numPages;
-      if (pageNum > quran.totalPagesCount) break;
+    int numPages = getNumPages(orientation);
 
-      String? imagePath = assetsLoaderController.getImagePath(pageNum);
-      if (imagePath == null) {
-        assetsLoaderController.loadImage(pageNum).then((_) {
-          if (mounted) setState(() {});
-        });
-      }
+    for (int i = 0; i < numPages; i++) {
+      int pageNum = startPageNum + i;
+      if (pageNum > quran.totalPagesCount) break;
 
       final Widget child = Stack(children: [
         DecoratedBox(
@@ -92,18 +97,8 @@ class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
               } else {
                 height = width * aspectRatio;
               }
-              return
-                  // Padding(
-                  // padding: EdgeInsets.only(top: pageNum < 3 ? height * 0.15 : 0),
-                  // child:
-                  //   ConstrainedBox(
-                  // constraints: BoxConstraints(
-                  //     minWidth: pageNum < 3 ? width * 0.46 : width * 1.2,
-                  //     maxWidth: pageNum < 3 ? width * 0.46 : width * 1.2,
-                  //     minHeight: pageNum < 3 ? height * 0.3 : height * 1.2,
-                  //     maxHeight: pageNum < 3 ? height * 0.3 : height * 1.2),
-                  // child:
-                  AutoSizeText.rich(
+
+              final child = AutoSizeText.rich(
                 TextSpan(
                     children: pageBuilder
                         .buildPage(state, i, numPages, settingsController, () {
@@ -111,39 +106,25 @@ class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
                 })),
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: _fontSize),
-                maxLines: pageNum == 1 ? 8 : 15,
-                stepGranularity: 1,
+                maxLines: pageNum < 3 ? 7 : 15,
+                stepGranularity: 0.1,
                 minFontSize: 5,
                 maxFontSize: numPages == 4 ? 28 : 98,
-                // ),
-                // ),
               );
+
+              if (numPages == 1 &&
+                  Get.mediaQuery.orientation == Orientation.landscape &&
+                  Platform.isAndroid) {
+                return Padding(
+                    padding: EdgeInsets.only(left: 40, right: 40),
+                    child: SingleChildScrollView(child: child));
+              }
+
+              return child;
             }),
           );
 
-          if (imagePath == null || imagePath.startsWith('http')) return child;
-
-          double imageAspectRatio = 700 / 450;
-          double deviceAspectRatio =
-              Get.mediaQuery.size.height / Get.mediaQuery.size.width;
-          bool isLandScape =
-              Get.mediaQuery.orientation == Orientation.landscape;
-
           return child;
-          // return DecoratedBox(
-          //   // BoxDecoration takes the image
-          //   decoration: BoxDecoration(
-          //     // Image set to background of the body
-          //     image: DecorationImage(
-          //         image: imagePath.startsWith('http')
-          //             ? NetworkImage(imagePath)
-          //             : FileImage(File(imagePath)),
-          //         fit: (deviceAspectRatio > imageAspectRatio && !isLandScape)
-          //             ? BoxFit.fill
-          //             : BoxFit.fitHeight),
-          //   ),
-          //   child: child,
-          // );
         }),
       ]);
 
@@ -153,81 +134,173 @@ class _QuranChapterDetailsView extends State<QuranChapterDetailsView> {
     return pages;
   }
 
+  late Offset horizontalStartPosition;
+  late Offset verticalUpperHalfStartPosition;
+  late Offset verticalLowerHalfStartPosition;
+
+  double epsilon = 0.0;
+
   @override
   Widget build(BuildContext context) {
+    if (state.surahNumber == -1) {
+      state.surahNumber = quran.getPageData(state.pageNumber).first['surah'];
+    }
+
     return Scaffold(
-        body: AnimatedOpacity(
-          opacity: state.pageTransition != PageTransition.noChange ? 0.0 : 1.0,
-          duration: const Duration(milliseconds: 500),
-          onEnd: () {
-            if (state.pageTransition == PageTransition.nextPage) {
-              setState(() {
-                state.pageTransition = PageTransition.noChange;
-                controller.goNextPage(settingsController, state);
-              });
-            } else if (state.pageTransition == PageTransition.previousPage) {
-              setState(() {
-                state.pageTransition = PageTransition.noChange;
-                controller.goPreviousPage(settingsController, state);
-              });
-            }
-          },
-          child: SwipeTo(
-            animationDuration: Duration(milliseconds: 0),
-            onRightSwipe: (details) {
-              setState(() {
-                state.pageTransition = PageTransition.nextPage;
-              });
-            },
-            onLeftSwipe: (details) {
-              setState(() {
-                state.pageTransition = PageTransition.previousPage;
-              });
-            },
-            child: CallbackShortcuts(
-              bindings: <ShortcutActivator, VoidCallback>{
-                // const SingleActivator(LogicalKeyboardKey.equal, control: true):
-                //     () {
-                //   setState(
-                //       () => _fontSize < 200 ? _fontSize += 1 : _fontSize += 0);
-                // },
-                // const SingleActivator(LogicalKeyboardKey.minus, control: true):
-                //     () {
-                //   setState(
-                //       () => _fontSize > 20 ? _fontSize -= 1 : _fontSize += 0);
-                // },
-                // const SingleActivator(LogicalKeyboardKey.digit0, control: true):
-                //     () {
-                //   setState(() => _fontSize = defaultFontSize);
-                // },
-                const SingleActivator(LogicalKeyboardKey.arrowLeft,
-                        includeRepeats: false):
-                    () => setState(
-                        () => controller.goNextPage(settingsController, state)),
-                const SingleActivator(LogicalKeyboardKey.arrowRight,
-                    includeRepeats:
-                        false): () => setState(
+      appBar: showAppBar
+          ? AppTopBar(settingsController: settingsController, state: state)
+          : null,
+      body: Stack(children: [
+        CallbackShortcuts(
+          bindings: <ShortcutActivator, VoidCallback>{
+            // const SingleActivator(LogicalKeyboardKey.equal, control: true):
+            //     () {
+            //   setState(
+            //       () => _fontSize < 200 ? _fontSize += 1 : _fontSize += 0);
+            // },
+            // const SingleActivator(LogicalKeyboardKey.minus, control: true):
+            //     () {
+            //   setState(
+            //       () => _fontSize > 20 ? _fontSize -= 1 : _fontSize += 0);
+            // },
+            // const SingleActivator(LogicalKeyboardKey.digit0, control: true):
+            //     () {
+            //   setState(() => _fontSize = defaultFontSize);
+            // },
+            const SingleActivator(LogicalKeyboardKey.arrowLeft,
+                    includeRepeats: false):
+                () => setState(
+                    () => controller.goNextPage(settingsController, state)),
+            const SingleActivator(LogicalKeyboardKey.arrowRight,
+                    includeRepeats: false):
+                () => setState(
                     () => controller.goPreviousPage(settingsController, state)),
-              },
-              child: Column(children: [
+          },
+          child: Builder(builder: (context) {
+            Orientation orientation = MediaQuery.of(context).orientation;
+            double pageAspectRatio = 0.5;
+            Size size = MediaQuery.of(context).size;
+            double fontSize =
+                (size.width > size.height ? size.width : size.height) / 100;
+            int numPages = getNumPages(orientation);
+            double widthForPage = size.width / numPages;
+            double pageWidth = pageAspectRatio * size.height;
+            double padding = (widthForPage - pageWidth) / 2;
+            if (padding < 0) {
+              padding = 0;
+            }
+            final List<Widget> headerChildren = [];
+            final List<Widget> footerChildren = [];
+            int end = startPageNum + numPages;
+            for (int i = end - 1; i >= startPageNum; i--) {
+              headerChildren.add(
                 Expanded(
-                  child: Focus(
-                    autofocus: true,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: padding, right: padding),
                     child: Row(
-                      textDirection: TextDirection.rtl,
-                      children: buildPages(),
+                      textDirection: TextDirection.ltr,
+                      children: [
+                        Text(
+                            controller.getSurahName(
+                                context,
+                                state.surahNumber <= 0
+                                    ? 0
+                                    : state.surahNumber - 1),
+                            style: TextStyle(fontSize: fontSize)),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                                controller.getRubHizbInfo(
+                                    state.surahNumber, i, context),
+                                style: TextStyle(fontSize: fontSize)),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                // QuranPlayer(
-                //   settingsController: settingsController,
-                //   state: state,
-                //   parent: this,
-                // ),
-              ]),
-            ),
+              );
+            }
+
+            for (int i = startPageNum; i < end; i++) {
+              footerChildren.add(
+                Expanded(
+                  child: Center(
+                    child: Text(ArabicNumber().convertToLocaleNumber(i),
+                        style: TextStyle(fontSize: fontSize)),
+                  ),
+                ),
+              );
+            }
+
+            return Column(spacing: 0, children: [
+              Row(textDirection: TextDirection.ltr, children: headerChildren),
+              Expanded(
+                child: Row(
+                  textDirection: TextDirection.rtl,
+                  children: buildPages(context, orientation),
+                ),
+              ),
+              Row(textDirection: TextDirection.rtl, children: footerChildren),
+              Visibility(
+                maintainState: true,
+                visible: showPlayer,
+                child: QuranPlayer(
+                  recitationId: settingsController.recitationId,
+                  state: state,
+                  update: () => setState(() {}),
+                ),
+              ),
+            ]);
+          }),
+        ),
+        Visibility(
+          maintainState: true,
+          maintainAnimation: true,
+          maintainSize: true,
+          maintainInteractivity: true,
+          visible: false,
+          child: Column(
+            children: [
+              Expanded(
+                child: Image(
+                    image: AssetImage('assets/images/hollow/bg.png'),
+                    fit: BoxFit.fill),
+              ),
+              Expanded(
+                child: SimpleGestureDetector(
+                  swipeConfig: SimpleSwipeConfig(
+                      swipeDetectionBehavior: SwipeDetectionBehavior.singular),
+                  onHorizontalSwipe: (direction) {
+                    if (direction == SwipeDirection.left) {
+                      setState(() =>
+                          controller.goPreviousPage(settingsController, state));
+                    } else if (direction == SwipeDirection.right) {
+                      setState(() =>
+                          controller.goNextPage(settingsController, state));
+                    } else {
+                      print('Error Error Error Error Error Error');
+                    }
+                  },
+                  onVerticalSwipe: (direction) {
+                    if (direction == SwipeDirection.down) {
+                      setState(() => showPlayer = false);
+                    } else if (direction == SwipeDirection.up) {
+                      setState(() => showPlayer = true);
+                    } else {
+                      print('Error Error Error Error Error Error');
+                    }
+                  },
+                  child: Image(
+                      image: AssetImage('assets/images/hollow/bg.png'),
+                      fit: BoxFit.fill),
+                ),
+              ),
+            ],
           ),
         ),
-        floatingActionButton: FloatingButtons(state: state, update: _update));
+      ]),
+    );
   }
 }

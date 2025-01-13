@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:quran/quran.dart' as quran;
-import 'package:quran_app_flutter/src/home/juz_list/juzs_list_controller.dart';
+import 'package:quran_app_flutter/src/localization/app_localizations.dart';
 
-import '../../settings/settings_controller.dart';
-import '../../util/arabic_number.dart';
-import '../../util/circular_precent.dart';
-import '../../util/quran_player_global_state.dart';
+import '../common/quran_info_controller.dart';
+import '../settings/settings_controller.dart';
+import '../util/arabic_number.dart';
+import '../util/circular_precent.dart';
+import '../util/quran_player_global_state.dart';
 
 class JuzsListView extends StatelessWidget {
   const JuzsListView(
@@ -15,7 +16,7 @@ class JuzsListView extends StatelessWidget {
   final QuranPlayerGlobalState state;
   final SettingsController settingsController;
   final fontSize = 18.0;
-  final JuzsListController controller = const JuzsListController();
+  final QuranInfoController controller = const QuranInfoController();
 
   List<Widget> _getRubHizbVerseReview(
       int hizbNumber, int quarterNumber, BuildContext context) {
@@ -23,26 +24,29 @@ class JuzsListView extends StatelessWidget {
         controller.getRubHizbPreview(hizbNumber, quarterNumber, context);
     List<Widget> widgets = [];
     widgets.add(Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(rubHizbVerseInfo.versePreview,
-          textDirection: TextDirection.rtl,
-          style: TextStyle(fontFamily: 'uthmanic', fontSize: fontSize - 2)),
+      Text(
+        rubHizbVerseInfo.versePreview,
+        textDirection: TextDirection.rtl,
+        // style: TextStyle(fontSize: fontSize - 2),
+      ),
       Row(children: <Widget>[
-        Text(rubHizbVerseInfo.verseInfo,
-            style: TextStyle(fontSize: fontSize - 6)),
-        ArabicNumber().convertToLocaleNumber(rubHizbVerseInfo.verseNumber,
-            fontSize: fontSize - 6),
+        Text(
+          '${rubHizbVerseInfo.verseInfo}${ArabicNumber().convertToLocaleNumber(rubHizbVerseInfo.verseNumber)}',
+          // style: TextStyle(fontSize: fontSize - 6),
+        ),
       ])
     ]));
     widgets.add(Expanded(
       // mainAxisAlignment: MainAxisAlignment.end,
       child: Align(
-          alignment: rtlLanguages
-                  .contains(Localizations.localeOf(context).languageCode)
-              ? Alignment.centerLeft
-              : Alignment.centerRight,
-          child: ArabicNumber().convertToLocaleNumber(
-              rubHizbVerseInfo.pageNumber,
-              fontSize: fontSize)),
+        alignment:
+            rtlLanguages.contains(Localizations.localeOf(context).languageCode)
+                ? Alignment.centerLeft
+                : Alignment.centerRight,
+        child: Text(
+            ArabicNumber().convertToLocaleNumber(rubHizbVerseInfo.pageNumber),
+            style: TextStyle(fontSize: fontSize)),
+      ),
     ));
 
     return widgets;
@@ -63,10 +67,9 @@ class JuzsListView extends StatelessWidget {
             decoration: BoxDecoration(color: Theme.of(context).disabledColor),
             child: Padding(
               padding: EdgeInsets.only(left: 20, right: 20),
-              child: Row(children: [
-                Text('جزء ', style: TextStyle(fontSize: fontSize)),
-                ArabicNumber().convertToLocaleNumber(i, fontSize: fontSize),
-              ]),
+              child: Text(
+                  '${AppLocalizations.of(context)!.juz} ${ArabicNumber().convertToLocaleNumber(i)}',
+                  style: TextStyle(fontSize: fontSize)),
             ),
           ),
         ),
@@ -79,7 +82,7 @@ class JuzsListView extends StatelessWidget {
           Widget circle;
           if (quarterNumber == 1) {
             circle = CircleAvatar(
-                child: ArabicNumber().convertToLocaleNumber(hizbNumber));
+                child: Text(ArabicNumber().convertToLocaleNumber(hizbNumber)));
           } else {
             circle = CustomPaint(
               painter: CircularPercent(

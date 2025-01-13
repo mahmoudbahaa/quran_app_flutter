@@ -47,7 +47,15 @@ class PageBuilder {
       return TextSpan(
         text: element,
         style: TextStyle(
-          backgroundColor: Get.theme.colorScheme.primary,
+          backgroundColor: Get.theme.colorScheme.inversePrimary,
+          fontFamily: fontFamily,
+          height: 1.7,
+        ),
+      );
+    } else if (type == TextType.surahName) {
+      return TextSpan(
+        text: element,
+        style: TextStyle(
           fontFamily: fontFamily,
           height: 1.7,
         ),
@@ -56,7 +64,6 @@ class PageBuilder {
       return TextSpan(
         text: element,
         style: TextStyle(
-          fontFamily: fontFamily,
           height: 1.7,
         ),
       );
@@ -156,7 +163,7 @@ class PageBuilder {
         }
 
         TextType type = (highlightSurah == surahNumber - 1 &&
-                verseNumber == highlightVerse &&
+                highlightVerse == verseNumber - 1 &&
                 j == highlightWord)
             ? TextType.highlightedVerse
             : TextType.verse;

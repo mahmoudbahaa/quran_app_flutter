@@ -60,7 +60,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get chapters => 'السور';
 
   @override
-  String get juz => 'الأجزاء';
+  String get juz => 'الجزء';
 
   @override
   String get goToPage => 'إذهب لصفحة';
@@ -79,4 +79,19 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get loading => 'جاري التحميل';
+
+  @override
+  String get hizb => 'الحزب';
+
+  @override
+  String get quarter => 'ربع';
+
+  @override
+  String get half => 'نصف';
+
+  @override
+  String get quarter3 => 'ثلاثة أرباع';
+
+  @override
+  String get comma => ' ،';
 }

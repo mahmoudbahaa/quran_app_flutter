@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'home/home_view.dart';
 import 'localization/app_localizations.dart';
@@ -14,6 +15,18 @@ class MyApp extends StatelessWidget {
 
   final SettingsController settingsController;
   final QuranPlayerGlobalState state;
+
+  ThemeData _buildTheme(brightness, String languageCode) {
+    var baseTheme = ThemeData(brightness: brightness, useMaterial3: false);
+
+    if (languageCode == 'ar') {
+      return baseTheme.copyWith(
+          textTheme: GoogleFonts.notoNaskhArabicTextTheme(baseTheme.textTheme));
+    } else {
+      return baseTheme.copyWith(
+          textTheme: GoogleFonts.notoSansTextTheme(baseTheme.textTheme));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,24 +62,10 @@ class MyApp extends StatelessWidget {
               // Define a light and dark color theme. Then, read the user's
               // preferred ThemeMode (light, dark, or system default) from the
               // SettingsController to display the correct theme.
-              theme: ThemeData(
-                useMaterial3: true,
-                fontFamily:
-                    rtlLanguages.contains(settingsController.appLocale.name)
-                        ? 'uthmanic'
-                        : DefaultTextStyle.of(context).style.fontFamily,
-                brightness: Brightness.light,
-                // colorSchemeSeed: Colors.blueGrey,
-              ),
-              darkTheme: ThemeData(
-                useMaterial3: true,
-                fontFamily:
-                    rtlLanguages.contains(settingsController.appLocale.name)
-                        ? 'uthmanic'
-                        : DefaultTextStyle.of(context).style.fontFamily,
-                // colorSchemeSeed: Colors.blue,
-                brightness: Brightness.dark,
-              ),
+              theme: _buildTheme(
+                  Brightness.light, settingsController.appLocale.name),
+              darkTheme: _buildTheme(
+                  Brightness.dark, settingsController.appLocale.name),
               themeMode: settingsController.themeMode,
               debugShowCheckedModeBanner: false,
             ));

@@ -25,5 +25,10 @@
   "loadAtStartupStyle": "Load at startup",
   "cachedOnly": "Cached only",
   "all": "all",
-  "loading": "Loading"
+  "loading": "Loading",
+  "hizb": "Hizb",
+  "quarter" : "¼",
+  "half": "½",
+  "quarter3": "¾",
+  "comma": ","
 }

@@ -2,36 +2,33 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:media_kit/media_kit.dart';
 import 'package:quran/quran.dart' as quran;
 import 'package:universal_io/io.dart';
 
-import '../settings/settings_controller.dart';
 import '../util/download_widget.dart';
 import '../util/file_utils.dart';
 import '../util/player_widget.dart';
 import '../util/quran_player_global_state.dart';
-import 'quran_page_view.dart';
 
 class QuranPlayer extends StatefulWidget {
   const QuranPlayer(
       {super.key,
-      required this.settingsController,
+      required this.recitationId,
       required this.state,
-      required this.parent});
+      required this.update});
 
-  final SettingsController settingsController;
+  final int recitationId;
   final QuranPlayerGlobalState state;
-  final State<QuranChapterDetailsView> parent;
+  final Function update;
 
   @override
   State<StatefulWidget> createState() => QuranPlayerState();
 }
 
 class QuranPlayerState extends State<QuranPlayer> {
-  Player get player => Player();
+  late Player player;
   int? surahNumber;
   int? recitationId;
   int verseNumber = -1;
@@ -39,13 +36,13 @@ class QuranPlayerState extends State<QuranPlayer> {
   String? filePath;
   String? downloadUrl;
   QuranPlayerGlobalState get state => widget.state;
-  SettingsController get settingsController => widget.settingsController;
-  State<QuranChapterDetailsView> get parent => widget.parent;
 
   //late bool _update =  update;
 
   Future<void> setSource() async {
     if (filePath == null) return;
+
+    setState(() {});
     await player.stop();
     // await player.setAudioSource(AudioSource.uri(Uri.parse(url)));
     // await player.open(AudioSource.file(filePath));
@@ -85,12 +82,12 @@ class QuranPlayerState extends State<QuranPlayer> {
 
   Future<void> changeSource(bool play) async {
     if (surahNumber != state.surahNumber ||
-        recitationId != settingsController.recitationId) {
+        recitationId != widget.recitationId) {
       surahNumber = state.surahNumber;
-      recitationId = settingsController.recitationId;
+      recitationId = widget.recitationId;
       await player.pause();
-      dynamic surahInfo = await makeGetRequest(
-          getUrl(state.surahNumber, settingsController.recitationId));
+      dynamic surahInfo =
+          await makeGetRequest(getUrl(state.surahNumber, widget.recitationId));
       state.verseTimings = surahInfo['audio_files'][0]['verse_timings'];
       downloadUrl = surahInfo['audio_files'][0]['audio_url'];
       String fileName =
@@ -99,10 +96,13 @@ class QuranPlayerState extends State<QuranPlayer> {
       if (kIsWeb) {
         filePath = downloadUrl;
       } else {
-        File file = (await FileUtils()
-            .getFile('${settingsController.recitationId}_$fileName'))!;
+        File file =
+            (await FileUtils().getFile('${widget.recitationId}_$fileName'))!;
+        filePath = file.path;
         if (!file.existsSync()) {
-          parent.setState(() => state.downloading = true);
+          file.parent.createSync(recursive: true);
+          state.downloading = true;
+          widget.update();
           return;
         }
       }
@@ -117,10 +117,11 @@ class QuranPlayerState extends State<QuranPlayer> {
   void initState() {
     super.initState();
 
-    // ambiguate(WidgetsBinding.instance)!.addObserver(this);
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.black,
-    ));
+    player = Player();
+    // // ambiguate(WidgetsBinding.instance)!.addObserver(this);
+    // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    //   statusBarColor: Colors.black,
+    // ));
     _init();
     player.stream.position.listen((duration) async {
       if (!mounted) return;
@@ -141,7 +142,7 @@ class QuranPlayerState extends State<QuranPlayer> {
             state.wordNumber = word;
             state.pageNumber =
                 quran.getPageNumber(surahNumber, state.verseNumber);
-            parent.setState(() {});
+            widget.update();
             return;
           }
         }
@@ -157,7 +158,7 @@ class QuranPlayerState extends State<QuranPlayer> {
         state.wordNumber = -1;
         state.pageNumber =
             quran.getPageNumber(surahNumber + 1, state.verseNumber);
-        parent.setState(() {});
+        widget.update();
         changeSource(true);
       }
     });

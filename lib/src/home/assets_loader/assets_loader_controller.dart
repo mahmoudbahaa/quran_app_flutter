@@ -8,7 +8,6 @@ class AssetsLoaderController {
 
   final SettingsController settingsController;
   static final Map _fontsLoaded = {};
-  static final Map _imagesLoaded = {};
   static final Map<String, dynamic> _versesDataLoaded = {};
   final AssetsLoaderService _assetsLoaderService = const AssetsLoaderService();
 
@@ -20,7 +19,6 @@ class AssetsLoaderController {
     final queue = Queue(parallel: _parallelism);
     for (int i = 1; i <= quran.totalPagesCount; i++) {
       queue.add(() async => await _loadPageFonts(i, update));
-      queue.add(() async => await _loadPageImages(i, update));
       queue.add(() async => await _loadVerseWordsData(i, update));
     }
 
@@ -40,10 +38,6 @@ class AssetsLoaderController {
 
   Future<void> _loadVerseWordsData(int pageNumber, Function update) async {
     await _loadAsset(pageNumber, loadVersesWordsData, update);
-  }
-
-  Future<void> _loadPageImages(int pageNumber, Function update) async {
-    await _loadAsset(pageNumber, loadImage, update);
   }
 
   bool isFontLoaded(int pageNumber) {
@@ -88,23 +82,6 @@ class AssetsLoaderController {
       String key =
           '${pageNumber}_${settingsController.textRepresentation.index}';
       _versesDataLoaded[key] = data;
-    }
-  }
-
-  String? getImagePath(int pageNumber) {
-    String key = 'background_$pageNumber';
-    return _imagesLoaded[key];
-  }
-
-  Future<void> loadImage(int pageNumber, {cacheOnly = false}) async {
-    if (getImagePath(pageNumber) != null) return;
-
-    String key = 'background_$pageNumber';
-    String? data = await _assetsLoaderService.loadImage(
-        pageNumber, settingsController.textRepresentation, cacheOnly);
-
-    if (data != null) {
-      _imagesLoaded[key] = data;
     }
   }
 }

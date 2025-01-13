@@ -39,9 +39,10 @@ dependencies:
   universal_io: ^2.2.2
   get: ^4.6.6
   queue: ^3.4.0
-#    dynamic_parallel_queue: ^1.0.3+2
+  google_fonts: ^6.2.1
+  simple_gesture_detector: ^0.2.1
 
-#  just_audio: ^0.9.42
+  #  just_audio: ^0.9.42
 #  audio_session: ^0.1.23
 #  swipe_to: ^1.0.6
 
@@ -120,9 +121,9 @@ flutter:
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
   fonts:
-    - family: uthmanic
+    - family: arabicFont
       fonts:
-        - asset: assets/fonts/UthmanicHafs1Ver18.ttf
+        - asset: assets/fonts/Roboto-Regular.ttf
 
     - family: surahNames
       fonts:

@@ -17,14 +17,18 @@
   "off": "غير مفعل",
   "numberOfPagesOnScreen": "عدد الصفحات في الشاشة",
   "recitation": "القارء",
-  "JuzPrefix": "",
   "verse": "الأية",
   "chapters": "السور",
-  "juz": "الأجزاء",
+  "juz": "الجزء",
   "goToPage": "إذهب لصفحة",
   "pageNumber": "رقم الصفحة",
   "loadAtStartupStyle": "التحميل عند البداية",
   "cachedOnly": "الذاكرة فقط",
   "all": "الجميع",
-  "loading": "جاري التحميل"
+  "loading": "جاري التحميل",
+  "hizb": "الحزب",
+  "quarter" : "ربع",
+  "half": "نصف",
+  "quarter3": "ثلاثة أرباع",
+  "comma": " ،"
 }

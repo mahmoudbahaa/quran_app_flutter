@@ -79,4 +79,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loading => 'Loading';
+
+  @override
+  String get hizb => 'Hizb';
+
+  @override
+  String get quarter => '¼';
+
+  @override
+  String get half => '½';
+
+  @override
+  String get quarter3 => '¾';
+
+  @override
+  String get comma => ',';
 }

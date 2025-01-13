@@ -30,6 +30,9 @@ class _AssetsDownloaderWidget extends State<AssetsLoaderWidget> {
 
   int startTime = DateTime.now().millisecondsSinceEpoch;
   int assetsLoaded = 0;
+  int totalAssets = quran.totalPagesCount * 2; //Platform.isAndroid
+  // ? quran.totalPagesCount * 2
+  // : quran.totalPagesCount * 3;
 
   int get secs =>
       ((DateTime.now().millisecondsSinceEpoch - startTime) / 1000).floor();
@@ -60,12 +63,12 @@ class _AssetsDownloaderWidget extends State<AssetsLoaderWidget> {
 
   void update() {
     assetsLoaded++;
-    if (assetsLoaded >= quran.totalPagesCount * 3) {
+    if (assetsLoaded >= totalAssets) {
       setState(() => widget.state.loading = false);
       widget.update();
     }
     setState(() => downloadProgressNotifier.value =
-        ((assetsLoaded / quran.totalPagesCount) * 100 / 3).toPrecision(2));
+        ((assetsLoaded / totalAssets) * 100).toPrecision(2));
   }
 
   @override
@@ -93,14 +96,14 @@ class _AssetsDownloaderWidget extends State<AssetsLoaderWidget> {
                   height: 32,
                 ),
                 CircularPercentIndicator(
-                  radius: 100.0,
-                  lineWidth: 20.0,
+                  radius: 75.0,
+                  lineWidth: 15.0,
                   // animation: true,
                   percent: downloadProgressNotifier.value / 100,
                   center: Text(
                     '${downloadProgressNotifier.value}%',
                     style: const TextStyle(
-                        fontSize: 40.0, fontWeight: FontWeight.w600),
+                        fontSize: 24.0, fontWeight: FontWeight.w600),
                   ),
                   circularStrokeCap: CircularStrokeCap.round,
                 ),
@@ -109,18 +112,18 @@ class _AssetsDownloaderWidget extends State<AssetsLoaderWidget> {
                 ),
                 Text(
                   textDirection: TextDirection.ltr,
-                  '$assetsLoaded/${quran.totalPagesCount * 3}',
-                  style: const TextStyle(fontSize: 40.0),
+                  '$assetsLoaded/$totalAssets',
+                  style: const TextStyle(fontSize: 24.0),
                 ),
                 Text(
                   textDirection: TextDirection.ltr,
                   'Elapsed: $elapsed',
-                  style: const TextStyle(fontSize: 24.0),
+                  style: const TextStyle(fontSize: 16.0),
                 ),
                 Text(
                   textDirection: TextDirection.ltr,
                   'Estimated Remaining: $remaining seconds',
-                  style: const TextStyle(fontSize: 24.0),
+                  style: const TextStyle(fontSize: 16.0),
                 ),
               ],
             );

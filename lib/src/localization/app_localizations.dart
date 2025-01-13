@@ -238,6 +238,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Loading'**
   String get loading;
+
+  /// No description provided for @hizb.
+  ///
+  /// In en, this message translates to:
+  /// **'Hizb'**
+  String get hizb;
+
+  /// No description provided for @quarter.
+  ///
+  /// In en, this message translates to:
+  /// **'¼'**
+  String get quarter;
+
+  /// No description provided for @half.
+  ///
+  /// In en, this message translates to:
+  /// **'½'**
+  String get half;
+
+  /// No description provided for @quarter3.
+  ///
+  /// In en, this message translates to:
+  /// **'¾'**
+  String get quarter3;
+
+  /// No description provided for @comma.
+  ///
+  /// In en, this message translates to:
+  /// **','**
+  String get comma;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

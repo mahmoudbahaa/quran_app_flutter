@@ -13,6 +13,10 @@ class QuranPlayerGlobalState {
 
   int pageNumber = -1;
 
+  int curPageInPageView = -1;
+
+  bool isDirty = true;
+
   int surahNumber = -1;
 
   int verseNumber = -1;

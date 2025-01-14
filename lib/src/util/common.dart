@@ -57,7 +57,7 @@ void showNumberSelectDialog({
     pages.add(
       DropdownMenuItem(
         value: i,
-        child: Text(ArabicNumber().convertToLocaleNumber(i)),
+        child: Text(ArabicNumber().convertToLocaleNumber(i, context)),
       ),
     );
   }

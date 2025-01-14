@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:quran_app_flutter/src/home/surahs_list_view.dart';
 
+import '../common/app_drawer.dart';
 import '../common/app_top_bar.dart';
+import '../localization/app_localizations.dart';
 import '../settings/settings_controller.dart';
 import '../util/quran_player_global_state.dart';
 import 'assets_loader/assets_loader_widget.dart';
@@ -24,8 +28,12 @@ class QuranChaptersListView extends StatefulWidget {
 class _QuranChaptersListViewState extends State<QuranChaptersListView> {
   SettingsController get settingsController => widget.controller;
   QuranPlayerGlobalState get state => widget.state;
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
   final maxVerseWords = 5;
   final fontSize = 20.0;
+  bool showAppBar = true;
+  final double _iconsSize = Platform.isAndroid || Platform.isIOS ? 32 : 32;
 
   @override
   void initState() {
@@ -38,7 +46,25 @@ class _QuranChaptersListViewState extends State<QuranChaptersListView> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        appBar: AppTopBar(state: state, settingsController: settingsController),
+        key: scaffoldKey,
+        appBar: showAppBar
+            ? AppTopBar(
+                state: state,
+                settingsController: settingsController,
+                hasNotch: false,
+                iconsSize: _iconsSize,
+                scaffoldKey: scaffoldKey,
+                tabs: [
+                    SizedBox(
+                      height: 30,
+                      child: Tab(text: AppLocalizations.of(context)!.chapters),
+                    ),
+                    SizedBox(
+                      height: 30,
+                      child: Tab(text: AppLocalizations.of(context)!.hizb),
+                    ),
+                  ])
+            : null,
 
         // To work with lists that may contain a large number of items, it’s best
         // to use the ListView.builder constructor.
@@ -61,6 +87,9 @@ class _QuranChaptersListViewState extends State<QuranChaptersListView> {
             ]);
           }
         }),
+
+        endDrawer:
+            AppDrawer(state: state, settingsController: settingsController),
       ),
     );
   }

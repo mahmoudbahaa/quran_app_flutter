@@ -28,10 +28,11 @@ class SurahsListView extends StatelessWidget {
             leading: CircleAvatar(
               // Display the Flutter Logo image asset.
               // foregroundImage: const AssetImage('assets/images/flutter_logo.png'),
-              child: Text(ArabicNumber().convertToLocaleNumber(index + 1)),
+              child: Text(
+                  ArabicNumber().convertToLocaleNumber(index + 1, context)),
             ),
             onTap: () => controller.goToPage(quran.getPageNumber(index + 1, 1),
-                index + 1, settingsController, state));
+                index + 1, context, settingsController, state));
       },
     );
   }

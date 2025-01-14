@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../quran_page/quran_player.dart';
 import '../util/quran_player_global_state.dart';
@@ -68,44 +68,25 @@ class _DownloadWidgetState extends State<DownloadWidget> {
                 // const SizedBox(
                 //   height: 32,
                 // ),
-                CircularPercentIndicator(
-                  radius: 50.0,
-                  lineWidth: 10.0,
+                LinearPercentIndicator(
+                  // radius: 25.0,
+                  // lineWidth: 5.0,
                   // animation: true,
                   percent: downloadProgressNotifier.value / 100,
                   center: Text(
                     '${downloadProgressNotifier.value}%',
                     style: const TextStyle(
-                        fontSize: 20.0, fontWeight: FontWeight.w600),
+                        fontSize: 16.0, fontWeight: FontWeight.w600),
                   ),
-                  circularStrokeCap: CircularStrokeCap.round,
+                  // circularStrokeCap: CircularStrokeCap.round,
                 ),
                 const SizedBox(
-                  height: 32,
+                  height: 10,
                 ),
-                // const Text(
-                //   'Linear Progress Indicator',
-                //   style: TextStyle(fontSize: 20),
-                // ),
-                // const SizedBox(
-                //   height: 32,
-                // ),
-                // LinearPercentIndicator(
-                //   // animation: true,
-                //   barRadius: const Radius.circular(10),
-                //   // animationDuration: 400,
-                //   lineHeight: 15.0,
-                //   percent: downloadProgressNotifier.value / 100,
-                //   backgroundColor: Colors.grey.shade300,
-                //   progressColor: Colors.blue,
-                // ),
-                // const SizedBox(
-                //   height: 15,
-                // ),
                 Text(
                   textDirection: TextDirection.ltr,
                   "${actualBytes == null ? '0.0' : actualBytes!.toStringAsFixed(1)} MB/${totalBytes == null ? '0.0' : totalBytes!.toStringAsFixed(1)} MB",
-                  style: const TextStyle(fontSize: 20.0),
+                  style: const TextStyle(fontSize: 12.0),
                 ),
               ],
             );

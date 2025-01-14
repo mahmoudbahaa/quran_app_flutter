@@ -1,10 +1,12 @@
-import 'package:get/get.dart';
+import 'package:flutter/cupertino.dart';
 
 class ArabicNumber {
   const ArabicNumber();
 
-  String convertToLocaleNumber(int number) {
-    if (Get.locale?.languageCode != 'ar') return number.toString();
+  String convertToLocaleNumber(int number, BuildContext context) {
+    String langCode = Localizations.localeOf(context).languageCode;
+    if (langCode != 'ar') return number.toString();
+
     String res = '';
     String num = number.toString();
 

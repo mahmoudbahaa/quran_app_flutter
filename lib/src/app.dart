@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'home/home_view.dart';
@@ -16,16 +15,52 @@ class MyApp extends StatelessWidget {
   final SettingsController settingsController;
   final QuranPlayerGlobalState state;
 
-  ThemeData _buildTheme(brightness, String languageCode) {
-    var baseTheme = ThemeData(brightness: brightness, useMaterial3: false);
-
-    if (languageCode == 'ar') {
-      return baseTheme.copyWith(
-          textTheme: GoogleFonts.notoNaskhArabicTextTheme(baseTheme.textTheme));
+  ThemeData _buildTheme(Brightness brightness, String languageCode) {
+    ThemeData baseTheme;
+    if (brightness == Brightness.light) {
+      baseTheme = ThemeData.light(useMaterial3: true);
     } else {
-      return baseTheme.copyWith(
-          textTheme: GoogleFonts.notoSansTextTheme(baseTheme.textTheme));
+      baseTheme = ThemeData.dark(useMaterial3: true);
     }
+
+    TextTheme textTheme;
+    if (languageCode == 'ar') {
+      textTheme = GoogleFonts.notoNaskhArabicTextTheme(baseTheme.textTheme);
+    } else {
+      textTheme = GoogleFonts.notoSansTextTheme(baseTheme.textTheme);
+    }
+
+    if (settingsController.mainColor == Colors.white ||
+        settingsController.mainColor == Colors.black) {
+      baseTheme = baseTheme.copyWith(
+        brightness: brightness,
+        textTheme: textTheme,
+        appBarTheme: AppBarTheme(
+          elevation: 4,
+        ),
+        bottomAppBarTheme: BottomAppBarTheme(),
+      );
+    } else {
+      final colorScheme = ColorScheme.fromSeed(
+          seedColor: settingsController.mainColor, brightness: brightness);
+
+      baseTheme = baseTheme.copyWith(
+        brightness: brightness,
+        textTheme: textTheme,
+        colorScheme: colorScheme,
+        appBarTheme: AppBarTheme(
+          elevation: 4,
+          backgroundColor: colorScheme.inversePrimary,
+          shadowColor: colorScheme.shadow,
+        ),
+        bottomAppBarTheme: BottomAppBarTheme(
+          // elevation: 4,
+          color: colorScheme.inversePrimary,
+        ),
+      );
+    }
+
+    return baseTheme;
   }
 
   @override
@@ -36,7 +71,7 @@ class MyApp extends StatelessWidget {
     // Whenever the user updates their settings, the MaterialApp is rebuilt.
     return ListenableBuilder(
         listenable: settingsController,
-        builder: (BuildContext context, Widget? child) => GetMaterialApp(
+        builder: (BuildContext context, Widget? child) => MaterialApp(
               home: QuranChaptersListView(
                   controller: settingsController, state: state),
               // Provide the generated AppLocalizations to the MaterialApp. This

@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:media_kit/media_kit.dart';
 
 import 'src/app.dart';
@@ -10,6 +14,10 @@ import 'src/util/quran_player_global_state.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MediaKit.ensureInitialized();
+
+  if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+    await DesktopWindow.setMinWindowSize(Size(400, 600));
+  }
 
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.
@@ -26,4 +34,8 @@ void main() async {
   // SettingsController for changes, then passes it further down to the
   // SettingsView.
   runApp(MyApp(settingsController: settingsController, state: state));
+
+  if (Platform.isAndroid) {
+    await FlutterDisplayMode.setHighRefreshRate();
+  }
 }

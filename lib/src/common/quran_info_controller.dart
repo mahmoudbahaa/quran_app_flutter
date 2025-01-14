@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:quran/quran.dart' as quran;
+import 'package:quran_app_flutter/src/util/arabic_number.dart';
 
 import '../home/assets_loader/assets_loader_controller.dart';
 import '../localization/app_localizations.dart';
@@ -13,14 +14,25 @@ import '../util/quran_player_global_state.dart';
 class QuranInfoController {
   const QuranInfoController();
 
-  void goToPage(int pageNumber, int surahNumber,
+  void goToPage(int pageNumber, int surahNumber, BuildContext context,
       SettingsController settingsController, QuranPlayerGlobalState state) {
     state.surahNumber = surahNumber;
     state.pageNumber = pageNumber;
     state.verseNumber = 1;
     state.wordNumber = -1;
-    Get.to(() => QuranChapterDetailsView(
-        settingsController: settingsController, state: state));
+
+    context.pushTransition(
+      type: PageTransitionType.leftToRight,
+      duration: Duration(milliseconds: 1000),
+      childBuilder: (context) =>
+          QuranPageView(settingsController: settingsController, state: state),
+    );
+
+    // Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //         builder: (context) => QuranPageView(
+    //             settingsController: settingsController, state: state)));
   }
 
   void goNextPage(
@@ -105,10 +117,10 @@ class QuranInfoController {
         String juz = AppLocalizations.of(context)!.juz;
         int juzNumber = (i / 8 + 1).floor();
         String comma = AppLocalizations.of(context)!.comma;
-        return '$juz $juzNumber$comma $prefix $hizb $hizbNumber';
+        return '$juz ${ArabicNumber().convertToLocaleNumber(juzNumber, context)}$comma $prefix $hizb ${ArabicNumber().convertToLocaleNumber(hizbNumber, context)}';
       }
     }
-    return '$juz $juzNumber';
+    return '$juz ${ArabicNumber().convertToLocaleNumber(juzNumber, context)}';
   }
 
   int getPageNumber(int hizbNumber, int quarterNumber) {
@@ -118,14 +130,15 @@ class QuranInfoController {
 
   String getSurahName(BuildContext context, int index) {
     String surahPrefix = AppLocalizations.of(context)!.surahPrefix;
-    String surahName = surahNames[Get.locale?.languageCode][index];
+    String surahName =
+        surahNames[Localizations.localeOf(context).languageCode][index];
     return '$surahPrefix$surahName';
   }
 
   String getSurahNameWithTranslation(int surahIndex, BuildContext context) {
-    String surahTranslation = Get.locale?.languageCode == 'ar'
-        ? ''
-        : ' (${surahTranslations[Get.locale?.languageCode][surahIndex]})';
+    String langCode = Localizations.localeOf(context).languageCode;
+    String surahTranslation =
+        langCode == 'ar' ? '' : ' (${surahTranslations[langCode][surahIndex]})';
 
     return '${getSurahName(context, surahIndex)}$surahTranslation';
   }
@@ -154,7 +167,8 @@ class QuranInfoController {
 
     String getSurahName(BuildContext context, int index) {
       String surahPrefix = AppLocalizations.of(context)!.surahPrefix;
-      String surahName = surahNames[Get.locale?.languageCode][index];
+      String surahName =
+          surahNames[Localizations.localeOf(context).languageCode][index];
       return '$surahPrefix$surahName';
     }
 

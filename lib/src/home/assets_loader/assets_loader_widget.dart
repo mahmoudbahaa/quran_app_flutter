@@ -1,5 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:quran/quran.dart' as quran;
 import 'package:quran_app_flutter/src/home/assets_loader/assets_loader_controller.dart';
@@ -26,7 +25,7 @@ class AssetsLoaderWidget extends StatefulWidget {
 }
 
 class _AssetsDownloaderWidget extends State<AssetsLoaderWidget> {
-  final ValueNotifier downloadProgressNotifier = ValueNotifier(0);
+  final ValueNotifier<double> downloadProgressNotifier = ValueNotifier(0);
 
   int startTime = DateTime.now().millisecondsSinceEpoch;
   int assetsLoaded = 0;
@@ -68,7 +67,7 @@ class _AssetsDownloaderWidget extends State<AssetsLoaderWidget> {
       widget.update();
     }
     setState(() => downloadProgressNotifier.value =
-        ((assetsLoaded / totalAssets) * 100).toPrecision(2));
+        double.parse(((assetsLoaded / totalAssets) * 100).toStringAsFixed(2)));
   }
 
   @override

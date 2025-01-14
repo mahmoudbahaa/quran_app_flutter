@@ -118,10 +118,6 @@ class QuranPlayerState extends State<QuranPlayer> {
     super.initState();
 
     player = Player();
-    // // ambiguate(WidgetsBinding.instance)!.addObserver(this);
-    // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    //   statusBarColor: Colors.black,
-    // ));
     _init();
     player.stream.position.listen((duration) async {
       if (!mounted) return;

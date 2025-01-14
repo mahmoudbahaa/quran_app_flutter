@@ -20,7 +20,7 @@ class AssetsLoaderService {
 
   String _getVerseDataUrl(int pageNumber, int mushafId,
           TextRepresentation textRepresentation, String codeVersion) =>
-      'https://quran.com/api/proxy/content/api/qdc/verses/by_page/$pageNumber?per_page=all&mushaf=$mushafId&words=true&word_fields=$codeVersion';
+      'https://quran.com/api/proxy/content/api/qdc/verses/by_page/$pageNumber?per_page=all&mushaf=$mushafId&words=true&word_fields=$codeVersion,text_uthmani_simple,text_imlaei,text_imlaei_simple';
 
   String _getPageImageUrl(int pageNumber) =>
       'https://github.com/mahmoudbahaa/quran_app_flutter/raw/refs/heads/main/assets/images/hollow/$pageNumber.png';

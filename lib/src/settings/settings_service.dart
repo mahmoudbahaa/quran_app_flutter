@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/enums.dart';
@@ -42,11 +43,23 @@ class SettingsService {
   Future<ThemeMode> themeMode() async =>
       ThemeMode.values[await getValue('themeMode', 0)];
 
+  Future<Color> mainColor() async {
+    String colorHex = await getValue('mainColor', 'FF443A49');
+    if (colorHex == 'FF443A49') {
+      return Color(0xFF443A49);
+    } else {
+      return colorHex.toColor() ?? Color(0xFF443A49);
+    }
+  }
+
   Future<TextRepresentation> textRepresentation() async =>
       TextRepresentation.values[await getValue('textRepresentation', 0)];
 
   Future<bool> loadCachedOnly() async =>
       await getValue('loadCachedOnly', false);
+
+  Future<bool> selectableViews() async =>
+      await getValue('selectableViews', false);
 
   Future<int> numPages() async => await getValue('numPages', 1);
 
@@ -57,6 +70,9 @@ class SettingsService {
 
   Future<void> updateThemeMode(ThemeMode theme) async =>
       await setValue('themeMode', theme.index);
+
+  Future<void> updateMainColor(Color mainColor) async =>
+      await setValue('mainColor', mainColor.toHexString());
 
   Future<void> updateTextRepresentation(
           TextRepresentation textRepresentation) async =>
@@ -73,4 +89,7 @@ class SettingsService {
 
   Future<void> updateRecitationId(int recitationId) async =>
       await setValue('recitationId', recitationId);
+
+  Future<void> updateSelectableViews(bool selectableViews) async =>
+      await setValue('selectableViews', selectableViews);
 }

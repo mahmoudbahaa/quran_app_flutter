@@ -1,13 +1,20 @@
+import 'package:flutter/cupertino.dart';
+
 enum AppLocale { ar, en }
 
 const List<String> appLocales = ['العربية', 'English'];
-// const List<String> rtlLanguages = <String>[
-//   'ar', // Arabic
-//   'fa', // Farsi
-//   'he', // Hebrew
-//   'ps', // Pashto
-//   'ur', // Urdu
-// ];
+
+const List<String> _rtlLanguages = <String>[
+  'ar', // Arabic
+  'fa', // Farsi
+  'he', // Hebrew
+  'ps', // Pashto
+  'ur',
+];
+
+bool isRtl(BuildContext context) {
+  return _rtlLanguages.contains(Localizations.localeOf(context).languageCode);
+}
 
 enum TextType {
   surahName,

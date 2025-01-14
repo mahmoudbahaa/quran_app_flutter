@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:media_kit/media_kit.dart';
 
+import '../models/enums.dart';
+import '../quran_page/quran_page_view.dart';
 import 'common.dart';
 import 'quran_player_global_state.dart';
 
@@ -80,8 +82,9 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   Widget build(BuildContext context) {
     bool isLandScape =
         MediaQuery.of(context).orientation == Orientation.landscape;
+    bool isrtl = isRtl(context);
 
-    final Widget durationWidget = Text(
+    Widget durationWidget = Text(
       _position != null
           ? '($_positionText/$_totalDuration)'
           : _duration != null
@@ -90,6 +93,9 @@ class _PlayerWidgetState extends State<PlayerWidget> {
       style: const TextStyle(fontSize: 12.0),
     );
 
+    durationWidget = Padding(
+        padding: EdgeInsets.only(right: isrtl ? 0 : 20, left: isrtl ? 20 : 0),
+        child: durationWidget);
     final children = [
       // Opens volume slider dialog
       IconButton(
@@ -134,15 +140,16 @@ class _PlayerWidgetState extends State<PlayerWidget> {
         ),
       ),
       isLandScape
-          ? Padding(padding: EdgeInsets.only(right: 20), child: durationWidget)
+          ? durationWidget
           : Expanded(
               child: Align(
-                  alignment: Alignment.centerRight, child: durationWidget),
+                  alignment:
+                      isrtl ? Alignment.centerLeft : Alignment.centerRight,
+                  child: durationWidget),
             ),
     ];
 
     final slider = Slider(
-      padding: EdgeInsets.zero,
       onChanged: (value) {
         final duration = _duration;
         if (duration == null) {
@@ -166,12 +173,21 @@ class _PlayerWidgetState extends State<PlayerWidget> {
       children.add(last);
       mainWidget = Row(spacing: 10, children: children);
     } else {
-      mainWidget = Column(
-        spacing: 0,
-        children: [
-          Row(spacing: 0, children: children),
-          slider,
-        ],
+      mainWidget = Transform.translate(
+        offset: Offset(0, QuranPageView.iconsSize / -2),
+        child: Container(
+          alignment: Alignment.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 0,
+            children: [
+              Row(spacing: 0, children: children),
+              Container(
+                  constraints: BoxConstraints(minHeight: 0, maxHeight: 10),
+                  child: slider),
+            ],
+          ),
+        ),
       );
     }
 

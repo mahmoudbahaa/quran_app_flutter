@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:quran_app_flutter/src/util/arabic_number.dart';
 
 import '../localization/app_localizations.dart';
@@ -20,6 +21,50 @@ class SettingsView extends StatelessWidget {
   final double dropDownWidth = 330;
   final double dividerHeight = 10;
   final double dividerThickness = 5;
+  final int maxNumPages = 6;
+
+  void showColorPicker(BuildContext context, Color pickerColor) {
+    // raise the [showDialog] widget
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Pick a color!'),
+          content: SingleChildScrollView(
+            child: BlockPicker(
+              pickerColor: pickerColor,
+              onColorChanged: (value) => pickerColor = value,
+            ),
+            // Use Material color picker:
+            //
+            // child: MaterialPicker(
+            //   pickerColor: pickerColor,
+            //   onColorChanged: changeColor,
+            //   showLabel: true, // only on portrait mode
+            // ),
+            //
+            // Use Block color picker:
+            //
+            // child: BlockPicker(
+            //   pickerColor: currentColor,
+            //   onColorChanged: changeColor,
+            // ),
+            //
+            // child: MultipleChoiceBlockPicker(
+            //   pickerColors: currentColors,
+            //   onColorsChanged: changeColors,
+            // ),
+          ),
+          actions: <Widget>[
+            ElevatedButton(
+              child: const Text('Apply'),
+              onPressed: () => controller.updateMainColor(pickerColor),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +86,22 @@ class SettingsView extends StatelessWidget {
       ));
     }
 
+    List<DropdownMenuItem<int>> numPages = [];
+    for (int i = 1; i <= maxNumPages; i++) {
+      numPages.add(DropdownMenuItem(
+        value: i,
+        child: Text(ArabicNumber().convertToLocaleNumber(i, context)),
+      ));
+    }
+
+    List<DropdownMenuItem<MaterialAccentColor>> colors = [];
+    for (int i = 0; i < Colors.accents.length; i++) {
+      colors.add(DropdownMenuItem(
+        value: Colors.accents[i],
+        child: Container(
+            color: Colors.accents[i], child: SizedBox(width: 10, height: 10)),
+      ));
+    }
     return ListenableBuilder(
       listenable: controller,
       builder: (BuildContext context, Widget? child) => Scaffold(
@@ -118,24 +179,7 @@ class SettingsView extends StatelessWidget {
               value: controller.numPages,
               // Call the updateThemeMode method any time the user selects a theme.
               onChanged: controller.updateNumPages,
-              items: [
-                DropdownMenuItem(
-                  value: 1,
-                  child: Text(ArabicNumber().convertToLocaleNumber(1)),
-                ),
-                DropdownMenuItem(
-                  value: 2,
-                  child: Text(ArabicNumber().convertToLocaleNumber(2)),
-                ),
-                DropdownMenuItem(
-                  value: 3,
-                  child: Text(ArabicNumber().convertToLocaleNumber(3)),
-                ),
-                DropdownMenuItem(
-                  value: 4,
-                  child: Text(ArabicNumber().convertToLocaleNumber(4)),
-                ),
-              ],
+              items: numPages,
             ),
             Divider(thickness: dividerThickness, height: dividerHeight),
             Text(AppLocalizations.of(context)!.recitation),
@@ -145,6 +189,39 @@ class SettingsView extends StatelessWidget {
               // Call the updateThemeMode method any time the user selects a theme.
               onChanged: controller.updateRecitationId,
               items: recitationsItems,
+            ),
+            Divider(thickness: dividerThickness, height: dividerHeight),
+            Text('Theme main Color'),
+            Container(
+                color: controller.mainColor,
+                child: TextButton(
+                    onPressed: () =>
+                        showColorPicker(context, controller.mainColor),
+                    child: Text('change Theme Color'))),
+            // <MaterialAccentColor>(
+            //   // Read the selected themeMode from the controller
+            //   value: controller.mainColor,
+            //   // Call the updateThemeMode method any time the user selects a theme.
+            //   onChanged: controller.updateMainColor,
+            //   items: colors,
+            // ),
+            Divider(thickness: dividerThickness, height: dividerHeight),
+            Text('Page View Mode'),
+            DropdownButton<bool>(
+              // Read the selected themeMode from the controller
+              value: controller.selectableViews,
+              // Call the updateThemeMode method any time the user selects a theme.
+              onChanged: controller.updateSelectableViews,
+              items: [
+                DropdownMenuItem(
+                  value: false,
+                  child: Text('View only'),
+                ),
+                DropdownMenuItem(
+                  value: true,
+                  child: Text('Selection and copy mode'),
+                ),
+              ],
             ),
             Divider(thickness: dividerThickness, height: dividerHeight),
           ]),

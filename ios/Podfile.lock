@@ -1,0 +1,48 @@
+PODS:
+  - audio_session (0.0.1):
+    - Flutter
+  - background_downloader (0.0.1):
+    - Flutter
+  - Flutter (1.0.0)
+  - just_audio (0.0.1):
+    - Flutter
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - shared_preferences_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+
+DEPENDENCIES:
+  - audio_session (from `.symlinks/plugins/audio_session/ios`)
+  - background_downloader (from `.symlinks/plugins/background_downloader/ios`)
+  - Flutter (from `Flutter`)
+  - just_audio (from `.symlinks/plugins/just_audio/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
+
+EXTERNAL SOURCES:
+  audio_session:
+    :path: ".symlinks/plugins/audio_session/ios"
+  background_downloader:
+    :path: ".symlinks/plugins/background_downloader/ios"
+  Flutter:
+    :path: Flutter
+  just_audio:
+    :path: ".symlinks/plugins/just_audio/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  shared_preferences_foundation:
+    :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
+
+SPEC CHECKSUMS:
+  audio_session: f08db0697111ac84ba46191b55488c0563bb29c6
+  background_downloader: b0572309a68d929c35941f0484e8ad7c65052228
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  just_audio: 6c031bb61297cf218b4462be616638e81c058e97
+  path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
+  shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
+
+PODFILE CHECKSUM: a57f30d18f102dd3ce366b1d62a55ecbef2158e5
+
+COCOAPODS: 1.16.2

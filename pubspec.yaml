@@ -52,8 +52,15 @@ dependencies:
 #  audio_session: ^0.1.23
 #  swipe_to: ^1.0.6
 
-  media_kit: ^1.1.11 # Primary package.
-  media_kit_libs_audio: ^1.0.5 # Native audio dependencies.
+  just_audio: ^0.9.43
+  just_audio_media_kit: ^2.0.0
+
+  # Select the native media_kit libs based on your usage:
+  # NOTE: if including video libs already, these audio libs aren't necessary.
+  media_kit_libs_linux: any
+  media_kit_libs_windows_audio: any
+#  media_kit: ^1.1.11 # Primary package.
+#  media_kit_libs_audio: ^1.0.5 # Native audio dependencies.
 
 #  just_audio_media_kit: ^2.0.6
 #  media_kit_libs_linux: any
@@ -76,6 +83,7 @@ dependencies:
   sidebarx: ^0.17.1
   measure_size_builder: ^1.0.3
 
+  intl: any
 dev_dependencies:
   flutter_test:
     sdk: flutter

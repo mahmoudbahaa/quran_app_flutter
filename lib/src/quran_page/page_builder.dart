@@ -138,7 +138,7 @@ class PageBuilder {
       QuranPlayerGlobalState newState = QuranPlayerGlobalState();
       newState
         // ..pageNumber = pageNumber
-        ..surahNumber = surahNumber;
+        .surahNumber = surahNumber;
 
       if (verseNumber == 1) {
         newState
@@ -367,7 +367,7 @@ class PageBuilder {
       QuranPlayerGlobalState newState = QuranPlayerGlobalState();
       newState
         // ..pageNumber = pageNumber
-        ..surahNumber = surahNumber;
+        .surahNumber = surahNumber;
 
       if (verseNumber == 1) {
         newState

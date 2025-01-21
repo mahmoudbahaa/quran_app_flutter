@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:media_kit/media_kit.dart';
 import 'package:quran/quran.dart' as quran;
 import 'package:universal_io/io.dart';
+import 'package:just_audio/just_audio.dart';
 
 import '../util/download_widget.dart';
 import '../util/file_utils.dart';
@@ -28,7 +28,7 @@ class QuranPlayer extends StatefulWidget {
 }
 
 class QuranPlayerState extends State<QuranPlayer> {
-  late Player player;
+  late AudioPlayer player;
   int? surahNumber;
   int? recitationId;
   int verseNumber = -1;
@@ -46,7 +46,7 @@ class QuranPlayerState extends State<QuranPlayer> {
     await player.stop();
     // await player.setAudioSource(AudioSource.uri(Uri.parse(url)));
     // await player.open(AudioSource.file(filePath));
-    await player.open(Media(filePath!));
+    await player.setAudioSource(AudioSource.file(filePath!));
   }
 
   Future<void> seek(bool play) async {
@@ -117,9 +117,9 @@ class QuranPlayerState extends State<QuranPlayer> {
   void initState() {
     super.initState();
 
-    player = Player();
+    player = AudioPlayer();
     _init();
-    player.stream.position.listen((duration) async {
+    player.positionStream.listen((duration) async {
       if (!mounted) return;
       dynamic verseTimings = state.verseTimings;
       if (verseTimings == null || !state.playing) return;
@@ -143,19 +143,26 @@ class QuranPlayerState extends State<QuranPlayer> {
           }
         }
       }
+    });
 
-      if (player.state.completed) {
+    player.playerStateStream.listen((playerState) {
+      switch (playerState.processingState) {
+      case ProcessingState.idle: break;
+      case ProcessingState.loading: break;
+      case ProcessingState.buffering: break;
+      case ProcessingState.ready: break;
+      case ProcessingState.completed:
         if (surahNumber == 114) return;
         // state.updateSurahNumber(state.surahNumber + 1);
-        if (!state.playing) return;
         state.playing = false;
         state.surahNumber++;
         state.verseNumber = 1;
         state.wordNumber = -1;
         state.pageNumber =
-            quran.getPageNumber(surahNumber + 1, state.verseNumber);
+            quran.getPageNumber(state.surahNumber, state.verseNumber);
         widget.update();
         changeSource(true);
+        break;
       }
     });
   }
@@ -189,10 +196,13 @@ class QuranPlayerState extends State<QuranPlayer> {
   }
 
   void _init() async {
+    // player.errorStream .listen((onData) => print(onData));
+    // WidgetsBinding.instance.addObserver(this);
+
     // Inform the operating system of our app's audio attributes etc.
     // We pick a reasonable default for an app that plays speech.
     // Listen to errors during playback.
-    // player.playbackEventStream.listen((event) {},
+    // player.platform..listen((event) {},
     //     onError: (Object e, StackTrace stackTrace) {
     //   print('A stream error occurred: $e');
     // });

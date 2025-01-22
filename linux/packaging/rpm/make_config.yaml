@@ -1,0 +1,28 @@
+display_name: Quran App
+icon: assets/icon/icon.png
+summary: A Cross platfrom Quran app made by flutter
+group: Religion
+vendor: Mahmoud Bahaa
+packager: Mahmoud Bahaa
+packagerEmail: mahmooud.bahaa.eg@gmail.com
+license: GPL3
+url: https://github.com/mahmoudbahaa/quran_app_flutter
+
+build_arch: x86_64
+
+requires:
+  - mpv
+
+keywords:
+  - Quran
+  - Islam
+  - Islamic
+  - Religion
+  - Holy book
+
+generic_name: Quran App
+
+categories:
+  - Religion
+
+startup_notify: true

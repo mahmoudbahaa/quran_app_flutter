@@ -1,0 +1,35 @@
+display_name: Quran App
+package_name: quran-app-flutter
+
+maintainer:
+  name: Mahmoud Bahaa
+  email: mahmoud.bahaa.eg@gmail.com
+
+priority: optional
+
+section: x11
+
+installed_size: 15700
+
+dependencies:
+  - mpv
+
+essential: false
+
+icon: assets/icon/icon.png
+
+postuninstall_scripts:
+  - echo "Sorry to see you go."
+
+keywords:
+  - Quran
+  - Islamic
+  - Islam
+  - Religion
+
+generic_name: Quran App
+
+categories:
+  - Religion
+
+startup_notify: true

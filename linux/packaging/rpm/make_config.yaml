@@ -1,0 +1,28 @@
+display_name: API Dash
+#icon: linux/assets/apidash.png
+summary: A Cross platfrom Quran app made by flutter
+group: Religion
+vendor: Mahmoud Bahaa
+packager: Mahmoud Bahaa
+packagerEmail: mahmooud.bahaa.eg@gmail.com
+license: GPL3
+url: https://github.com/mahmoudbahaa/quran_app_flutter
+
+build_arch: aarch64
+
+requires:
+  - mpv
+
+keywords:
+  - Quran
+  - Islam
+  - Islamic
+  - Religion
+  - Holy book
+
+generic_name: Quran App
+
+categories:
+  - Religion
+
+startup_notify: true

@@ -1,5 +1,7 @@
 # quran_app_flutter
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/97fe3355c5504aedb59f65dc19baa7a3)](https://app.codacy.com/gh/mahmoudbahaa/quran_app_flutter?utm_source=github.com&utm_medium=referral&utm_content=mahmoudbahaa/quran_app_flutter&utm_campaign=Badge_Grade)
+
 Quran app in flutter
 
 ## Getting Started

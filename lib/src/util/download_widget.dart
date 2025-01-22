@@ -58,37 +58,22 @@ class _DownloadWidgetState extends State<DownloadWidget> {
           valueListenable: downloadProgressNotifier,
           builder: (context, value, snapshot) {
             return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // const Text(
-                //   'Downloading',
-                //   style: TextStyle(fontSize: 20),
-                // ),
-                // const SizedBox(
-                //   height: 32,
-                // ),
-                LinearPercentIndicator(
-                  // radius: 25.0,
-                  // lineWidth: 5.0,
-                  // animation: true,
-                  percent: downloadProgressNotifier.value / 100,
-                  center: Text(
-                    '${downloadProgressNotifier.value}%',
-                    style: const TextStyle(
-                        fontSize: 16.0, fontWeight: FontWeight.w600),
+                mainAxisAlignment: MainAxisAlignment.end,
+                // crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  LinearPercentIndicator(
+                    percent: downloadProgressNotifier.value / 100,
+                    // circularStrokeCap: CircularStrokeCap.round,
                   ),
-                  // circularStrokeCap: CircularStrokeCap.round,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  textDirection: TextDirection.ltr,
-                  "${actualBytes == null ? '0.0' : actualBytes!.toStringAsFixed(1)} MB/${totalBytes == null ? '0.0' : totalBytes!.toStringAsFixed(1)} MB",
-                  style: const TextStyle(fontSize: 12.0),
-                ),
-              ],
+                  const SizedBox(
+                    height: 2,
+                  ),
+                  Text(
+                    textDirection: TextDirection.ltr,
+                    "${downloadProgressNotifier.value}% (${actualBytes == null ? '0.0' : actualBytes!.toStringAsFixed(1)} MB/${totalBytes == null ? '0.0' : totalBytes!.toStringAsFixed(1)} MB)",
+                    style: const TextStyle(fontSize: 12.0),
+                  ),
+                ],
             );
           }),
     );

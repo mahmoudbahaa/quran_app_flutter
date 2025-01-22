@@ -52,24 +52,27 @@ dependencies:
 #  audio_session: ^0.1.23
 #  swipe_to: ^1.0.6
 
+  audio_session: ^0.1.23
+  # macos, ios web and android
   just_audio: ^0.9.43
-  just_audio_media_kit: ^2.0.0
+  #windows
+  just_audio_windows: ^0.2.2
+  #linux
+  just_audio_media_kit: ^2.0.6
+  media_kit_libs_linux: ^1.1.3
+
+  shared_preferences: ^2.3.5
+
+
+
 
   # Select the native media_kit libs based on your usage:
   # NOTE: if including video libs already, these audio libs aren't necessary.
-  media_kit_libs_linux: any
-  media_kit_libs_windows_audio: any
-#  media_kit: ^1.1.11 # Primary package.
-#  media_kit_libs_audio: ^1.0.5 # Native audio dependencies.
+  #  media_kit_libs_linux: any
+  #  media_kit_libs_windows_audio: any
+  #  media_kit: ^1.1.11 # Primary package.
+  #  media_kit_libs_audio: ^1.0.5 # Native audio dependencies.
 
-#  just_audio_media_kit: ^2.0.6
-#  media_kit_libs_linux: any
-#  media_kit_libs_windows_audio: any
-##  media_kit_libs_macos_audio: any
-#  media_kit_libs_android_audio: any
-##  media_kit_libs_ios_audio: any
-
-  shared_preferences: ^2.3.5
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -94,6 +97,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  msix: ^3.16.8
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -11,7 +11,7 @@ class FileUtils {
     if (kIsWeb) return null;
 
     Directory directory;
-    if (Platform.isAndroid) {
+    if (!kIsWeb && Platform.isAndroid) {
       directory = (await getExternalStorageDirectory())!;
     } else {
       directory = (await getApplicationCacheDirectory());

@@ -41,8 +41,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
 
   bool get _isPaused => !player.playing;
 
-  String get _totalDuration =>
-      player.duration.toString().split('.').first;
+  String get _totalDuration => player.duration.toString().split('.').first;
 
   String get _durationText => _duration?.toString().split('.').first ?? '';
 
@@ -174,19 +173,16 @@ class _PlayerWidgetState extends State<PlayerWidget> {
       mainWidget = Row(spacing: 10, children: children);
     } else {
       mainWidget = Transform.translate(
-        offset: Offset(0, QuranPageView.iconsSize / -2),
-        child: Container(
-          alignment: Alignment.center,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            spacing: 0,
-            children: [
-              Row(spacing: 0, children: children),
-              Container(
-                  constraints: BoxConstraints(minHeight: 0, maxHeight: 10),
-                  child: slider),
-            ],
-          ),
+        offset: Offset(0, QuranPageView.iconsSize * -1 / 2),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          spacing: 0,
+          children: [
+            Row(spacing: 0, children: children),
+            Container(
+                constraints: BoxConstraints(minHeight: 0, maxHeight: 10),
+                child: slider),
+          ],
         ),
       );
     }

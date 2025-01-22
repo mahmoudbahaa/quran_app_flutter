@@ -33,7 +33,7 @@ class _QuranChaptersListViewState extends State<QuranChaptersListView> {
   final maxVerseWords = 5;
   final fontSize = 20.0;
   bool showAppBar = true;
-  final double _iconsSize = Platform.isAndroid || Platform.isIOS ? 32 : 32;
+  final double _iconsSize = 32;
 
   @override
   void initState() {

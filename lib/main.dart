@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:audio_session/audio_session.dart';
 import 'package:desktop_window/desktop_window.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
@@ -14,11 +16,14 @@ import 'src/util/quran_player_global_state.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // by default, windows and linux are enabled
-  JustAudioMediaKit.ensureInitialized();
+  JustAudioMediaKit.ensureInitialized(linux: true, windows: false);
 
   if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
     await DesktopWindow.setMinWindowSize(Size(400, 600));
   }
+
+  final session = await AudioSession.instance;
+  await session.configure(AudioSessionConfiguration.speech());
 
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.
@@ -36,7 +41,7 @@ void main() async {
   // SettingsView.
   runApp(MyApp(settingsController: settingsController, state: state));
 
-  if (Platform.isAndroid) {
+  if (!kIsWeb && Platform.isAndroid) {
     await FlutterDisplayMode.setHighRefreshRate();
   }
 }

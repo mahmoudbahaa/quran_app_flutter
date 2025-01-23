@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:quran_app_flutter/src/home/surahs_list_view.dart';
 

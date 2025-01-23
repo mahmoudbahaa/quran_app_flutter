@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:quran/quran.dart' as quran;
+import 'package:quran_app_flutter/src/util/sound_player.dart';
 import 'package:universal_io/io.dart';
-import 'package:just_audio/just_audio.dart';
 
 import '../util/download_widget.dart';
 import '../util/file_utils.dart';
@@ -28,7 +28,7 @@ class QuranPlayer extends StatefulWidget {
 }
 
 class QuranPlayerState extends State<QuranPlayer> {
-  late AudioPlayer player;
+  late SoundPlayer player;
   int? surahNumber;
   int? recitationId;
   int verseNumber = -1;
@@ -46,7 +46,7 @@ class QuranPlayerState extends State<QuranPlayer> {
     await player.stop();
     // await player.setAudioSource(AudioSource.uri(Uri.parse(url)));
     // await player.open(AudioSource.file(filePath));
-    await player.setAudioSource(AudioSource.file(filePath!));
+    await player.setFileSource(filePath!);
   }
 
   Future<void> seek(bool play) async {
@@ -117,9 +117,9 @@ class QuranPlayerState extends State<QuranPlayer> {
   void initState() {
     super.initState();
 
-    player = AudioPlayer();
+    player = SoundPlayer.instance();
     _init();
-    player.positionStream.listen((duration) async {
+    player.stream.position.listen((duration) async {
       if (!mounted) return;
       dynamic verseTimings = state.verseTimings;
       if (verseTimings == null || !state.playing) return;
@@ -145,25 +145,19 @@ class QuranPlayerState extends State<QuranPlayer> {
       }
     });
 
-    player.playerStateStream.listen((playerState) {
-      switch (playerState.processingState) {
-      case ProcessingState.idle: break;
-      case ProcessingState.loading: break;
-      case ProcessingState.buffering: break;
-      case ProcessingState.ready: break;
-      case ProcessingState.completed:
-        if (surahNumber == 114) return;
-        // state.updateSurahNumber(state.surahNumber + 1);
-        state.playing = false;
-        state.surahNumber++;
-        state.verseNumber = 1;
-        state.wordNumber = -1;
-        state.pageNumber =
-            quran.getPageNumber(state.surahNumber, state.verseNumber);
-        widget.update();
-        changeSource(true);
-        break;
-      }
+    player.stream.completed.listen((completed) {
+      if (!completed) return;
+
+      if (surahNumber == 114) return;
+      // state.updateSurahNumber(state.surahNumber + 1);
+      state.playing = false;
+      state.surahNumber++;
+      state.verseNumber = 1;
+      state.wordNumber = -1;
+      state.pageNumber =
+          quran.getPageNumber(state.surahNumber, state.verseNumber);
+      widget.update();
+      changeSource(true);
     });
   }
 

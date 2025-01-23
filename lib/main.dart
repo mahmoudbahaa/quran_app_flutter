@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
-import 'package:just_audio_media_kit/just_audio_media_kit.dart';
 
 import 'src/app.dart';
 import 'src/settings/settings_controller.dart';
@@ -15,10 +14,8 @@ import 'src/util/quran_player_global_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // by default, windows and linux are enabled
-  JustAudioMediaKit.ensureInitialized(linux: true, windows: false);
 
-  if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
+  if (!kIsWeb && (Platform.isLinux || Platform.isWindows || Platform.isMacOS)) {
     await DesktopWindow.setMinWindowSize(Size(400, 600));
   }
 

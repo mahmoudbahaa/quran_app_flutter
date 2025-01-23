@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
+import 'package:quran_app_flutter/src/util/sound_player.dart';
 
 import '../models/enums.dart';
 import '../quran_page/quran_page_view.dart';
@@ -20,7 +20,7 @@ class PlayerWidget extends StatefulWidget {
 
   final Function update;
   final QuranPlayerGlobalState state;
-  final AudioPlayer player;
+  final SoundPlayer player;
 
   @override
   State<StatefulWidget> createState() {
@@ -37,24 +37,25 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   StreamSubscription? _playerCompleteSubscription;
   StreamSubscription? _playerStateChangeSubscription;
 
-  bool get _isPlaying => player.playing;
+  bool get _isPlaying => player.state.playing;
 
-  bool get _isPaused => !player.playing;
+  bool get _isPaused => !player.state.playing;
 
-  String get _totalDuration => player.duration.toString().split('.').first;
+  String get _totalDuration =>
+      player.state.duration.toString().split('.').first;
 
   String get _durationText => _duration?.toString().split('.').first ?? '';
 
   String get _positionText => _position?.toString().split('.').first ?? '';
 
-  AudioPlayer get player => widget.player;
+  SoundPlayer get player => widget.player;
 
   @override
   void initState() {
     super.initState();
     // Use initial values from player
-    _duration = player.duration;
-    _position = player.position;
+    _duration = player.state.duration;
+    _position = player.state.position;
     _initStreams();
   }
 
@@ -105,8 +106,8 @@ class _PlayerWidgetState extends State<PlayerWidget> {
             divisions: 10,
             min: 0.0,
             max: 100.0,
-            value: player.volume,
-            stream: player.volumeStream,
+            value: player.state.volume,
+            stream: player.stream.volume,
             onChanged: player.setVolume,
           );
         },
@@ -119,7 +120,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
               : const Icon(Icons.play_arrow)),
       // Opens speed slider dialog
       StreamBuilder<double>(
-        stream: player.speedStream,
+        stream: player.stream.speed,
         builder: (context, snapshot) => IconButton(
           onPressed: () {
             showSliderDialog(
@@ -128,12 +129,12 @@ class _PlayerWidgetState extends State<PlayerWidget> {
               divisions: 5,
               min: 0.8,
               max: 1.3,
-              value: player.speed,
-              stream: player.speedStream,
+              value: player.state.speed,
+              stream: player.stream.speed,
               onChanged: player.setSpeed,
             );
           },
-          icon: Text('${player.speed.toStringAsFixed(1)}x',
+          icon: Text('${player.state.speed.toStringAsFixed(1)}x',
               style:
                   const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
         ),
@@ -191,11 +192,11 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   }
 
   void _initStreams() {
-    _durationSubscription = player.durationStream.listen((duration) {
+    _durationSubscription = player.stream.duration.listen((duration) {
       setState(() => _duration = duration);
     });
 
-    _positionSubscription = player.positionStream.listen(
+    _positionSubscription = player.stream.position.listen(
       (p) => setState(() => _position = p),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quran_app_flutter/src/util/arabic_number.dart';
+
+import 'number_utils.dart';
 
 void showSliderDialog({
   required BuildContext context,
@@ -8,7 +9,6 @@ void showSliderDialog({
   required double min,
   required double max,
   String valueSuffix = '',
-  // TODO: Replace these two by ValueStream.
   required double value,
   required Stream<double> stream,
   required ValueChanged<double> onChanged,
@@ -57,7 +57,7 @@ void showNumberSelectDialog({
     pages.add(
       DropdownMenuItem(
         value: i,
-        child: Text(ArabicNumber().convertToLocaleNumber(i, context)),
+        child: Text(NumberUtils.convertToLocaleNumber(i, context)),
       ),
     );
   }

@@ -5,8 +5,8 @@ import 'package:quran_app_flutter/src/models/enums.dart';
 
 import '../common/quran_info_controller.dart';
 import '../settings/settings_controller.dart';
-import '../util/arabic_number.dart';
 import '../util/circular_precent.dart';
+import '../util/number_utils.dart';
 import '../util/quran_player_global_state.dart';
 
 class JuzsListView extends StatelessWidget {
@@ -31,7 +31,7 @@ class JuzsListView extends StatelessWidget {
       ),
       Row(children: <Widget>[
         Text(
-          '${rubHizbVerseInfo.verseInfo}${ArabicNumber().convertToLocaleNumber(rubHizbVerseInfo.verseNumber, context)}',
+          '${rubHizbVerseInfo.verseInfo}${NumberUtils.convertToLocaleNumber(rubHizbVerseInfo.verseNumber, context)}',
           // style: TextStyle(fontSize: fontSize - 6),
         ),
       ])
@@ -42,8 +42,8 @@ class JuzsListView extends StatelessWidget {
         alignment:
             isRtl(context) ? Alignment.centerLeft : Alignment.centerRight,
         child: Text(
-            ArabicNumber()
-                .convertToLocaleNumber(rubHizbVerseInfo.pageNumber, context),
+            NumberUtils.convertToLocaleNumber(
+                rubHizbVerseInfo.pageNumber, context),
             style: TextStyle(fontSize: fontSize)),
       ),
     ));
@@ -72,7 +72,7 @@ class JuzsListView extends StatelessWidget {
               padding: EdgeInsets.only(left: 20, right: 20),
               child: Row(children: [
                 Text(
-                    '${AppLocalizations.of(context)!.juz} ${ArabicNumber().convertToLocaleNumber((index / 9).floor() + 1, context)}',
+                    '${AppLocalizations.of(context)!.juz} ${NumberUtils.convertToLocaleNumber((index / 9).floor() + 1, context)}',
                     style: TextStyle(fontSize: fontSize)),
                 Expanded(
                   child: Align(
@@ -80,7 +80,7 @@ class JuzsListView extends StatelessWidget {
                         ? Alignment.centerLeft
                         : Alignment.centerRight,
                     child: Text(
-                        ArabicNumber().convertToLocaleNumber(
+                        NumberUtils.convertToLocaleNumber(
                             quran.getPageNumber(
                                 controller.getSurahNumber(
                                     (juzNumber - 1) * 2 + 1, 1),
@@ -100,8 +100,7 @@ class JuzsListView extends StatelessWidget {
     Widget circle;
     if (quarterNumber == 1) {
       circle = CircleAvatar(
-          child:
-              Text(ArabicNumber().convertToLocaleNumber(hizbNumber, context)));
+          child: Text(NumberUtils.convertToLocaleNumber(hizbNumber, context)));
     } else {
       circle = CustomPaint(
         painter: CircularPercent(

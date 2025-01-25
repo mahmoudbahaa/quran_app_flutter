@@ -3,7 +3,7 @@ import 'package:quran/quran.dart' as quran;
 
 import '../common/quran_info_controller.dart';
 import '../settings/settings_controller.dart';
-import '../util/arabic_number.dart';
+import '../util/number_utils.dart';
 import '../util/quran_player_global_state.dart';
 
 class SurahsListView extends StatelessWidget {
@@ -23,15 +23,16 @@ class SurahsListView extends StatelessWidget {
       restorationId: 'sampleItemListView',
       itemCount: quran.totalSurahCount,
       itemBuilder: (BuildContext context, int index) {
+        int surahNum = index + 1;
         return ListTile(
-            title: Text(controller.getSurahNameWithTranslation(index, context)),
+            title:
+                Text(controller.getSurahNameWithTranslation(surahNum, context)),
             leading: CircleAvatar(
               // Display the Flutter Logo image asset.
               // foregroundImage: const AssetImage('assets/images/flutter_logo.png'),
-              child: Text(
-                  ArabicNumber().convertToLocaleNumber(index + 1, context)),
+              child: Text(NumberUtils.convertToLocaleNumber(surahNum, context)),
             ),
-            onTap: () => controller.goToPage(quran.getPageNumber(index + 1, 1),
+            onTap: () => controller.goToPage(quran.getPageNumber(surahNum, 1),
                 index + 1, context, settingsController, state));
       },
     );

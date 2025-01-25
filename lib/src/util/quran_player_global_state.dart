@@ -1,9 +1,5 @@
-import '../models/enums.dart';
-
 class QuranPlayerGlobalState {
   dynamic verseTimings;
-
-  // final Player player = Player();
 
   bool pause = true;
 
@@ -11,19 +7,15 @@ class QuranPlayerGlobalState {
 
   bool playing = false;
 
-  int pageNumber = -1;
+  bool loading = false;
 
   int curPageInPageView = -1;
 
-  bool isDirty = true;
+  int pageNumber = -1;
 
   int surahNumber = -1;
 
   int verseNumber = -1;
 
   int wordNumber = -1;
-
-  PageTransition pageTransition = PageTransition.noChange;
-
-  bool loading = false;
 }

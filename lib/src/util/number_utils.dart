@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
-class ArabicNumber {
-  const ArabicNumber();
+class NumberUtils {
+  const NumberUtils();
 
-  String convertToLocaleNumber(int number, BuildContext context) {
+  static String convertToLocaleNumber(int number, BuildContext context) {
     String langCode = Localizations.localeOf(context).languageCode;
     if (langCode != 'ar') return number.toString();
 

@@ -8,26 +8,36 @@ class DesktopPageScroll extends StatelessWidget {
       required this.child,
       required this.controller,
       required this.itemCount,
-      required this.state});
+      required this.numPages,
+      required this.state,
+      required this.update});
 
   final Widget child;
   final PageController controller;
   final int itemCount;
+  final int numPages;
   final QuranPlayerGlobalState state;
+  final VoidCallback update;
 
   void goNextPage() {
     if (controller.page != null && controller.page! < itemCount - 1) {
-      state.curPageInPageView++;
+      state.pageNumber += numPages;
+      state.pause = true;
+      state.surahNumber = -1;
       controller.nextPage(
           duration: Duration(milliseconds: 400), curve: Curves.ease);
+      // update();
     }
   }
 
   void goPreviousPage() {
     if (controller.page != null && controller.page! > 0.0) {
-      state.curPageInPageView--;
+      state.pageNumber -= numPages;
+      state.pause = true;
+      state.surahNumber = -1;
       controller.previousPage(
           duration: Duration(milliseconds: 400), curve: Curves.ease);
+      // update();
     }
   }
 

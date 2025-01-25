@@ -33,11 +33,10 @@ class QuranPlayerState extends State<QuranPlayer> {
   int? recitationId;
   int verseNumber = -1;
   int wordNumber = -1;
+  int pageNumber = -1;
   String? filePath;
   String? downloadUrl;
   QuranPlayerGlobalState get state => widget.state;
-
-  //late bool _update =  update;
 
   Future<void> setSource() async {
     if (filePath == null) return;
@@ -114,8 +113,15 @@ class QuranPlayerState extends State<QuranPlayer> {
   }
 
   @override
+  void setState(VoidCallback fn) {
+    if (mounted) super.setState(fn);
+  }
+
+  @override
   void initState() {
     super.initState();
+
+    pageNumber = state.pageNumber;
 
     player = SoundPlayer.instance();
     _init();
@@ -123,6 +129,7 @@ class QuranPlayerState extends State<QuranPlayer> {
       if (!mounted) return;
       dynamic verseTimings = state.verseTimings;
       if (verseTimings == null || !state.playing) return;
+
       int surahNumber = state.surahNumber;
       int verse = -1;
       while (verse < verseTimings.length - 1) {
@@ -136,7 +143,7 @@ class QuranPlayerState extends State<QuranPlayer> {
               duration.inMilliseconds < segments[segment][2]) {
             state.verseNumber = verse + 1;
             state.wordNumber = word;
-            state.pageNumber =
+            pageNumber = state.pageNumber =
                 quran.getPageNumber(surahNumber, state.verseNumber);
             widget.update();
             return;
@@ -154,7 +161,7 @@ class QuranPlayerState extends State<QuranPlayer> {
       state.surahNumber++;
       state.verseNumber = 1;
       state.wordNumber = -1;
-      state.pageNumber =
+      pageNumber = state.pageNumber =
           quran.getPageNumber(state.surahNumber, state.verseNumber);
       widget.update();
       changeSource(true);
@@ -235,7 +242,10 @@ class QuranPlayerState extends State<QuranPlayer> {
           state: state,
           parent: this);
     } else {
-      // preBuild();
+      if (pageNumber != state.pageNumber) {
+        seek(state.playing);
+      }
+
       return PlayerWidget(
           state: state,
           player: player,

@@ -7,23 +7,24 @@ import '../models/enums.dart';
 import '../util/quran_player_global_state.dart';
 
 class PageBuilder {
-  const PageBuilder({required this.context, required this.textRepresentation});
+  const PageBuilder(
+      {required this.context,
+      required this.state,
+      required this.update,
+      required this.fontSize,
+      required this.textRepresentation});
 
   final BuildContext context;
   final prefixes = const ['', 'v2_', 'v4_'];
   final codeKeys = const ['code_v1', 'code_v2', 'code_v2'];
   final double lineHeight = 1.7;
+  final QuranPlayerGlobalState state;
+  final VoidCallback update;
   final TextRepresentation textRepresentation;
+  final double fontSize;
 
-  TextSpan getText(
-      String element,
-      String originalText,
-      String fontFamily,
-      TextType type,
-      QuranPlayerGlobalState state,
-      QuranPlayerGlobalState newState,
-      Function update,
-      double fontSize) {
+  TextSpan getText(String element, String originalText, String fontFamily,
+      TextType type, QuranPlayerGlobalState newState) {
     final pageNumber = newState.pageNumber;
     final surahNumber = newState.surahNumber;
     final verseNumber = newState.verseNumber;
@@ -81,8 +82,8 @@ class PageBuilder {
     }
   }
 
-  List<InlineSpan> buildPage(QuranPlayerGlobalState state, int pageNumber,
-      SettingsController settingsController, Function update, double fontSize) {
+  List<InlineSpan> buildPage(
+      int pageNumber, SettingsController settingsController) {
     final AssetsLoaderController assetsLoaderController =
         AssetsLoaderController(settingsController: settingsController);
     final List<InlineSpan> children = List.empty(growable: true);
@@ -101,9 +102,9 @@ class PageBuilder {
       return children;
     }
 
-    int highlightSurah = state.surahNumber - 1;
-    int highlightVerse = state.verseNumber - 1;
-    int highlightWord = state.wordNumber - 1;
+    int highlightSurah = state.surahNumber;
+    int highlightVerse = state.verseNumber;
+    int highlightWord = state.wordNumber;
 
     int lineNumber = -1;
     int curLineNumber = -1;
@@ -135,10 +136,16 @@ class PageBuilder {
       int verseNumber = int.parse(verseKey.split(':')[1]);
       int startingLineNumber = wordsData[0]['line_number'];
 
+      if (i == 0 && state.surahNumber == -1) {
+        state.surahNumber = surahNumber;
+        state.verseNumber = verseNumber;
+        state.wordNumber = 1;
+      }
+
       QuranPlayerGlobalState newState = QuranPlayerGlobalState();
       newState
-        // ..pageNumber = pageNumber
-        .surahNumber = surahNumber;
+          // ..pageNumber = pageNumber
+          .surahNumber = surahNumber;
 
       if (verseNumber == 1) {
         newState
@@ -150,13 +157,13 @@ class PageBuilder {
               '$surahSep${surahNumber.toString().padLeft(3, '0')}surah\n';
           String surahName = quran.getSurahNameArabic(surahNumber);
           children.add(getText(surahCode, surahName, 'surahNames',
-              TextType.surahName, state, newState, update, fontSize));
+              TextType.surahName, newState));
         }
 
         String sep = (startingLineNumber < 15 || pageNumber == 2) ? '\n' : '';
         if (surahNumber != 1 && surahNumber != 9) {
-          children.add(getText('﷽$sep', '﷽$sep', 'uthmanic', TextType.bismallah,
-              state, newState, update, fontSize));
+          children.add(getText(
+              '﷽$sep', '﷽$sep', 'uthmanic', TextType.bismallah, newState));
         }
       }
 
@@ -173,9 +180,9 @@ class PageBuilder {
           sep = '\n';
         }
 
-        TextType type = (highlightSurah == surahNumber - 1 &&
-                highlightVerse == (verseNumber - 1) &&
-                highlightWord == (wordNumber - 1))
+        TextType type = (highlightSurah == surahNumber &&
+                highlightVerse == verseNumber &&
+                highlightWord == wordNumber)
             ? TextType.highlightedVerse
             : TextType.verse;
 
@@ -197,8 +204,8 @@ class PageBuilder {
         // final wordCode = '$sep\u0021';
         final font = '${prefix}page$pageNumber';
         newState.wordNumber = wordNumber;
-        InlineSpan wordSpan = getText(wordCode, actualText, font, type, state,
-            newState, update, fontSize);
+        InlineSpan wordSpan =
+            getText(wordCode, actualText, font, type, newState);
         children.add(wordSpan);
       }
 
@@ -217,8 +224,8 @@ class PageBuilder {
       String surahCode =
           '$surahSep${surahNumber.toString().padLeft(3, '0')}surah\n';
       String surahName = quran.getSurahNameArabic(surahNumber);
-      children.add(getText(surahCode, surahName, 'surahNames',
-          TextType.surahName, state, newState, update, fontSize));
+      children.add(getText(
+          surahCode, surahName, 'surahNames', TextType.surahName, newState));
     }
 
     // line.add(TextSpan(text: '\n'));
@@ -226,15 +233,8 @@ class PageBuilder {
     return children;
   }
 
-  Widget getText2(
-      String element,
-      String originalText,
-      String fontFamily,
-      TextType type,
-      QuranPlayerGlobalState state,
-      QuranPlayerGlobalState newState,
-      Function update,
-      double fontSize) {
+  Widget getText2(String element, String originalText, String fontFamily,
+      TextType type, QuranPlayerGlobalState newState) {
     final pageNumber = newState.pageNumber;
     final surahNumber = newState.surahNumber;
     final verseNumber = newState.verseNumber;
@@ -308,8 +308,8 @@ class PageBuilder {
         children: line));
   }
 
-  List<Widget> buildPage2(QuranPlayerGlobalState state, int pageNumber,
-      SettingsController settingsController, Function update, double fontSize) {
+  List<Widget> buildPage2(
+      int pageNumber, SettingsController settingsController) {
     final AssetsLoaderController assetsLoaderController =
         AssetsLoaderController(settingsController: settingsController);
     final List<Widget> lines = List.empty(growable: true);
@@ -366,8 +366,8 @@ class PageBuilder {
 
       QuranPlayerGlobalState newState = QuranPlayerGlobalState();
       newState
-        // ..pageNumber = pageNumber
-        .surahNumber = surahNumber;
+          // ..pageNumber = pageNumber
+          .surahNumber = surahNumber;
 
       if (verseNumber == 1) {
         newState
@@ -386,7 +386,7 @@ class PageBuilder {
           addToLine(
               line,
               getText2(surahCode, surahName, 'surahNames', TextType.surahName,
-                  state, newState, update, fontSize));
+                  newState));
           addToLine(line, SizedBox(width: 1));
 
           addLine(lines, line, pageNumber);
@@ -395,10 +395,8 @@ class PageBuilder {
 
         if (surahNumber != 1 && surahNumber != 9) {
           addToLine(line, SizedBox(width: 1));
-          addToLine(
-              line,
-              getText2('﷽', '﷽', 'uthmanic', TextType.bismallah, state,
-                  newState, update, fontSize));
+          addToLine(line,
+              getText2('﷽', '﷽', 'uthmanic', TextType.bismallah, newState));
           addToLine(line, SizedBox(width: 1));
 
           addLine(lines, line, pageNumber);
@@ -439,8 +437,7 @@ class PageBuilder {
         // final wordCode = '$sep\u0021';
         final font = '${prefix}page$pageNumber';
         newState.wordNumber = wordNumber;
-        Widget wordSpan = getText2(wordCode, actualText, font, type, state,
-            newState, update, fontSize);
+        Widget wordSpan = getText2(wordCode, actualText, font, type, newState);
         addToLine(line, wordSpan); // SelectableAdapterWidget(child: wordSpan));
       }
     }
@@ -466,7 +463,7 @@ class PageBuilder {
       addToLine(
           line,
           getText2(surahCode, surahName, 'surahNames', TextType.surahName,
-              state, newState, update, fontSize));
+              newState));
       addToLine(line, SizedBox(width: 1));
     }
 

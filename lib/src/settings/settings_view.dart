@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:quran_app_flutter/src/util/arabic_number.dart';
 
 import '../localization/app_localizations.dart';
 import '../models/enums.dart';
 import '../models/recitations.dart';
+import '../util/number_utils.dart';
 import 'settings_controller.dart';
 
 /// Displays the various settings that can be customized by the user.
@@ -90,7 +90,7 @@ class SettingsView extends StatelessWidget {
     for (int i = 1; i <= maxNumPages; i++) {
       numPages.add(DropdownMenuItem(
         value: i,
-        child: Text(ArabicNumber().convertToLocaleNumber(i, context)),
+        child: Text(NumberUtils.convertToLocaleNumber(i, context)),
       ));
     }
 

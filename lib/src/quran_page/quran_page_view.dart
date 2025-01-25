@@ -8,12 +8,12 @@ import 'package:quran_app_flutter/src/models/enums.dart';
 
 import '../common/app_drawer.dart';
 import '../common/app_top_bar.dart';
-import '../common/custom_text.dart' as customText;
+import '../common/custom_text.dart' as custom_text;
 import '../common/desktop_page_scroll.dart';
 import '../common/quran_info_controller.dart';
 import '../home/assets_loader/assets_loader_controller.dart';
 import '../settings/settings_controller.dart';
-import '../util/arabic_number.dart';
+import '../util/number_utils.dart';
 import '../util/quran_player_global_state.dart';
 import 'page_builder.dart';
 import 'quran_player.dart';
@@ -90,17 +90,17 @@ class _QuranPageViewState extends State<QuranPageView> {
 
     _lastOrientation = orientation;
 
-    // _controller.currentState!.goToPage(state.curPageInPageView);
-    _pageController.jumpToPage(state.curPageInPageView);
     return newNumPages;
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) super.setState(fn);
   }
 
   @override
   void initState() {
     super.initState();
-    pageBuilder = PageBuilder(
-        context: context,
-        textRepresentation: settingsController.textRepresentation);
     _pageController = PageController(initialPage: state.curPageInPageView);
     assetsLoaderController =
         AssetsLoaderController(settingsController: settingsController);
@@ -112,17 +112,17 @@ class _QuranPageViewState extends State<QuranPageView> {
   }
 
   void update() {
-    if (mounted) setState(() => {});
+    setState(() => {});
   }
 
   void addPage(
       List<Widget> pages, int pageNumber, int numPages, double fontSize) {
     final Widget child = Builder(builder: (context) {
       final surahNumber = quran.getPageData(pageNumber)[0]['surah'];
-      final surahName = controller.getSurahName(context, surahNumber - 1);
+      final surahName = controller.getSurahName(context, surahNumber);
 
       final hizbInfo =
-          controller.getRubHizbInfo(state.surahNumber, pageNumber, context);
+          controller.getRubHizbInfo(surahNumber, pageNumber, context);
 
       final header = Row(children: [
         Expanded(
@@ -134,20 +134,19 @@ class _QuranPageViewState extends State<QuranPageView> {
 
       final footer = Align(
         alignment: Alignment.center,
-        child: Text(ArabicNumber().convertToLocaleNumber(pageNumber, context),
+        child: Text(NumberUtils.convertToLocaleNumber(pageNumber, context),
             style: TextStyle(fontSize: fontSize * 0.5)),
       );
 
       Widget child;
       if (settingsController.selectableViews) {
-        final children = pageBuilder.buildPage(
-            state, pageNumber, settingsController, update, fontSize);
+        final children = pageBuilder.buildPage(pageNumber, settingsController);
 
         child = IntrinsicWidth(
           child: Column(children: [
             header,
             SelectionArea(
-                child: customText.Text.rich(
+                child: custom_text.Text.rich(
               style: TextStyle(
                   color: Theme.of(context).textTheme.bodyMedium!.color),
               TextSpan(children: children),
@@ -158,8 +157,8 @@ class _QuranPageViewState extends State<QuranPageView> {
           ]),
         );
       } else {
-        final children2 = pageBuilder.buildPage2(
-            state, pageNumber, settingsController, update, fontSize);
+        final children2 =
+            pageBuilder.buildPage2(pageNumber, settingsController);
 
         children2.insert(0, header);
         children2.add(footer);
@@ -243,6 +242,13 @@ class _QuranPageViewState extends State<QuranPageView> {
 
   @override
   Widget build(BuildContext context) {
+    pageBuilder = PageBuilder(
+        context: context,
+        state: state,
+        update: update,
+        fontSize: getMainFontSize(MediaQuery.orientationOf(context)),
+        textRepresentation: settingsController.textRepresentation);
+
     if (state.surahNumber == -1) {
       state.surahNumber = quran.getPageData(state.pageNumber).first['surah'];
     }
@@ -264,9 +270,7 @@ class _QuranPageViewState extends State<QuranPageView> {
       }
 
       final int numPages = getNumPages(orientation);
-      if (state.curPageInPageView == -1) {
-        state.curPageInPageView = ((state.pageNumber - 1) / numPages).floor();
-      }
+      state.curPageInPageView = ((state.pageNumber - 1) / numPages).floor();
 
       if (_initialized) {
         _pageController.jumpToPage(state.curPageInPageView);
@@ -279,15 +283,17 @@ class _QuranPageViewState extends State<QuranPageView> {
       Widget body = DesktopPageScroll(
         controller: _pageController,
         itemCount: (quran.totalPagesCount / numPages).floor(),
+        numPages: numPages,
         state: state,
+        update: update,
         child: Focus(
           autofocus: true,
           child: PageView.builder(
             onPageChanged: (value) => state.curPageInPageView = value,
             scrollDirection: Axis.horizontal,
             controller: _pageController,
-            scrollBehavior:
-                ScrollConfiguration.of(context).copyWith(dragDevices: {
+            scrollBehavior: ScrollConfiguration.of(context)
+                .copyWith(scrollbars: true, dragDevices: {
               PointerDeviceKind.touch,
             }),
             itemCount: (quran.totalPagesCount / numPages).floor(),

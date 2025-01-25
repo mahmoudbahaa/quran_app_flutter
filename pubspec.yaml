@@ -43,6 +43,7 @@ dev_dependencies:
   flutter_lints: '^5.0.0'
   msix: '^3.16.8'
   inno_build: '^0.3.0'
+  flutter_distributor: ^0.0.2
 flutter:
   uses-material-design: true
   assets:

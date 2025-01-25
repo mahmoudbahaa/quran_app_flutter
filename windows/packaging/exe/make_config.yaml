@@ -1,0 +1,12 @@
+# The value of AppId uniquely identifies this application.
+# Do not use the same AppId value in installers for other applications.
+app_id: 60c776c4-dd15-4ea3-b2fb-3b6a725a5853
+publisher: Mahmoud Bahaa
+publisher_url: https://github.com/mahmoudbahaa/quran_app_flutter
+display_name: Quran App
+create_desktop_icon: true
+script_template: inno_setup.iss
+setup_icon_file: ..\..\assets\icon\icon.ico
+locales:
+  - en
+  - ar

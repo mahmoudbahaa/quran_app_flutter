@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:audio_session/audio_session.dart';
 import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
+import 'package:vinyl/vinyl.dart';
 
 import 'src/app.dart';
 import 'src/settings/settings_controller.dart';
@@ -19,8 +19,10 @@ void main() async {
     await DesktopWindow.setMinWindowSize(Size(400, 600));
   }
 
-  final session = await AudioSession.instance;
-  await session.configure(AudioSessionConfiguration.speech());
+  // store this in a singleton
+  // await SoundPlayer.init();
+
+  await vinyl.init(audioConfig: AudioServiceConfig());
 
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.

@@ -15,10 +15,26 @@ class SettingsService {
           cacheOptions: const SharedPreferencesWithCacheOptions());
 
   Future<dynamic> getValue(String key, dynamic defaultValue) async {
-    final SharedPreferencesWithCache prefs = await _prefs;
-    Object? value = prefs.get(key);
-    if (value == null) return defaultValue;
-    return value;
+    try {
+      final SharedPreferencesWithCache prefs = await _prefs;
+      dynamic value;
+      if (defaultValue is bool) {
+        value = prefs.getBool(key);
+      } else if (defaultValue is int) {
+        value = prefs.getInt(key);
+      } else if (defaultValue is double) {
+        value = prefs.getDouble(key);
+      } else if (defaultValue is String) {
+        value = prefs.getString(key);
+      } else if (defaultValue is List<String>) {
+        value = prefs.getStringList(key);
+      }
+
+      if (value == null) return defaultValue;
+      return value;
+    } catch (e) {
+      return defaultValue;
+    }
   }
 
   Future<void> setValue(String key, dynamic value) async {

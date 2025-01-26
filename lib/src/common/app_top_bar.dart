@@ -88,7 +88,6 @@ class NotchedAppBarClipper extends CustomClipper<Path> {
     } else {
       return Path()
         ..lineTo(0, 0)
-        // ..lineTo(0, size.height)
         ..lineTo(size.width / 2 - iconsSize / 2 - 4, 0)
         ..arcToPoint(Offset(size.width / 2 + iconsSize / 2 + 4, 0),
             radius: Radius.circular(iconsSize / 2 + 4), clockwise: false)

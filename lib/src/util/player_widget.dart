@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:quran_app_flutter/src/util/sound_player.dart';
+import 'package:vinyl/vinyl.dart';
 
 import '../models/enums.dart';
 import '../quran_page/quran_page_view.dart';
@@ -20,7 +20,7 @@ class PlayerWidget extends StatefulWidget {
 
   final Function update;
   final QuranPlayerGlobalState state;
-  final SoundPlayer player;
+  final PlayerInterface player;
 
   @override
   State<StatefulWidget> createState() {
@@ -48,7 +48,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
 
   String get _positionText => _position?.toString().split('.').first ?? '';
 
-  SoundPlayer get player => widget.player;
+  PlayerInterface get player => widget.player;
 
   @override
   void initState() {
@@ -120,7 +120,7 @@ class _PlayerWidgetState extends State<PlayerWidget> {
               : const Icon(Icons.play_arrow)),
       // Opens speed slider dialog
       StreamBuilder<double>(
-        stream: player.stream.speed,
+        stream: player.stream.rate,
         builder: (context, snapshot) => IconButton(
           onPressed: () {
             showSliderDialog(
@@ -129,12 +129,12 @@ class _PlayerWidgetState extends State<PlayerWidget> {
               divisions: 5,
               min: 0.8,
               max: 1.3,
-              value: player.state.speed,
-              stream: player.stream.speed,
-              onChanged: player.setSpeed,
+              value: player.state.rate,
+              stream: player.stream.rate,
+              onChanged: player.setPlaybackRate,
             );
           },
-          icon: Text('${player.state.speed.toStringAsFixed(1)}x',
+          icon: Text('${player.state.rate.toStringAsFixed(1)}x',
               style:
                   const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
         ),

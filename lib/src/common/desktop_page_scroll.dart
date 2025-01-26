@@ -20,25 +20,23 @@ class DesktopPageScroll extends StatelessWidget {
   final VoidCallback update;
 
   void goNextPage() {
-    if (controller.page != null && controller.page! < itemCount - 1) {
-      state.pageNumber += numPages;
-      state.pause = true;
-      state.surahNumber = -1;
-      controller.nextPage(
-          duration: Duration(milliseconds: 400), curve: Curves.ease);
-      // update();
-    }
+    if (controller.page == null || controller.page! >= itemCount - 1) return;
+
+    state.pageNumber += numPages;
+    state.pause = true;
+    state.surahNumber = -1;
+    controller.nextPage(
+        duration: Duration(milliseconds: 400), curve: Curves.ease);
   }
 
   void goPreviousPage() {
-    if (controller.page != null && controller.page! > 0.0) {
-      state.pageNumber -= numPages;
-      state.pause = true;
-      state.surahNumber = -1;
-      controller.previousPage(
-          duration: Duration(milliseconds: 400), curve: Curves.ease);
-      // update();
-    }
+    if (controller.page == null || controller.page! <= 0.0) return;
+
+    state.pageNumber -= numPages;
+    state.pause = true;
+    state.surahNumber = -1;
+    controller.previousPage(
+        duration: Duration(milliseconds: 400), curve: Curves.ease);
   }
 
   bool? _turnPage(DragUpdateDetails details, bool? isForward) {

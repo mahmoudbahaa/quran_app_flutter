@@ -38,6 +38,7 @@ class _QuranPageViewState extends State<QuranPageView> {
 
   static bool showPlayer = false;
   static bool showAppBar = false;
+  double spacing = 15.0;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   int widthFactor = 20;
@@ -52,7 +53,7 @@ class _QuranPageViewState extends State<QuranPageView> {
     Size size = MediaQuery.sizeOf(context);
     double width = size.width / getNumPages(orientation);
     double height = size.height;
-    return (width < height ? width / 16 : height / 25);
+    return (width < height ? width / 10 : height / 25);
   }
 
   bool _initialized = false;
@@ -64,7 +65,6 @@ class _QuranPageViewState extends State<QuranPageView> {
   SettingsController get settingsController => widget.settingsController;
   late AssetsLoaderController assetsLoaderController;
   PageController _pageController = PageController();
-  // final _controller = GlobalKey<PageFlipWidgetState>();
 
   Orientation? _lastOrientation;
 
@@ -117,6 +117,8 @@ class _QuranPageViewState extends State<QuranPageView> {
 
   void addPage(
       List<Widget> pages, int pageNumber, int numPages, double fontSize) {
+    Size size = MediaQuery.sizeOf(context);
+
     final Widget child = Builder(builder: (context) {
       final surahNumber = quran.getPageData(pageNumber)[0]['surah'];
       final surahName = controller.getSurahName(context, surahNumber);
@@ -139,39 +141,23 @@ class _QuranPageViewState extends State<QuranPageView> {
       );
 
       Widget child;
+
+      final children = pageBuilder.buildPage(pageNumber, settingsController);
+
+      child = custom_text.Text.rich(
+        style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color),
+        TextSpan(children: children),
+        textAlign: TextAlign.center,
+        maxLines: 15,
+      );
+
       if (settingsController.selectableViews) {
-        final children = pageBuilder.buildPage(pageNumber, settingsController);
-
-        child = IntrinsicWidth(
-          child: Column(children: [
-            header,
-            SelectionArea(
-                child: custom_text.Text.rich(
-              style: TextStyle(
-                  color: Theme.of(context).textTheme.bodyMedium!.color),
-              TextSpan(children: children),
-              textAlign: TextAlign.center,
-              maxLines: 15,
-            )),
-            footer
-          ]),
-        );
-      } else {
-        final children2 =
-            pageBuilder.buildPage2(pageNumber, settingsController);
-
-        children2.insert(0, header);
-        children2.add(footer);
-
-        child = IntrinsicWidth(
-          child: Padding(
-            padding: EdgeInsets.only(left: 10, right: 10),
-            child: Column(children: children2),
-          ),
-        );
+        child = SelectionArea(child: child);
       }
 
-      Size size = MediaQuery.sizeOf(context);
+      child = IntrinsicWidth(
+        child: Column(children: [header, child, footer]),
+      );
 
       if (numPages == 1 &&
           size.width > size.height &&
@@ -179,16 +165,19 @@ class _QuranPageViewState extends State<QuranPageView> {
         child = SingleChildScrollView(
             child: FittedBox(fit: BoxFit.fitWidth, child: child));
       } else {
-        child = FittedBox(fit: BoxFit.fitHeight, child: child);
+        child = FittedBox(fit: BoxFit.contain, child: child);
       }
 
-      return Localizations.override(
-          context: context, locale: Locale('ar'), child: child);
+      return child;
     });
 
     pages.add(
       Expanded(
-        child: child,
+        child: IntrinsicHeight(
+          child: SizedBox(
+              height: ((size.width / numPages - spacing * 2) * 2),
+              child: child),
+        ),
       ),
     );
   }
@@ -199,39 +188,31 @@ class _QuranPageViewState extends State<QuranPageView> {
 
     double fontSize = getMainFontSize(orientation);
     int startPageNum = index + 1;
-    List<Widget> pageNums = [];
 
     for (int i = 0; i < numPages; i++) {
       int pageNumber = startPageNum + i;
+      if (pageNumber > quran.totalPagesCount) break;
       addPage(pages, pageNumber, numPages, fontSize);
     }
 
     List<Widget> children = [];
-    children.add(VerticalDivider(width: 3, thickness: 3));
-    children.add(SizedBox(width: 3));
+    children.add(VerticalDivider(width: spacing / 3, thickness: spacing / 3));
     for (int i = 0; i < pages.length; i++) {
+      children.add(SizedBox(width: spacing / 3));
       children.add(pages[i]);
-      children.add(VerticalDivider(width: 3, thickness: 3));
+      children.add(SizedBox(width: spacing / 3));
+      children.add(VerticalDivider(width: spacing / 3, thickness: spacing / 3));
     }
 
-    children.add(SizedBox(width: 3));
+    Widget child = IntrinsicHeight(child: Row(children: children));
 
-    Widget child = Row(children: children);
-
-    if (numPages != 1) {
-      child = IntrinsicHeight(child: child);
-    }
-
-    // return child;
-    return Column(children: [
-      Expanded(
-        child: Align(
-          alignment: Alignment.center,
-          child: child,
-        ),
-      ),
-      Row(children: pageNums),
-    ]);
+    return Localizations.override(
+      context: context,
+      locale: Locale('ar'),
+      child: Column(children: [
+        Expanded(child: Align(alignment: Alignment.center, child: child)),
+      ]),
+    );
   }
 
   late Offset horizontalStartPosition;
@@ -282,7 +263,7 @@ class _QuranPageViewState extends State<QuranPageView> {
 
       Widget body = DesktopPageScroll(
         controller: _pageController,
-        itemCount: (quran.totalPagesCount / numPages).floor(),
+        itemCount: (quran.totalPagesCount / numPages).ceil(),
         numPages: numPages,
         state: state,
         update: update,
@@ -296,7 +277,7 @@ class _QuranPageViewState extends State<QuranPageView> {
                 .copyWith(scrollbars: true, dragDevices: {
               PointerDeviceKind.touch,
             }),
-            itemCount: (quran.totalPagesCount / numPages).floor(),
+            itemCount: (quran.totalPagesCount / numPages).ceil(),
             reverse: !isRtl(context),
             itemBuilder: (context, index) =>
                 buildPages(context, orientation, index * numPages),
@@ -379,20 +360,22 @@ class _QuranPageViewState extends State<QuranPageView> {
                       : Icon(Icons.arrow_drop_down_rounded,
                           size: QuranPageView.iconsSize))),
         ),
-        bottomNavigationBar: showPlayer
-            ? ClipPath(
-                clipper: NotchedAppBarClipper(
-                    iconsSize: QuranPageView.iconsSize, top: false),
-                child: BottomAppBar(
-                  padding: EdgeInsets.zero,
-                  height: playerHeight,
-                  child: QuranPlayer(
-                      recitationId: settingsController.recitationId,
-                      state: state,
-                      update: update),
-                ),
-              )
-            : null,
+        bottomNavigationBar: Visibility(
+          visible: showPlayer,
+          maintainState: true,
+          child: ClipPath(
+            clipper: NotchedAppBarClipper(
+                iconsSize: QuranPageView.iconsSize, top: false),
+            child: BottomAppBar(
+              padding: EdgeInsets.zero,
+              height: playerHeight,
+              child: QuranPlayer(
+                  settingsController: settingsController,
+                  state: state,
+                  update: update),
+            ),
+          ),
+        ),
         floatingActionButtonLocation:
             FloatingActionButtonLocation.miniCenterDocked,
       );

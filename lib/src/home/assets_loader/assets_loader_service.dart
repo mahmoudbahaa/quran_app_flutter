@@ -30,76 +30,42 @@ class AssetsLoaderService {
     final fontName = '${fontPrefix}page$pageNumber';
     final fontBaseUrl = _codeFontBaseUrl[textRepresentation.index];
     final fontUrl = '$fontBaseUrl$pageNumber.ttf';
-    try {
-      File? file = await FileUtils().getFile('fonts/$fontName');
-      if (file != null && file.existsSync()) {
-        final fontLoader = FontLoader(fontName);
-        fontLoader.addFont(
-            Future.value(ByteData.sublistView(file.readAsBytesSync())));
-        await fontLoader.load();
-        return true;
-      }
+    Uint8List? bytes = await FileUtils.getFontFile(
+        fontName: fontName, url: fontUrl, cacheOnly: cacheOnly);
+    if (bytes == null) return false;
 
-      if (cacheOnly) return false;
-      // Download the font file
-      final response = await http.get(Uri.parse(fontUrl));
-
-      if (response.statusCode == 200) {
-        if (file != null) {
-          file.createSync(recursive: true);
-          file.writeAsBytesSync(response.bodyBytes);
-        }
-
-        final fontLoader = FontLoader(fontName);
-
-        fontLoader
-            .addFont(Future.value(ByteData.sublistView(response.bodyBytes)));
-
-        // Load the font into Flutter
-        await fontLoader.load();
-        return true;
-      } else {
-        // print('Failed to load font: ${response.statusCode}');
-        return false;
-      }
-    } catch (e) {
-      // print('Error loading font: $e');
-      return false;
-    }
+    final fontLoader = FontLoader(fontName);
+    fontLoader.addFont(Future.value(ByteData.sublistView(bytes)));
+    await fontLoader.load();
+    return true;
   }
 
   dynamic getWordsData(int pageNumber, TextRepresentation textRepresentation,
       bool cacheOnly, String codeVersion) async {
     final int mushafId = mushafIds[textRepresentation.index];
-    File? file =
-        await FileUtils().getFile('models/${mushafId}_$pageNumber.json');
-    if (file != null && file.existsSync()) return FileUtils().readJson(file);
-
-    if (cacheOnly) return null;
-
     String url =
         _getVerseDataUrl(pageNumber, mushafId, textRepresentation, codeVersion);
-    final response = await http.get(Uri.parse(url));
 
-    if (response.statusCode != 200) return null;
+    String? jsonString = await FileUtils.getMushafModel(
+        mushafId: mushafId,
+        pageNumber: pageNumber,
+        url: url,
+        cacheOnly: cacheOnly);
 
-    String jsonString = response.body;
-    if (file != null) {
-      file.createSync(recursive: true);
-      file.writeAsString(jsonString);
-    }
+    if (jsonString == null) return null;
 
     return await json.decode(jsonString);
   }
 
   Future<File?> getPageImageFile(int pageNumber) async {
-    return await FileUtils().getFile('images/background/$pageNumber.png');
+    return await FileUtils.getBackgroundImage(
+        pageNumber: pageNumber, url: '', cacheOnly: true);
   }
 
-  Future<String?> loadImage(
-      int pageNumber, TextRepresentation textRepresentation, cacheOnly) async {
+  Future<String?> loadImage(int pageNumber, cacheOnly) async {
     String url = _getPageImageUrl(pageNumber);
-    File? file = await FileUtils().getFile('images/background/$pageNumber.png');
+    File? file = await FileUtils.getBackgroundImage(
+        pageNumber: pageNumber, url: url, cacheOnly: cacheOnly);
     if (file != null && file.existsSync()) {
       return file.path;
     }

@@ -23,12 +23,13 @@ class MyApp extends StatelessWidget {
       baseTheme = ThemeData.dark(useMaterial3: true);
     }
 
-    TextTheme textTheme;
-    if (languageCode == 'ar') {
-      textTheme = GoogleFonts.notoNaskhArabicTextTheme(baseTheme.textTheme);
-    } else {
-      textTheme = GoogleFonts.notoSansTextTheme(baseTheme.textTheme);
-    }
+    TextTheme textTheme =
+        GoogleFonts.notoNaskhArabicTextTheme(baseTheme.textTheme);
+    // if (languageCode == 'ar') {
+    //   textTheme = GoogleFonts.notoNaskhArabicTextTheme(baseTheme.textTheme);
+    // } else {
+    //   textTheme = GoogleFonts.notoSansTextTheme(baseTheme.textTheme);
+    // }
 
     if (settingsController.mainColor == Colors.white ||
         settingsController.mainColor == Colors.black) {
@@ -54,7 +55,6 @@ class MyApp extends StatelessWidget {
           shadowColor: colorScheme.shadow,
         ),
         bottomAppBarTheme: BottomAppBarTheme(
-          // elevation: 4,
           color: colorScheme.inversePrimary,
         ),
       );

@@ -3,6 +3,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:quran/quran.dart' as quran;
 
 import '../localization/app_localizations.dart';
+import '../models/recitations.dart';
 import '../models/rub_hizb_info.dart';
 import '../models/surah_names.dart';
 import '../quran_page/quran_page_view.dart';
@@ -12,6 +13,15 @@ import '../util/quran_player_global_state.dart';
 
 class QuranInfoController {
   const QuranInfoController();
+
+  String getRecitation(BuildContext context, int recitationId) {
+    dynamic recitation =
+        recitations.firstWhere((element) => element['id'] == recitationId);
+
+    return Localizations.localeOf(context).languageCode == 'ar'
+        ? recitation['translated_name']['name']
+        : recitation['reciter_name'];
+  }
 
   void goToPage(int pageNumber, int surahNumber, BuildContext context,
       SettingsController settingsController, QuranPlayerGlobalState state) {

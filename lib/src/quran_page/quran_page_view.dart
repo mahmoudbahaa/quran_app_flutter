@@ -161,7 +161,7 @@ class _QuranPageViewState extends State<QuranPageView> {
 
       if (numPages == 1 &&
           size.width > size.height &&
-          (kIsWeb || Platform.isAndroid || Platform.isIOS)) {
+          (!kIsWeb && (Platform.isAndroid || Platform.isIOS))) {
         child = SingleChildScrollView(
             child: FittedBox(fit: BoxFit.fitWidth, child: child));
       } else {

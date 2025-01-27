@@ -13,7 +13,7 @@ class AssetsLoaderController {
 
   final _codeFontPrefix = const ['', 'v2_', 'v4_'];
   final List<String> _codeVersion = const ['code_v1', 'code_v2', 'code_v2'];
-  final int _parallelism = 10;
+  final int _parallelism = 16;
 
   Future<void> loadAssets(Function update) async {
     final queue = Queue(parallel: _parallelism);

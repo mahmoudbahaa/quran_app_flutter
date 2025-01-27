@@ -955,7 +955,7 @@ packages:
     source: hosted
     version: "1.10.0"
   sqflite:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: sqflite
       sha256: "2d7299468485dca85efeeadf5d38986909c5eb0cd71fd3db2c2f000e6c9454bb"
@@ -1093,11 +1093,9 @@ packages:
   vinyl:
     dependency: "direct main"
     description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "8532430b2c87b82f7d28bd5cf91afc735e7c0ae1"
-      url: "https://github.com/RA341/vinyl"
-    source: git
+      path: "../vinyl"
+      relative: true
+    source: path
     version: "0.0.3"
   vm_service:
     dependency: transitive

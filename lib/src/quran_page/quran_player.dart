@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:quran/quran.dart' as quran;
 import 'package:quran_app_flutter/src/common/quran_info_controller.dart';
+import 'package:quran_app_flutter/src/localization/app_localizations.dart';
 import 'package:quran_app_flutter/src/settings/settings_controller.dart';
 import 'package:universal_io/io.dart';
 import 'package:vinyl/vinyl.dart';
@@ -37,52 +39,113 @@ class QuranPlayerState extends State<QuranPlayer> {
   int verseNumber = -1;
   int wordNumber = -1;
   int pageNumber = -1;
-  String? filePath;
+  String? downloadFilePath;
   String? downloadUrl;
   QuranPlayerGlobalState get state => widget.state;
   final int maxHttpRequestRetries = 5;
 
-  Future<void> setSource() async {
+  Future<void> setSource(String? filePath) async {
     if (filePath == null) return;
 
+    // await player.stop();
+    await player.play();
+    // addMediaItem(surahNumber!, recitationId, filePath, true);
     setState(() {});
-    await player.stop();
-    // await player.setAudioSource(AudioSource.uri(Uri.parse(url)));
-    // await player.open(AudioSource.file(filePath));
+  }
 
-    String title = '';
-    if (mounted) {
-      title = QuranInfoController().getSurahName(context, surahNumber!);
+  Future<void> downloadNext(
+      {required int surahNumber,
+      required int recitationId,
+      required bool showDownloadBar,
+      required bool append,
+      required bool forward}) async {
+    if (surahNumber < 1 || surahNumber > quran.totalSurahCount) return;
+
+    String url = getUrl(surahNumber, recitationId);
+    String? string = await FileUtils.getVersesInfoFile(
+        recitationId: recitationId, surahNumber: surahNumber, url: url);
+    if (string == null) {
+      //TODO: communicate error to user
+      print("verse Info is null");
+      return;
     }
 
-    await player.loadMedia([
-      MediaRecord(
-          id: '${recitationId}_$surahNumber',
-          title: title,
-          mediaUri: filePath!),
-    ]);
-    // player.mediaItem.add(MediaItem(
-    //     id: '${recitationId}_$surahNumber',
-    //     title: title,
-    //     duration: Duration(seconds: 100000)));
+    dynamic surahInfo = jsonDecode(string);
+    downloadUrl = surahInfo['audio_files'][0]['audio_url'];
 
-    // player.stream.duration.listen((duration) {
-    //   if (duration != Duration.zero) {
-    //     player.mediaItem.add(MediaItem(
-    //         id: '${recitationId}_$surahNumber',
-    //         title: title,
-    //         duration: player.state.duration));
-    //   }
-    // });
+    String? filePath;
+    if (kIsWeb) {
+      filePath = downloadUrl;
+    } else {
+      int startIndex = downloadUrl!.lastIndexOf('/') + 1;
+      String fileName = downloadUrl!.substring(startIndex);
 
-    // player.stream.position.listen((position) => player.playbackState
-    //     .add(player.playbackState.value.copyWith(updatePosition: position)));
+      File? file = await FileUtils.getMp3File(recitationId, fileName);
+      if (file == null) return;
+      filePath = file.path;
+      if (!file.existsSync()) {
+        file.parent.createSync(recursive: true);
 
-    // player.stream.position.listen((position) => player.playbackState
-    //     .add(player.playbackState.value.copyWith(updatePosition: position)));
+        if (showDownloadBar) {
+          downloadFilePath = filePath;
+          state.downloading = true;
+          widget.update();
+          return;
+        }
 
-    // player.playbackState
-    //     .add(player.playbackState.value.copyWith(playing: true));
+        await Dio().download(downloadUrl!, filePath);
+      }
+    }
+
+    if (!showDownloadBar) {
+      await addMediaItem(surahNumber, recitationId, filePath!, append);
+    } else {
+      state.verseTimings = surahInfo['audio_files'][0]['verse_timings'];
+      await player.loadMedia(
+          [getMediaRecord(state.surahNumber, recitationId, filePath!)]);
+      await player.play();
+    }
+
+    if (forward) {
+      downloadNext(
+          surahNumber: surahNumber + 1,
+          recitationId: recitationId,
+          showDownloadBar: false,
+          append: true,
+          forward: forward);
+    } else {
+      downloadNext(
+          surahNumber: surahNumber - 1,
+          recitationId: recitationId,
+          showDownloadBar: false,
+          append: false,
+          forward: forward);
+    }
+  }
+
+  MediaRecord getMediaRecord(
+      int surahNumber, int recitationId, String filePath) {
+    String title = '';
+    String artist = '';
+    String album = '';
+    if (mounted) {
+      title = QuranInfoController().getSurahName(context, surahNumber);
+      artist = QuranInfoController().getRecitation(context, recitationId);
+      album = AppLocalizations.of(context)!.album;
+    }
+
+    return MediaRecord(
+        id: '${recitationId}_$surahNumber',
+        title: title,
+        artist: artist,
+        album: album,
+        mediaUri: filePath);
+  }
+
+  Future<void> addMediaItem(
+      int surahNumber, int recitationId, String filePath, bool append) async {
+    Function addToQueue = append ? player.appendToQueue : player.prependToQueue;
+    await addToQueue(getMediaRecord(surahNumber, recitationId, filePath));
   }
 
   Future<void> seek(bool play) async {
@@ -121,34 +184,20 @@ class QuranPlayerState extends State<QuranPlayer> {
       surahNumber = state.surahNumber;
       lastRecitationId = recitationId;
       await player.pause();
-      String url = getUrl(state.surahNumber, recitationId);
-      String? string = await FileUtils.getVersesInfoFile(
-          recitationId: recitationId, surahNumber: state.surahNumber, url: url);
-      if (string == null) {
-        //TODO: communicate error to user
-        return;
-      }
 
-      dynamic surahInfo = jsonDecode(string);
-      state.verseTimings = surahInfo['audio_files'][0]['verse_timings'];
-      downloadUrl = surahInfo['audio_files'][0]['audio_url'];
-      int startIndex = downloadUrl!.lastIndexOf('/') + 1;
-      String fileName = downloadUrl!.substring(startIndex);
+      downloadNext(
+          surahNumber: surahNumber!,
+          recitationId: recitationId,
+          showDownloadBar: true,
+          append: true,
+          forward: true);
 
-      if (kIsWeb) {
-        filePath = downloadUrl;
-      } else {
-        File file = (await FileUtils.getMp3File(recitationId, fileName))!;
-        filePath = file.path;
-        if (!file.existsSync()) {
-          file.parent.createSync(recursive: true);
-          state.downloading = true;
-          widget.update();
-          return;
-        }
-      }
-
-      setSource();
+      downloadNext(
+          surahNumber: surahNumber! - 1,
+          recitationId: recitationId,
+          showDownloadBar: false,
+          append: false,
+          forward: false);
     }
 
     seek(play);
@@ -197,7 +246,7 @@ class QuranPlayerState extends State<QuranPlayer> {
     player.stream.completed.listen((completed) async {
       if (!completed) return;
 
-      if (surahNumber == 114) return;
+      if (surahNumber == quran.totalSurahCount) return;
       // state.updateSurahNumber(state.surahNumber + 1);
       state.playing = false;
       state.surahNumber++;
@@ -205,8 +254,11 @@ class QuranPlayerState extends State<QuranPlayer> {
       state.wordNumber = -1;
       pageNumber = state.pageNumber =
           quran.getPageNumber(state.surahNumber, state.verseNumber);
+
+      await player.next();
+      await player.play();
+
       widget.update();
-      await changeSource(true);
     });
   }
 
@@ -287,10 +339,10 @@ class QuranPlayerState extends State<QuranPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    if (state.downloading && downloadUrl != null && filePath != null) {
+    if (state.downloading && downloadUrl != null && downloadFilePath != null) {
       return DownloadWidget(
           downloadUrl: downloadUrl!,
-          filePath: filePath!,
+          filePath: downloadFilePath!,
           state: state,
           parent: this);
     } else {

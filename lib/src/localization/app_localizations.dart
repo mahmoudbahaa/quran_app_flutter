@@ -268,6 +268,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **','**
   String get comma;
+
+  /// No description provided for @album.
+  ///
+  /// In en, this message translates to:
+  /// **'Quran'**
+  String get album;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

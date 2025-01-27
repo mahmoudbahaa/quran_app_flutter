@@ -92,4 +92,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get comma => ',';
+
+  @override
+  String get album => 'Quran';
 }

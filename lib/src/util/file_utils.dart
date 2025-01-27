@@ -89,6 +89,7 @@ class FileUtils {
       if (response == null) return null;
       return file;
     } catch (e) {
+      print(e);
       return null;
     }
   }
@@ -137,10 +138,14 @@ class FileUtils {
           if (file != null) {
             file.createSync(recursive: true);
             file.writeAsBytesSync(response.bodyBytes);
-            return response;
           }
+
+          return response;
         }
+
+        retries++;
       } catch (e) {
+        print(e);
         retries++;
       }
     }

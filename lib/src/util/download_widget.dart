@@ -47,7 +47,7 @@ class _DownloadWidgetState extends State<DownloadWidget> {
       downloadProgressNotifier.value = (actualBytes / totalBytes * 100).floor();
     }).then((value) {
       widget.state.downloading = false;
-      parent.setSource().then((value) => parent.seek(true));
+      parent.setSource(filePath).then((value) => parent.seek(true));
     });
   }
 
@@ -58,22 +58,22 @@ class _DownloadWidgetState extends State<DownloadWidget> {
           valueListenable: downloadProgressNotifier,
           builder: (context, value, snapshot) {
             return Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                // crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  LinearPercentIndicator(
-                    percent: downloadProgressNotifier.value / 100,
-                    // circularStrokeCap: CircularStrokeCap.round,
-                  ),
-                  const SizedBox(
-                    height: 2,
-                  ),
-                  Text(
-                    textDirection: TextDirection.ltr,
-                    "${downloadProgressNotifier.value}% (${actualBytes == null ? '0.0' : actualBytes!.toStringAsFixed(1)} MB/${totalBytes == null ? '0.0' : totalBytes!.toStringAsFixed(1)} MB)",
-                    style: const TextStyle(fontSize: 12.0),
-                  ),
-                ],
+              mainAxisAlignment: MainAxisAlignment.end,
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                LinearPercentIndicator(
+                  percent: downloadProgressNotifier.value / 100,
+                  // circularStrokeCap: CircularStrokeCap.round,
+                ),
+                const SizedBox(
+                  height: 2,
+                ),
+                Text(
+                  textDirection: TextDirection.ltr,
+                  "${downloadProgressNotifier.value}% (${actualBytes == null ? '0.0' : actualBytes!.toStringAsFixed(1)} MB/${totalBytes == null ? '0.0' : totalBytes!.toStringAsFixed(1)} MB)",
+                  style: const TextStyle(fontSize: 12.0),
+                ),
+              ],
             );
           }),
     );

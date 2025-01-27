@@ -24,11 +24,10 @@ dependencies:
   page_flip: '^0.2.3'
 #  audio_session: '^0.1.23'
   vinyl:
-    git:
-      url: https://github.com/RA341/vinyl
+#    git:
+#      url: https://github.com/RA341/vinyl
 #      ref: e26f8e5eb57ab36261d6d06c7fbbcf395d188e0f
-#    path: ../vinyl
-  sqflite: ^2.4.1
+    path: ../vinyl
 
   just_audio: '^0.9.43'
   media_kit: '^1.1.11'

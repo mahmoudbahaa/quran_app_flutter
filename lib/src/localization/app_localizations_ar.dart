@@ -92,4 +92,7 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get comma => ' ،';
+
+  @override
+  String get album => 'القرآن الكربم';
 }

@@ -37,18 +37,21 @@ dependencies:
   percent_indicator: '^4.2.4'
   flutter_colorpicker: '^1.1.0'
   dio: '^5.7.0'
-  path_provider: '^2.1.5'
+  path_provider: ^2.1.5
   provider: '^6.1.2'
   sidebarx: '^0.17.1'
   measure_size_builder: '^1.0.3'
   flutter_launcher_icons: ^0.14.3
+  drift: ^2.24.0
+  drift_flutter: ^0.2.4
+  synchronized: ^3.3.0+3
+
 dev_dependencies:
   flutter_test:
     sdk: 'flutter'
   flutter_lints: '^5.0.0'
-#  msix: '^3.16.8'
-#  inno_build: '^0.3.0'
-  flutter_distributor: ^0.4.5
+  drift_dev: ^2.24.0
+  build_runner: ^2.4.14
 
 flutter:
   uses-material-design: true
@@ -64,7 +67,7 @@ flutter:
     - family: 'surahNames'
       fonts:
         - asset: 'assets/fonts/quran/surah-names/v1/sura_names.ttf'
-    - family: 'page175'
+    - family: '1_175'
       fonts:
         - asset: 'assets/fonts/quran/page175.ttf'
 inno_build:

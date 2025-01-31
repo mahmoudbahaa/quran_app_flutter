@@ -1,6 +1,4 @@
 class QuranPlayerGlobalState {
-  dynamic verseTimings;
-
   bool pause = true;
 
   bool downloading = false;

@@ -119,57 +119,65 @@ class _QuranPageViewState extends State<QuranPageView> {
       List<Widget> pages, int pageNumber, int numPages, double fontSize) {
     Size size = MediaQuery.sizeOf(context);
 
-    final Widget child = Builder(builder: (context) {
-      final surahNumber = quran.getPageData(pageNumber)[0]['surah'];
-      final surahName = controller.getSurahName(context, surahNumber);
+    final Widget child = FutureBuilder(
+        future: pageBuilder.buildPage(pageNumber, settingsController),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Align(
+                alignment: Alignment.center,
+                child: CircularProgressIndicator());
+          }
 
-      final hizbInfo =
-          controller.getRubHizbInfo(surahNumber, pageNumber, context);
+          final surahNumber = quran.getPageData(pageNumber)[0]['surah'];
+          final surahName = controller.getSurahName(context, surahNumber);
 
-      final header = Row(children: [
-        Expanded(
-            child: Text(hizbInfo, style: TextStyle(fontSize: fontSize * 0.5))),
-        Text(surahName,
-            style: TextStyle(fontSize: fontSize * 0.5),
-            textDirection: TextDirection.ltr),
-      ]);
+          final hizbInfo =
+              controller.getRubHizbInfo(surahNumber, pageNumber, context);
 
-      final footer = Align(
-        alignment: Alignment.center,
-        child: Text(NumberUtils.convertToLocaleNumber(pageNumber, context),
-            style: TextStyle(fontSize: fontSize * 0.5)),
-      );
+          final header = Row(children: [
+            Expanded(
+                child:
+                    Text(hizbInfo, style: TextStyle(fontSize: fontSize * 0.5))),
+            Text(surahName,
+                style: TextStyle(fontSize: fontSize * 0.5),
+                textDirection: TextDirection.ltr),
+          ]);
 
-      Widget child;
+          final footer = Align(
+            alignment: Alignment.center,
+            child: Text(NumberUtils.convertToLocaleNumber(pageNumber, context),
+                style: TextStyle(fontSize: fontSize * 0.5)),
+          );
 
-      final children = pageBuilder.buildPage(pageNumber, settingsController);
+          Widget child;
 
-      child = custom_text.Text.rich(
-        style: TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color),
-        TextSpan(children: children),
-        textAlign: TextAlign.center,
-        maxLines: 15,
-      );
+          child = custom_text.Text.rich(
+            style:
+                TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color),
+            TextSpan(children: snapshot.data),
+            textAlign: TextAlign.center,
+            maxLines: 15,
+          );
 
-      if (settingsController.selectableViews) {
-        child = SelectionArea(child: child);
-      }
+          if (settingsController.selectableViews) {
+            child = SelectionArea(child: child);
+          }
 
-      child = IntrinsicWidth(
-        child: Column(children: [header, child, footer]),
-      );
+          child = IntrinsicWidth(
+            child: Column(children: [header, child, footer]),
+          );
 
-      if (numPages == 1 &&
-          size.width > size.height &&
-          (!kIsWeb && (Platform.isAndroid || Platform.isIOS))) {
-        child = SingleChildScrollView(
-            child: FittedBox(fit: BoxFit.fitWidth, child: child));
-      } else {
-        child = FittedBox(fit: BoxFit.contain, child: child);
-      }
+          if (numPages == 1 &&
+              size.width > size.height &&
+              (!kIsWeb && (Platform.isAndroid || Platform.isIOS))) {
+            child = SingleChildScrollView(
+                child: FittedBox(fit: BoxFit.fitWidth, child: child));
+          } else {
+            child = FittedBox(fit: BoxFit.contain, child: child);
+          }
 
-      return child;
-    });
+          return child;
+        });
 
     pages.add(
       Expanded(

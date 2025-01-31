@@ -1,9 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:quran/quran.dart' as quran;
-import 'package:quran_app_flutter/src/home/assets_loader/assets_loader_controller.dart';
 import 'package:quran_app_flutter/src/settings/settings_controller.dart';
 
+import '../db/db_utils/db_utils.dart';
+import '../db/exposed_models.dart';
+import '../home/assets_loader/assets_loader_controller.dart';
 import '../models/enums.dart';
 import '../util/quran_player_global_state.dart';
 
@@ -16,7 +18,8 @@ class PageBuilder {
       required this.textRepresentation});
 
   final BuildContext context;
-  final prefixes = const ['', 'v2_', 'v4_'];
+  final fontCode = const [1, 2, 4];
+  final code = const [1, 2, 2];
   final codeKeys = const ['code_v1', 'code_v2', 'code_v2'];
   final double lineHeight = 1.9;
   final QuranPlayerGlobalState state;
@@ -83,104 +86,114 @@ class PageBuilder {
     }
   }
 
-  List<InlineSpan> buildPage(
-      int pageNumber, SettingsController settingsController) {
+  // Future<List<InlineSpan>> buildPage(
+  //     int pageNumber, SettingsController settingsController) async {
+  //   final AssetsLoaderController assetsLoaderController =
+  //       AssetsLoaderController(settingsController: settingsController);
+  //   final List<InlineSpan> children = List.empty(growable: true);
+  //
+  //   if (!AssetsLoaderController(settingsController: settingsController)
+  //       .isFontLoaded(pageNumber)) {
+  //     children.add(TextSpan(
+  //         text: 'جاري تحميل الصفحة, برجاء الإنتظار',
+  //         style: TextStyle(
+  //           height: 1.7,
+  //           // fontSize: loadingFontSize,
+  //         )));
+  //     AssetsLoaderController(settingsController: settingsController)
+  //         .loadPageFont(pageNumber)
+  //         .then((value) => update());
+  //     return children;
+  //   }
+  //
+  //   children.add(TextSpan(
+  //       text: 'جاري تحميل الصفحة, برجاء الإنتظار',
+  //       style: TextStyle(
+  //         height: 1.7,
+  //         // fontSize: loadingFontSize,
+  //       )));
+  //
+  //   assetsLoaderController.getWordsData(pageNumber).then((data) async =>
+  //       await actualBuildPage(data, pageNumber, settingsController));
+  //
+  //   return children;
+  // }
+
+  Future<List<InlineSpan>> buildPage(
+      int pageNumber, SettingsController settingsController) async {
     final AssetsLoaderController assetsLoaderController =
         AssetsLoaderController(settingsController: settingsController);
-    final List<InlineSpan> children = List.empty(growable: true);
+    await assetsLoaderController.loadPageFont(pageNumber, cacheOnly: false);
+    await assetsLoaderController.loadWordsData(pageNumber, cacheOnly: false);
 
-    if (!AssetsLoaderController(settingsController: settingsController)
-        .isFontLoaded(pageNumber)) {
-      children.add(TextSpan(
-          text: 'جاري تحميل الصفحة, برجاء الإنتظار',
-          style: TextStyle(
-            height: 1.7,
-            // fontSize: loadingFontSize,
-          )));
-      AssetsLoaderController(settingsController: settingsController)
-          .loadPageFont(pageNumber)
-          .then((value) => update());
-      return children;
-    }
+    final codeVersion = code[settingsController.textRepresentation.index];
+    final List<InlineSpan> children = List.empty(growable: true);
 
     int highlightSurah = state.surahNumber;
     int highlightVerse = state.verseNumber;
     int highlightWord = state.wordNumber;
+    bool addBismallah = false;
+    bool addSurahName = false;
 
-    int lineNumber = -1;
-    int curLineNumber = -1;
+    QuranPlayerGlobalState newState = QuranPlayerGlobalState();
     int surahNumber = -1;
-    // int surahNumber = quran.getPageData(pageNumber)[0]['surah'];
+    for (int line = 1; line <= 15; line++) {
+      List<WordInfo> wordInfos = await DBUtils.getLinesWords(
+          code: codeVersion, page: pageNumber, line: line);
 
-    final data = assetsLoaderController.getCachedVersesWordsData(pageNumber);
-    if (data == null) {
-      children.add(TextSpan(
-          text: 'جاري تحميل الصفحة, برجاء الإنتظار',
-          style: TextStyle(
-            height: 1.7,
-            // fontSize: loadingFontSize,
-          )));
-      assetsLoaderController
-          .loadVersesWordsData(pageNumber)
-          .then((_) => update());
-      return children;
-    }
-
-    final versesData = data['verses'];
-    String surahSep = '';
-    for (int i = 0; i < versesData.length; i++) {
-      final verseData = versesData[i];
-      final wordsData = verseData['words'];
-
-      String verseKey = verseData['verse_key'];
-      surahNumber = int.parse(verseKey.split(':').first);
-      int verseNumber = int.parse(verseKey.split(':')[1]);
-      int startingLineNumber = wordsData[0]['line_number'];
-
-      if (i == 0 && state.surahNumber == -1) {
-        state.surahNumber = surahNumber;
-        state.verseNumber = verseNumber;
-        state.wordNumber = 1;
-      }
-
-      QuranPlayerGlobalState newState = QuranPlayerGlobalState();
-      newState
-          // ..pageNumber = pageNumber
-          .surahNumber = surahNumber;
-
-      if (verseNumber == 1) {
-        newState
-          ..verseNumber = 1
-          ..wordNumber = 1;
-        if (surahNumber > 2 && (startingLineNumber != 2 || surahNumber == 9)) {
-          String surahSep = curLineNumber >= 1 ? '\n' : '';
-          String surahCode =
-              '$surahSep${surahNumber.toString().padLeft(3, '0')}surah\n';
+      if (wordInfos.isEmpty) {
+        if (line == 15) {
+          surahNumber++;
+          String surahCode = '${surahNumber.toString().padLeft(3, '0')}surah\n';
           String surahName = quran.getSurahNameArabic(surahNumber);
           children.add(getText(surahCode, surahName, 'surahNames',
               TextType.surahName, newState));
         }
-
-        if (surahNumber != 1 && surahNumber != 9) {
-          children
-              .add(getText('﷽', '﷽', 'uthmanic', TextType.bismallah, newState));
+        if (addBismallah) {
+          addSurahName = true;
+        } else {
+          addBismallah = true;
         }
 
-        lineNumber = curLineNumber = 1;
+        continue;
       }
+      for (int i = 0; i < wordInfos.length; i++) {
+        WordInfo wordInfo = wordInfos[i];
 
-      newState.verseNumber = verseNumber;
-      int wordsCount = wordsData.length;
-      for (int wordNumber = 1; wordNumber <= wordsCount; wordNumber++) {
-        final wordData = wordsData[wordNumber - 1];
-        curLineNumber = wordData['line_number'];
-        String sep = '';
-        if (lineNumber == -1) {
-          lineNumber = curLineNumber;
-        } else if (lineNumber != curLineNumber) {
-          lineNumber = curLineNumber;
-          sep = '\n';
+        surahNumber = wordInfo.word.surah;
+        int verseNumber = wordInfo.word.verse;
+        int wordNumber = wordInfo.word.position;
+
+        newState = QuranPlayerGlobalState()
+          ..pageNumber = pageNumber
+          ..surahNumber = surahNumber
+          ..verseNumber = verseNumber
+          ..wordNumber = wordNumber;
+
+        if (addSurahName || (addBismallah && surahNumber == 9)) {
+          String surahCode = '${surahNumber.toString().padLeft(3, '0')}surah\n';
+          String surahName = quran.getSurahNameArabic(surahNumber);
+          children.add(getText(surahCode, surahName, 'surahNames',
+              TextType.surahName, newState));
+          addSurahName = false;
         }
+
+        if (addBismallah) {
+          if (surahNumber != 1 && surahNumber != 9) {
+            children.add(getText(
+                '﷽\n', '﷽\n', 'uthmanic', TextType.bismallah, newState));
+          }
+
+          addBismallah = false;
+        }
+
+        final font = '${fontCode[textRepresentation.index]}_$pageNumber';
+        final suffix = (line == 1 || i == 0) &&
+                wordNumber == 1 &&
+                textRepresentation != TextRepresentation.codeV1
+            ? ' '
+            // ? ''
+            : '';
 
         TextType type = (highlightSurah == surahNumber &&
                 highlightVerse == verseNumber &&
@@ -188,48 +201,121 @@ class PageBuilder {
             ? TextType.highlightedVerse
             : TextType.verse;
 
-        String key = codeKeys[textRepresentation.index];
-        String prefix = prefixes[textRepresentation.index];
-        final suffix = (curLineNumber == 1 || i == 0) &&
-                wordNumber == 1 &&
-                textRepresentation != TextRepresentation.codeV1
-            // ? ' '
-            ? ''
-            : '';
-
-        if (sep != '') {
-          children.add(TextSpan(text: '\n', semanticsLabel: '\n'));
-        }
-
-        final wordCode = '${wordData[key]}$suffix';
-        final actualText = '${wordData['text_imlaei']} ';
-        // final wordCode = '$sep\u0021';
-        final font = '${prefix}page$pageNumber';
-        newState.wordNumber = wordNumber;
+        final wordCode = '${wordInfo.code}$suffix';
+        final actualText = '${wordInfo.word.textImlaei} ';
         InlineSpan wordSpan =
             getText(wordCode, actualText, font, type, newState);
         children.add(wordSpan);
       }
 
-      surahSep = '\n';
-    }
-
-    if (curLineNumber == 14) {
-      surahNumber++;
-      QuranPlayerGlobalState newState = QuranPlayerGlobalState();
-      newState
-        // ..pageNumber = pageNumber
-        ..surahNumber = surahNumber
-        ..verseNumber = 1
-        ..wordNumber = 1;
-
-      String surahCode =
-          '$surahSep${surahNumber.toString().padLeft(3, '0')}surah\n';
-      String surahName = quran.getSurahNameArabic(surahNumber);
-      children.add(getText(
-          surahCode, surahName, 'surahNames', TextType.surahName, newState));
+      children.add(TextSpan(text: '\n', semanticsLabel: '\n'));
     }
 
     return children;
+
+    // final versesData = data['verses'];
+    // String surahSep = '';
+    // for (int i = 0; i < versesData.length; i++) {
+    //   final verseData = versesData[i];
+    //   final wordsData = verseData['words'];
+    //
+    //   String verseKey = verseData['verse_key'];
+    //   surahNumber = int.parse(verseKey.split(':').first);
+    //   int verseNumber = int.parse(verseKey.split(':')[1]);
+    //   int startingLineNumber = wordsData[0]['line_number'];
+    //
+    //   if (i == 0 && state.surahNumber == -1) {
+    //     state.surahNumber = surahNumber;
+    //     state.verseNumber = verseNumber;
+    //     state.wordNumber = 1;
+    //   }
+    //
+    //   QuranPlayerGlobalState newState = QuranPlayerGlobalState();
+    //   newState
+    //       // ..pageNumber = pageNumber
+    //       .surahNumber = surahNumber;
+    //
+    //   if (verseNumber == 1) {
+    //     newState
+    //       ..verseNumber = 1
+    //       ..wordNumber = 1;
+    //     if (surahNumber > 2 && (startingLineNumber != 2 || surahNumber == 9)) {
+    //       String surahSep = curLineNumber >= 1 ? '\n' : '';
+    //       String surahCode =
+    //           '$surahSep${surahNumber.toString().padLeft(3, '0')}surah\n';
+    //       String surahName = quran.getSurahNameArabic(surahNumber);
+    //       children.add(getText(surahCode, surahName, 'surahNames',
+    //           TextType.surahName, newState));
+    //     }
+    //
+    //     if (surahNumber != 1 && surahNumber != 9) {
+    //       children
+    //           .add(getText('﷽', '﷽', 'uthmanic', TextType.bismallah, newState));
+    //     }
+    //
+    //     lineNumber = curLineNumber = 1;
+    //   }
+    //
+    //   newState.verseNumber = verseNumber;
+    //   int wordsCount = wordsData.length;
+    //   for (int wordNumber = 1; wordNumber <= wordsCount; wordNumber++) {
+    //     final wordData = wordsData[wordNumber - 1];
+    //     curLineNumber = wordData['line_number'];
+    //     String sep = '';
+    //     if (lineNumber == -1) {
+    //       lineNumber = curLineNumber;
+    //     } else if (lineNumber != curLineNumber) {
+    //       lineNumber = curLineNumber;
+    //       sep = '\n';
+    //     }
+    //
+    //     TextType type = (highlightSurah == surahNumber &&
+    //             highlightVerse == verseNumber &&
+    //             highlightWord == wordNumber)
+    //         ? TextType.highlightedVerse
+    //         : TextType.verse;
+    //
+    //     String key = codeKeys[textRepresentation.index];
+    //     final font = '${fontCode[textRepresentation.index]}_$pageNumber';
+    //     final suffix = (curLineNumber == 1 || i == 0) &&
+    //             wordNumber == 1 &&
+    //             textRepresentation != TextRepresentation.codeV1
+    //         // ? ' '
+    //         ? ''
+    //         : '';
+    //
+    //     if (sep != '') {
+    //       children.add(TextSpan(text: '\n', semanticsLabel: '\n'));
+    //     }
+    //
+    //     final wordCode = '${wordData[key]}$suffix';
+    //     final actualText = '${wordData['text_imlaei']} ';
+    //     // final wordCode = '$sep\u0021';
+    //     newState.wordNumber = wordNumber;
+    //     InlineSpan wordSpan =
+    //         getText(wordCode, actualText, font, type, newState);
+    //     children.add(wordSpan);
+    //   }
+    //
+    //   surahSep = '\n';
+    // }
+    //
+    // if (curLineNumber == 14) {
+    //   surahNumber++;
+    //   QuranPlayerGlobalState newState = QuranPlayerGlobalState();
+    //   newState
+    //     // ..pageNumber = pageNumber
+    //     ..surahNumber = surahNumber
+    //     ..verseNumber = 1
+    //     ..wordNumber = 1;
+    //
+    //   String surahCode =
+    //       '$surahSep${surahNumber.toString().padLeft(3, '0')}surah\n';
+    //   String surahName = quran.getSurahNameArabic(surahNumber);
+    //   children.add(getText(
+    //       surahCode, surahName, 'surahNames', TextType.surahName, newState));
+    // }
+    //
+    // return children;
   }
 }

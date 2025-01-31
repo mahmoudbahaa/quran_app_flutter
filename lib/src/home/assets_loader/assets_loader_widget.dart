@@ -16,7 +16,7 @@ class AssetsLoaderWidget extends StatefulWidget {
 
   final SettingsController settingsController;
   final QuranPlayerGlobalState state;
-  final Function update;
+  final VoidCallback update;
 
   @override
   State<StatefulWidget> createState() {
@@ -80,21 +80,21 @@ class _AssetsDownloaderWidget extends State<AssetsLoaderWidget> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: ValueListenableBuilder(
-          valueListenable: downloadProgressNotifier,
-          builder: (context, value, snapshot) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  AppLocalizations.of(context)!.loading,
-                  style: TextStyle(fontSize: 40),
-                ),
-                const SizedBox(
-                  height: 32,
-                ),
-                CircularPercentIndicator(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            AppLocalizations.of(context)!.loading,
+            style: TextStyle(fontSize: 40),
+          ),
+          const SizedBox(
+            height: 32,
+          ),
+          ValueListenableBuilder(
+              valueListenable: downloadProgressNotifier,
+              builder: (context, value, snapshot) {
+                return CircularPercentIndicator(
                   radius: 75.0,
                   lineWidth: 15.0,
                   // animation: true,
@@ -105,28 +105,28 @@ class _AssetsDownloaderWidget extends State<AssetsLoaderWidget> {
                         fontSize: 24.0, fontWeight: FontWeight.w600),
                   ),
                   circularStrokeCap: CircularStrokeCap.round,
-                ),
-                const SizedBox(
-                  height: 32,
-                ),
-                Text(
-                  textDirection: TextDirection.ltr,
-                  '$assetsLoaded/$totalAssets',
-                  style: const TextStyle(fontSize: 24.0),
-                ),
-                Text(
-                  textDirection: TextDirection.ltr,
-                  'Elapsed: $elapsed',
-                  style: const TextStyle(fontSize: 16.0),
-                ),
-                Text(
-                  textDirection: TextDirection.ltr,
-                  'Estimated Remaining: $remaining seconds',
-                  style: const TextStyle(fontSize: 16.0),
-                ),
-              ],
-            );
-          }),
+                );
+              }),
+          const SizedBox(
+            height: 32,
+          ),
+          Text(
+            textDirection: TextDirection.ltr,
+            '$assetsLoaded/$totalAssets',
+            style: const TextStyle(fontSize: 24.0),
+          ),
+          Text(
+            textDirection: TextDirection.ltr,
+            'Elapsed: $elapsed',
+            style: const TextStyle(fontSize: 16.0),
+          ),
+          Text(
+            textDirection: TextDirection.ltr,
+            'Estimated Remaining: $remaining seconds',
+            style: const TextStyle(fontSize: 16.0),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -72,7 +72,7 @@ class SettingsService {
       TextRepresentation.values[await getValue('textRepresentation', 0)];
 
   Future<bool> loadCachedOnly() async =>
-      await getValue('loadCachedOnly', false);
+      true; // await getValue('loadCachedOnly', true);
 
   Future<bool> selectableViews() async =>
       await getValue('selectableViews', false);

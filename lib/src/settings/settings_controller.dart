@@ -28,7 +28,7 @@ class SettingsController with ChangeNotifier {
   // Allow Widgets to read the user's preferred ThemeMode.
   ThemeMode get themeMode => _themeMode;
   TextRepresentation get textRepresentation => _textRepresentation;
-  bool get loadCachedOnly => _loadCachedOnly;
+  bool get loadCachedOnly => false; // _loadCachedOnly;
   bool get selectableViews => _selectableViews;
   int get numPages => _numPages;
   int get recitationId => _recitationId;

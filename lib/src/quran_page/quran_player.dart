@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:quran/quran.dart' as quran;
@@ -11,8 +11,9 @@ import 'package:quran_app_flutter/src/settings/settings_controller.dart';
 import 'package:universal_io/io.dart';
 import 'package:vinyl/vinyl.dart';
 
+import '../db/db_utils/db_utils.dart';
+import '../db/exposed_models.dart';
 import '../util/download_widget.dart';
-import '../util/file_utils.dart';
 import '../util/player_widget.dart';
 import '../util/quran_player_global_state.dart';
 
@@ -40,15 +41,17 @@ class QuranPlayerState extends State<QuranPlayer> {
   int wordNumber = -1;
   int pageNumber = -1;
   String? downloadFilePath;
-  String? downloadUrl;
+  AudioFile? audioFile;
   QuranPlayerGlobalState get state => widget.state;
   final int maxHttpRequestRetries = 5;
 
-  Future<void> setSource(String? filePath) async {
-    if (filePath == null) return;
+  Future<void> setSource(AudioFile? audioFile, String filePath) async {
+    if (audioFile == null) return;
 
-    // await player.stop();
+    await player.open(getMediaRecord(audioFile, filePath));
     await player.play();
+    // await player.stop();
+    // await player.play();
     // addMediaItem(surahNumber!, recitationId, filePath, true);
     setState(() {});
   }
@@ -62,47 +65,45 @@ class QuranPlayerState extends State<QuranPlayer> {
     if (surahNumber < 1 || surahNumber > quran.totalSurahCount) return;
 
     String url = getUrl(surahNumber, recitationId);
-    String? string = await FileUtils.getVersesInfoFile(
+    AudioFile? audioFile = await DBUtils.loadVersesData(
         recitationId: recitationId, surahNumber: surahNumber, url: url);
-    if (string == null) {
+    if (audioFile == null) {
       //TODO: communicate error to user
-      print("verse Info is null");
+      if (kDebugMode) debugPrint('verse Info is null');
       return;
     }
 
-    dynamic surahInfo = jsonDecode(string);
-    downloadUrl = surahInfo['audio_files'][0]['audio_url'];
+    final String downloadUrl = audioFile.url;
 
     String? filePath;
     if (kIsWeb) {
       filePath = downloadUrl;
     } else {
-      int startIndex = downloadUrl!.lastIndexOf('/') + 1;
-      String fileName = downloadUrl!.substring(startIndex);
+      int startIndex = downloadUrl.lastIndexOf('/') + 1;
+      String fileName = downloadUrl.substring(startIndex);
 
-      File? file = await FileUtils.getMp3File(recitationId, fileName);
+      File? file = await DBUtils.getMp3File(recitationId, fileName);
       if (file == null) return;
       filePath = file.path;
       if (!file.existsSync()) {
         file.parent.createSync(recursive: true);
 
         if (showDownloadBar) {
+          this.audioFile = audioFile;
           downloadFilePath = filePath;
           state.downloading = true;
           widget.update();
           return;
         }
 
-        await Dio().download(downloadUrl!, filePath);
+        await Dio().download(downloadUrl, filePath);
       }
     }
 
     if (!showDownloadBar) {
-      await addMediaItem(surahNumber, recitationId, filePath!, append);
+      await addMediaItem(audioFile, filePath, append);
     } else {
-      state.verseTimings = surahInfo['audio_files'][0]['verse_timings'];
-      await player.loadMedia(
-          [getMediaRecord(state.surahNumber, recitationId, filePath!)]);
+      await player.open(getMediaRecord(audioFile, filePath));
       await player.play();
     }
 
@@ -123,14 +124,14 @@ class QuranPlayerState extends State<QuranPlayer> {
     }
   }
 
-  MediaRecord getMediaRecord(
-      int surahNumber, int recitationId, String filePath) {
+  MediaRecord getMediaRecord(AudioFile audioFile, String filePath) {
     String title = '';
     String artist = '';
     String album = '';
     if (mounted) {
-      title = QuranInfoController().getSurahName(context, surahNumber);
-      artist = QuranInfoController().getRecitation(context, recitationId);
+      title = QuranInfoController().getSurahName(context, audioFile.surah);
+      artist =
+          QuranInfoController().getRecitation(context, audioFile.recitation);
       album = AppLocalizations.of(context)!.album;
     }
 
@@ -139,35 +140,31 @@ class QuranPlayerState extends State<QuranPlayer> {
         title: title,
         artist: artist,
         album: album,
+        duration: Duration(milliseconds: audioFile.duration.floor()),
         mediaUri: filePath);
   }
 
   Future<void> addMediaItem(
-      int surahNumber, int recitationId, String filePath, bool append) async {
+      AudioFile audioFile, String filePath, bool append) async {
     Function addToQueue = append ? player.appendToQueue : player.prependToQueue;
-    await addToQueue(getMediaRecord(surahNumber, recitationId, filePath));
+    await addToQueue(getMediaRecord(audioFile, filePath));
   }
 
   Future<void> seek(bool play) async {
     if (surahNumber != state.surahNumber ||
         verseNumber != state.verseNumber ||
         wordNumber != state.wordNumber) {
+      surahNumber = state.surahNumber;
       verseNumber = state.verseNumber;
       wordNumber = state.wordNumber;
       if (verseNumber > 1) {
-        dynamic verseTiming = state.verseTimings[verseNumber - 1];
-        int startPoint = verseTiming['timestamp_from'];
-        if (state.wordNumber > 1) {
-          dynamic segments = verseTiming['segments'];
-          for (int i = 0; i < segments.length; i++) {
-            if (segments[i][0] == state.wordNumber) {
-              startPoint = segments[i][1].floor();
-              break;
-            }
-          }
-        }
+        VerseTimings? verseTimings = await DBUtils.getSegment(
+            recitationId, surahNumber!, verseNumber, wordNumber);
 
-        await player.seek(Duration(milliseconds: startPoint));
+        if (verseTimings != null) {
+          int startPoint = verseTimings.from;
+          await player.seek(Duration(milliseconds: startPoint));
+        }
       }
     }
 
@@ -218,29 +215,20 @@ class QuranPlayerState extends State<QuranPlayer> {
     _init();
     player.stream.position.listen((duration) async {
       if (!mounted) return;
-      dynamic verseTimings = state.verseTimings;
-      if (verseTimings == null || !state.playing) return;
+      if (!state.playing) return;
 
-      int surahNumber = state.surahNumber;
-      int verse = -1;
-      while (verse < verseTimings.length - 1) {
-        verse++;
-        dynamic segments = verseTimings[verse]['segments'];
-        int word = -1;
-        for (int segment = 0; segment < segments.length; segment++) {
-          if (segments[segment].length < 3) continue;
-          word = segments[segment][0];
-          if (duration.inMilliseconds >= segments[segment][1] &&
-              duration.inMilliseconds < segments[segment][2]) {
-            state.verseNumber = verse + 1;
-            state.wordNumber = word;
-            pageNumber = state.pageNumber =
-                quran.getPageNumber(surahNumber, state.verseNumber);
-            widget.update();
-            return;
-          }
-        }
-      }
+      VerseTimings? verseTiming = await DBUtils.getCurrentSegment(
+          recitationId, state.surahNumber, duration.inMilliseconds);
+
+      if (verseTiming == null) return;
+
+      String verse = verseTiming.verse;
+      state.surahNumber = int.parse(verse.split(':').first);
+      state.verseNumber = int.parse(verse.split(':').last);
+      state.wordNumber = verseTiming.wordPosition;
+      pageNumber = state.pageNumber =
+          quran.getPageNumber(state.surahNumber, state.verseNumber);
+      widget.update();
     });
 
     player.stream.completed.listen((completed) async {
@@ -248,7 +236,7 @@ class QuranPlayerState extends State<QuranPlayer> {
 
       if (surahNumber == quran.totalSurahCount) return;
       // state.updateSurahNumber(state.surahNumber + 1);
-      state.playing = false;
+      // state.playing = false;
       state.surahNumber++;
       state.verseNumber = 1;
       state.wordNumber = -1;
@@ -339,9 +327,9 @@ class QuranPlayerState extends State<QuranPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    if (state.downloading && downloadUrl != null && downloadFilePath != null) {
+    if (state.downloading && audioFile != null && downloadFilePath != null) {
       return DownloadWidget(
-          downloadUrl: downloadUrl!,
+          audioFile: audioFile!,
           filePath: downloadFilePath!,
           state: state,
           parent: this);

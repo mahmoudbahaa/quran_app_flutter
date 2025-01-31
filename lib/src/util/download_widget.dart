@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:quran_app_flutter/src/db/exposed_models.dart';
 
 import '../quran_page/quran_player.dart';
 import '../util/quran_player_global_state.dart';
@@ -10,13 +11,13 @@ import '../util/quran_player_global_state.dart';
 class DownloadWidget extends StatefulWidget {
   const DownloadWidget({
     super.key,
-    required this.downloadUrl,
+    required this.audioFile,
     required this.filePath,
     required this.state,
     required this.parent,
   });
 
-  final String downloadUrl;
+  final AudioFile audioFile;
   final String filePath;
   final QuranPlayerGlobalState state;
   final QuranPlayerState parent;
@@ -30,7 +31,7 @@ class DownloadWidget extends StatefulWidget {
 class _DownloadWidgetState extends State<DownloadWidget> {
   ValueNotifier downloadProgressNotifier = ValueNotifier(0);
 
-  String get downloadUrl => widget.downloadUrl;
+  AudioFile get audioFile => widget.audioFile;
   String get filePath => widget.filePath;
   QuranPlayerState get parent => widget.parent;
   double? actualBytes;
@@ -40,14 +41,14 @@ class _DownloadWidgetState extends State<DownloadWidget> {
   void initState() {
     super.initState();
 
-    Dio().download(downloadUrl, filePath,
+    Dio().download(audioFile.url, filePath,
         onReceiveProgress: (actualBytes, int totalBytes) {
       this.actualBytes = actualBytes / 1024 / 1024;
       this.totalBytes = totalBytes / 1024 / 1024;
       downloadProgressNotifier.value = (actualBytes / totalBytes * 100).floor();
     }).then((value) {
       widget.state.downloading = false;
-      parent.setSource(filePath).then((value) => parent.seek(true));
+      parent.setSource(audioFile, filePath).then((value) => parent.seek(true));
     });
   }
 

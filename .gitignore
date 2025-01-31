@@ -33,6 +33,7 @@ dist/
 .pub-cache/
 .pub/
 /build/
+**/Debug/
 
 # Symbolication related
 app.*.symbols

@@ -8,6 +8,7 @@ import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:vinyl/vinyl.dart';
 
 import 'src/app.dart';
+import 'src/db/db_utils/db_utils_exporter.dart';
 import 'src/settings/settings_controller.dart';
 import 'src/settings/settings_service.dart';
 import 'src/util/quran_player_global_state.dart';
@@ -18,6 +19,10 @@ void main() async {
   if (!kIsWeb && (Platform.isLinux || Platform.isWindows || Platform.isMacOS)) {
     await DesktopWindow.setMinWindowSize(Size(400, 600));
   }
+
+  await initDbUtils();
+  // File file = File('${dir.path}/quran_app.sqlite');
+  // if (file.existsSync()) file.deleteSync();
 
   // store this in a singleton
   // await SoundPlayer.init();

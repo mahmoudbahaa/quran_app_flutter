@@ -21,7 +21,7 @@ class PageBuilder {
   final fontCode = const [1, 2, 4];
   final code = const [1, 2, 2];
   final codeKeys = const ['code_v1', 'code_v2', 'code_v2'];
-  final double lineHeight = 1.9;
+  final double lineHeight = 2.0;
   final QuranPlayerGlobalState state;
   final VoidCallback update;
   final TextRepresentation textRepresentation;
@@ -119,11 +119,12 @@ class PageBuilder {
   //   return children;
   // }
 
-  Future<List<InlineSpan>> buildPage(
-      int pageNumber, SettingsController settingsController) async {
+  Future<List<InlineSpan>> buildPage(bool isDark, int pageNumber,
+      SettingsController settingsController) async {
     final AssetsLoaderController assetsLoaderController =
         AssetsLoaderController(settingsController: settingsController);
-    await assetsLoaderController.loadPageFont(pageNumber, cacheOnly: false);
+    await assetsLoaderController.loadPageFont(pageNumber,
+        cacheOnly: false, dark: isDark);
     await assetsLoaderController.loadWordsData(pageNumber, cacheOnly: false);
 
     final codeVersion = code[settingsController.textRepresentation.index];
@@ -187,7 +188,9 @@ class PageBuilder {
           addBismallah = false;
         }
 
-        final font = '${fontCode[textRepresentation.index]}_$pageNumber';
+        final fontSuffix = isDark ? '_dark' : '';
+        final font =
+            '${fontCode[textRepresentation.index]}_$pageNumber$fontSuffix';
         final suffix = (line == 1 || i == 0) &&
                 wordNumber == 1 &&
                 textRepresentation != TextRepresentation.codeV1

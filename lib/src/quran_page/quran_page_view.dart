@@ -106,11 +106,6 @@ class _QuranPageViewState extends State<QuranPageView> {
         AssetsLoaderController(settingsController: settingsController);
   }
 
-  bool forceLightMode() {
-    return (Theme.of(context).brightness == Brightness.dark &&
-        settingsController.textRepresentation == TextRepresentation.codeV4);
-  }
-
   void update() {
     setState(() => {});
   }
@@ -118,9 +113,11 @@ class _QuranPageViewState extends State<QuranPageView> {
   void addPage(
       List<Widget> pages, int pageNumber, int numPages, double fontSize) {
     Size size = MediaQuery.sizeOf(context);
+    bool isDark = Theme.of(context).brightness == Brightness.dark &&
+        settingsController.textRepresentation == TextRepresentation.codeV4;
 
     final Widget child = FutureBuilder(
-        future: pageBuilder.buildPage(pageNumber, settingsController),
+        future: pageBuilder.buildPage(isDark, pageNumber, settingsController),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Align(
@@ -293,10 +290,6 @@ class _QuranPageViewState extends State<QuranPageView> {
           ),
         ),
       );
-
-      if (forceLightMode()) {
-        body = ColoredBox(color: Colors.white, child: body);
-      }
 
       List<Widget> stackChildren = [
         body,

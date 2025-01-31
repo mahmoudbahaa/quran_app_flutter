@@ -16,14 +16,14 @@ class DbUtilsDrift extends DBUtils {
   }
 
   @override
-  Future<FontFile?> getFont(int code, int page) async =>
+  Future<FontFile?> getFont(int code, int page) =>
       _database.getFont(code, page);
 
   @override
-  Future<List<FontFile>> getFonts(int code) async => _database.getFonts(code);
+  Future<List<FontFile>> getFonts(int code) => _database.getFonts(code);
 
   @override
-  Future<void> insertFont(int code, int page, Uint8List font) async =>
+  Future<void> insertFont(int code, int page, Uint8List font) =>
       _database.insertFont(code, page, font);
 
   @override
@@ -31,7 +31,7 @@ class DbUtilsDrift extends DBUtils {
       _database.getWordsInfoLoaded(code);
 
   @override
-  Future<void> loadWordsInfo(int code, int page, data) async =>
+  Future<void> loadWordsInfo(int code, int page, data) =>
       _database.loadWordsInfo(code, page, data);
 
   static final Map<String, List<exposed.WordInfo>> _cache =

@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:archive/archive.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:synchronized/synchronized.dart';
@@ -54,32 +56,55 @@ class DBUtils {
           int verseNumber, int wordNumber) async =>
       null;
 
-  static Future<Directory?> _getDownloadsDirectory() async {
+  static Future<Directory?> _getAppRootDirectory() async {
     if (kIsWeb) return null;
 
     return (await getApplicationSupportDirectory());
   }
 
-  static Future<File?> _getFile(String filePath) async {
-    Directory? directory = await _getDownloadsDirectory();
+  static Future<String?> _getFilePath(String filePath) async {
+    Directory? directory = await _getAppRootDirectory();
     if (directory == null) return null;
-    return File('${directory.path}/$filePath');
+    return '${directory.path}/$filePath';
   }
 
-  static Map<int, Map<int, Uint8List>> fonts = {};
+  static Future<File?> _getFile(String filePath) async {
+    String? resolvedFilePath = await _getFilePath(filePath);
+    if (resolvedFilePath == null) return null;
+    return File(resolvedFilePath);
+  }
+
+  static Map<int, Map<String, Uint8List>> fonts = {};
+
+  static Future<void> _extractArchive(archivePath) async {
+    final byteData = await rootBundle.load(archivePath);
+    Uint8List xz = XZDecoder().decodeBytes(Uint8List.sublistView(byteData));
+    final archive = TarDecoder().decodeBytes(xz);
+    for (final entry in archive) {
+      if (entry.isFile) {
+        String? filePath = await _getFilePath(entry.name);
+        if (filePath == null) break;
+        OutputStream os = OutputFileStream(filePath);
+        entry.writeContent(os);
+        os.closeSync();
+      }
+    }
+  }
 
   static Future<Uint8List?> getFontFile(
       {required int code,
       required int page,
       required String url,
+      required bool dark,
       required bool cacheOnly}) async {
+    String suffix = dark ? '_dark' : '';
     if (fonts[code] == null) {
       await _lock.synchronized(() async {
         if (fonts[code] == null) {
           List<FontFile> codeFonts = await instance.getFonts(code);
-          final Map<int, Uint8List> loaded = {};
+          final Map<String, Uint8List> loaded = {};
           for (FontFile codeFont in codeFonts) {
-            loaded[codeFont.page] = codeFont.font;
+            loaded['${codeFont.page}'] = codeFont.font;
           }
 
           fonts[code] = loaded;
@@ -87,14 +112,26 @@ class DBUtils {
       });
     }
 
-    Uint8List? font = fonts[code]![page];
+    Uint8List? font = fonts[code]!['$page$suffix'];
     if (font != null) return font;
     if (cacheOnly) return null;
-    font = await _downloadIfNotExistBytes(url);
+    if (dark) {
+      File? file = await _getFile('ttf/4_${page}_dark.ttf');
+      if (file == null) return null;
+      if (!file.existsSync()) {
+        await _extractArchive('assets/fonts/quran/tagweed-dark/ttf.tar.xz');
+      }
+
+      if (!file.existsSync()) return null;
+      font = file.readAsBytesSync();
+    } else {
+      font = await _downloadIfNotExistBytes(url);
+    }
+
     if (font == null) return null;
 
-    await instance.insertFont(code, page, font);
-    fonts[code]![page] = font;
+    if (!dark) await instance.insertFont(code, page, font);
+    fonts[code]!['$page$suffix'] = font;
     return font;
   }
 

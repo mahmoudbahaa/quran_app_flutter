@@ -45,6 +45,7 @@ dependencies:
   drift: ^2.24.0
   drift_flutter: ^0.2.4
   synchronized: ^3.3.0+3
+  archive: ^4.0.2
 
 dev_dependencies:
   flutter_test:
@@ -57,6 +58,8 @@ flutter:
   uses-material-design: true
   assets:
     - 'assets/images/hollow/bg.png'
+    - 'assets/fonts/quran/tagweed-dark/ttf.tar.xz'
+
   fonts:
     - family: 'pointer'
       fonts:
@@ -70,6 +73,7 @@ flutter:
     - family: '1_175'
       fonts:
         - asset: 'assets/fonts/quran/page175.ttf'
+
 inno_build:
   app_id: '60c776c4-dd15-4ea3-b2fb-3b6a725a5853'
 

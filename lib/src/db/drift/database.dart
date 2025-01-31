@@ -75,7 +75,7 @@ class AppDatabase extends _$AppDatabase {
       .getSingleOrNull();
 
   Future<void> insertFont(int code, int page, Uint8List font) =>
-      into(fontFiles).insert(FontFilesCompanion(
+      into(fontFiles).insertOnConflictUpdate(FontFilesCompanion(
           code: Value(code), page: Value(page), font: Value(font)));
 
   Future<List<int?>> getWordsInfoLoaded(int code) {

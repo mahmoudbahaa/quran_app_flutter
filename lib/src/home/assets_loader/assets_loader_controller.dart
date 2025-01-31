@@ -44,6 +44,7 @@ class AssetsLoaderController {
   }
 
   bool isFontLoaded(int pageNumber) {
+    return true;
     final codeVersion =
         _codeVersion[settingsController.textRepresentation.index];
     if (codeVersion == 1 && pageNumber == 175) return true;

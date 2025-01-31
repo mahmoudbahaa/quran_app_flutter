@@ -140,6 +140,7 @@ class QuranPlayerState extends State<QuranPlayer> {
         title: title,
         artist: artist,
         album: album,
+        displaySubtitle: 'hi',
         duration: Duration(milliseconds: audioFile.duration.floor()),
         mediaUri: filePath);
   }

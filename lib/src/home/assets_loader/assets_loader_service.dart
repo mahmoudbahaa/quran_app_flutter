@@ -14,7 +14,16 @@ class AssetsLoaderService {
   final _codeFontBaseUrl = const [
     'https://quran.com/fonts/quran/hafs/v1/ttf/p',
     'https://quran.com/fonts/quran/hafs/v2/ttf/p',
-    'https://quran.com/fonts/quran/hafs/v4/colrv1/ttf/p',
+    // 'https://quran.com/fonts/quran/hafs/v4/colrv1/ttf/p',
+    'https://quran.com/fonts/quran/hafs/v4/colrv1/woff2/p',
+    // 'https://quran.com/fonts/quran/hafs/v4/ot-svg/sepia/ttf/p',
+  ];
+
+  final _codeFontSuffix = const [
+    '.ttf',
+    '.ttf',
+    // '.ttf',
+    '.woff2',
     // 'https://quran.com/fonts/quran/hafs/v4/ot-svg/sepia/ttf/p',
   ];
 
@@ -30,7 +39,8 @@ class AssetsLoaderService {
   Future<bool> loadFont(int page, int code,
       TextRepresentation textRepresentation, bool cacheOnly) async {
     final fontBaseUrl = _codeFontBaseUrl[textRepresentation.index];
-    final fontUrl = '$fontBaseUrl$page.ttf';
+    final fontSuffix = _codeFontSuffix[textRepresentation.index];
+    final fontUrl = '$fontBaseUrl$page$fontSuffix';
     Uint8List? font = await DBUtils.getFontFile(
         code: code, page: page, url: fontUrl, cacheOnly: cacheOnly);
     if (font == null) return false;

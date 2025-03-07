@@ -39,11 +39,6 @@ jobs:
           flutter_distributor release --name=dev --jobs=release-dev-linux-rpm
           cp "dist/"*"/quran_app_flutter-"*"-linux.rpm" quran_app_flutter.rpm
 
-      - name: Build web
-        run: |
-          flutter build web --release
-          tar -czf quran_app_flutter_web.tar.gz -C build web
-
       - name: Extract version from pubspec.yaml
         id: extract_version
         run: |
@@ -53,7 +48,7 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "quran_app_flutter.deb,quran_app_flutter.rpm,quran_app_flutter_web.tar.gz"
+          artifacts: "quran_app_flutter.deb,quran_app_flutter.rpm"
           tag: v${{ env.VERSION }}
           token: ${{ secrets.TOKEN }}
           allowUpdates: true
@@ -162,10 +157,6 @@ jobs:
 #        name: Build appBundle
 #        run: flutter build appbundle --release
 #
-#      - if: startsWith(matrix.os, 'ubuntu')
-#        name: Build web
-#        run: flutter build web --release
-#
 #      - if: startsWith(matrix.os, 'macos')
 #        name: Build MacOS
 #        run: flutter build macos --release
@@ -185,7 +176,6 @@ jobs:
 #        name: Compress Archives
 #        run: |
 #          tar -czf linux_build.tar.gz -C build/linux/x64/release bundle
-#          tar -czf web_build.tar.gz -C build web
 #
 #      - if: startsWith(matrix.os, 'macos')
 #        name: Compress Archives

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:quran/quran.dart' as quran;
@@ -76,28 +76,23 @@ class QuranPlayerState extends State<QuranPlayer> {
     final String downloadUrl = audioFile.url;
 
     String? filePath;
-    if (kIsWeb) {
-      filePath = downloadUrl;
-    } else {
-      int startIndex = downloadUrl.lastIndexOf('/') + 1;
-      String fileName = downloadUrl.substring(startIndex);
+    int startIndex = downloadUrl.lastIndexOf('/') + 1;
+    String fileName = downloadUrl.substring(startIndex);
 
-      File? file = await DBUtils.getMp3File(recitationId, fileName);
-      if (file == null) return;
-      filePath = file.path;
-      if (!file.existsSync()) {
-        file.parent.createSync(recursive: true);
+    File file = await DBUtils.getMp3File(recitationId, fileName);
+    filePath = file.path;
+    if (!file.existsSync()) {
+      file.parent.createSync(recursive: true);
 
-        if (showDownloadBar) {
-          this.audioFile = audioFile;
-          downloadFilePath = filePath;
-          state.downloading = true;
-          widget.update();
-          return;
-        }
-
-        await Dio().download(downloadUrl, filePath);
+      if (showDownloadBar) {
+        this.audioFile = audioFile;
+        downloadFilePath = filePath;
+        state.downloading = true;
+        widget.update();
+        return;
       }
+
+      await Dio().download(downloadUrl, filePath);
     }
 
     if (!showDownloadBar) {

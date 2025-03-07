@@ -1,10 +1,10 @@
 import 'package:drift/drift.dart';
+import 'package:drift_dev/api/migrations_native.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../exposed_models.dart' as exposed;
-import 'connection/connection.dart' as impl;
 import 'tables.dart';
 
 part 'database.g.dart';
@@ -62,7 +62,10 @@ class AppDatabase extends _$AppDatabase {
         // This follows the recommendation to validate that the database schema
         // matches what drift expects (https://drift.simonbinder.eu/docs/advanced-features/migrations/#verifying-a-database-schema-at-runtime).
         // It allows catching bugs in the migration logic early.
-        await impl.validateDatabaseSchema(this);
+
+        if (kDebugMode) {
+          await validateDatabaseSchema();
+        }
       },
     );
   }

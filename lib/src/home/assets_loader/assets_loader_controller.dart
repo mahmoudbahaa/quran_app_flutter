@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:queue/queue.dart';
 import 'package:quran/quran.dart' as quran;
 import 'package:quran_app_flutter/src/home/assets_loader/assets_loader_service.dart';
-import 'package:quran_app_flutter/src/models/enums.dart';
 import 'package:quran_app_flutter/src/settings/settings_controller.dart';
 
 class AssetsLoaderController {
@@ -16,40 +16,30 @@ class AssetsLoaderController {
   // final _codeFontPrefix = const ['', 'v2_', 'v4_'];
   final List<int> _codeVersion = const [1, 2, 2];
   final List<int> _fontVersion = const [1, 2, 4];
-  // final int _parallelism = kIsWeb ? 3 : 12;
-  // final fontsQueue = Queue(parallel: kIsWeb ? 1 : 12);
-  // final fontsQueue = Queue();
-  // final versesWordsQueue = Queue(parallel: kIsWeb ? 8 : 12);
+  final queue = Queue(parallel: 12);
 
-  Future<void> loadAssets(VoidCallback update) {
-    return _loadPageFonts(1, update);
-    // for (int i = 1; i <= quran.totalPagesCount; i++) {
-    //   fontsQueue.add(() async => await _loadPageFonts(i, update));
-    // versesWordsQueue.add(() async => await _loadVerseWordsData(i, update));
-    // }
-
-    // await fontsQueue.onComplete;
-    // await versesWordsQueue.onComplete;
-    // fontsQueue.dispose();
-    // versesWordsQueue.dispose();
-  }
-
-  Future<void> _loadPageFonts(int pageNumber, VoidCallback update) async {
-    if (pageNumber > quran.totalPagesCount) return;
-    await loadPageFont(pageNumber);
-    if (settingsController.textRepresentation == TextRepresentation.codeV4) {
-      await loadPageFont(pageNumber, dark: true);
+  Future<void> loadAssets(VoidCallback update) async {
+    for (int i = 1; i <= quran.totalPagesCount; i++) {
+      queue.add(() async => await _loadPageFonts(i, update));
+      queue.add(() async => await _loadVerseWordsData(i, update));
     }
 
-    update();
-
-    _loadPageFonts(pageNumber + 1, update);
+    await queue.onComplete;
   }
 
-  Future<void> _loadVerseWordsData(int pageNumber, VoidCallback update) async {
-    if (pageNumber > quran.totalPagesCount) return;
-    await loadWordsData(pageNumber);
+  Future<void> _loadAsset(
+      int pageNumber, Function assetFunc, Function update) async {
+    await assetFunc(pageNumber);
+
     update();
+  }
+
+  Future<void> _loadPageFonts(int pageNumber, Function update) async {
+    await _loadAsset(pageNumber, loadPageFont, update);
+  }
+
+  Future<void> _loadVerseWordsData(int pageNumber, Function update) async {
+    await _loadAsset(pageNumber, loadWordsData, update);
   }
 
   String _getFontName(int pageNumber, bool dark) {

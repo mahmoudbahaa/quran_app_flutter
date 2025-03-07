@@ -56,21 +56,17 @@ class DBUtils {
           int verseNumber, int wordNumber) async =>
       null;
 
-  static Future<Directory?> _getAppRootDirectory() async {
-    if (kIsWeb) return null;
-
+  static Future<Directory> _getAppRootDirectory() async {
     return (await getApplicationSupportDirectory());
   }
 
-  static Future<String?> _getFilePath(String filePath) async {
-    Directory? directory = await _getAppRootDirectory();
-    if (directory == null) return null;
+  static Future<String> _getFilePath(String filePath) async {
+    Directory directory = await _getAppRootDirectory();
     return '${directory.path}/$filePath';
   }
 
-  static Future<File?> _getFile(String filePath) async {
-    String? resolvedFilePath = await _getFilePath(filePath);
-    if (resolvedFilePath == null) return null;
+  static Future<File> _getFile(String filePath) async {
+    String resolvedFilePath = await _getFilePath(filePath);
     return File(resolvedFilePath);
   }
 
@@ -82,8 +78,7 @@ class DBUtils {
     final archive = TarDecoder().decodeBytes(xz);
     for (final entry in archive) {
       if (entry.isFile) {
-        String? filePath = await _getFilePath(entry.name);
-        if (filePath == null) break;
+        String filePath = await _getFilePath(entry.name);
         OutputStream os = OutputFileStream(filePath);
         entry.writeContent(os);
         os.closeSync();
@@ -116,8 +111,7 @@ class DBUtils {
     if (font != null) return font;
     if (cacheOnly) return null;
     if (dark) {
-      File? file = await _getFile('ttf/4_${page}_dark.ttf');
-      if (file == null) return null;
+      File file = await _getFile('ttf/4_${page}_dark.ttf');
       if (!file.existsSync()) {
         await _extractArchive('assets/fonts/quran/tagweed-dark/ttf.tar.xz');
       }
@@ -170,12 +164,12 @@ class DBUtils {
       {required int pageNumber,
       required String url,
       required bool cacheOnly}) async {
-    File? file = await _getFile('images/background/$pageNumber.png');
+    File file = await _getFile('images/background/$pageNumber.png');
     return await _downloadIfNotExist(
         file: file, url: url, cacheOnly: cacheOnly);
   }
 
-  static Future<File?> getMp3File(int recitationId, String fileName) async {
+  static Future<File> getMp3File(int recitationId, String fileName) async {
     return await _getFile('mp3/${recitationId}_$fileName');
   }
 
@@ -208,9 +202,9 @@ class DBUtils {
   }
 
   static Future<File?> _downloadIfNotExist(
-      {required File? file, required String url, required cacheOnly}) async {
+      {required File file, required String url, required cacheOnly}) async {
     try {
-      if (file != null && file.existsSync()) {
+      if (file.existsSync()) {
         return file;
       }
 

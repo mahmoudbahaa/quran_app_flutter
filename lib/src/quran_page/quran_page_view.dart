@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:quran/quran.dart' as quran;
 import 'package:quran_app_flutter/src/models/enums.dart';
@@ -24,8 +23,7 @@ class QuranPageView extends StatefulWidget {
 
   final SettingsController settingsController;
   final QuranPlayerGlobalState state;
-  static double iconsSize =
-      kIsWeb || Platform.isAndroid || Platform.isIOS ? 40 : 32;
+  static double iconsSize = Platform.isAndroid || Platform.isIOS ? 40 : 32;
 
   @override
   State<QuranPageView> createState() {
@@ -166,7 +164,7 @@ class _QuranPageViewState extends State<QuranPageView> {
 
           if (numPages == 1 &&
               size.width > size.height &&
-              (!kIsWeb && (Platform.isAndroid || Platform.isIOS))) {
+              (Platform.isAndroid || Platform.isIOS)) {
             child = SingleChildScrollView(
                 child: FittedBox(fit: BoxFit.fitWidth, child: child));
           } else {
@@ -299,9 +297,7 @@ class _QuranPageViewState extends State<QuranPageView> {
             offset: Offset(
                 0,
                 -1 * QuranPageView.iconsSize / 2 +
-                    ((kIsWeb || Platform.isIOS || Platform.isAndroid)
-                        ? -4
-                        : 0)),
+                    ((Platform.isIOS || Platform.isAndroid) ? -4 : 0)),
             child: MaterialButton(
               shape: CircleBorder(),
               color: Theme.of(context).colorScheme.secondary,
@@ -344,13 +340,9 @@ class _QuranPageViewState extends State<QuranPageView> {
                   showPlayer
                       ? QuranPageView.iconsSize / 2 -
                           playerHeight +
-                          ((!kIsWeb && (Platform.isIOS || Platform.isAndroid))
-                              ? 4
-                              : 0)
+                          ((Platform.isIOS || Platform.isAndroid) ? 4 : 0)
                       : QuranPageView.iconsSize / 2 +
-                          ((!kIsWeb && (Platform.isIOS || Platform.isAndroid))
-                              ? 4
-                              : 0)),
+                          ((Platform.isIOS || Platform.isAndroid) ? 4 : 0)),
               child: MaterialButton(
                   shape: CircleBorder(),
                   color: Theme.of(context).colorScheme.secondary,

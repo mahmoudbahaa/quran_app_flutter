@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:desktop_window/desktop_window.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
@@ -16,7 +15,7 @@ import 'src/util/quran_player_global_state.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (!kIsWeb && (Platform.isLinux || Platform.isWindows || Platform.isMacOS)) {
+  if (Platform.isLinux || Platform.isWindows || Platform.isMacOS) {
     await DesktopWindow.setMinWindowSize(Size(400, 600));
   }
 
@@ -45,7 +44,7 @@ void main() async {
   // SettingsView.
   runApp(MyApp(settingsController: settingsController, state: state));
 
-  if (!kIsWeb && Platform.isAndroid) {
+  if (Platform.isAndroid) {
     await FlutterDisplayMode.setHighRefreshRate();
   }
 }

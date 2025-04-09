@@ -4,13 +4,13 @@ import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
-import 'package:vinyl/vinyl.dart';
 
 import 'src/app.dart';
 import 'src/db/db_utils/db_utils_exporter.dart';
 import 'src/settings/settings_controller.dart';
 import 'src/settings/settings_service.dart';
 import 'src/util/quran_player_global_state.dart';
+import 'src/vinyl/vinyl.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

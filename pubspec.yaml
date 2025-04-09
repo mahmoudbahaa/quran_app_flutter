@@ -11,7 +11,7 @@ dependencies:
     sdk: 'flutter'
   quran: '^1.3.3'
   http: '^1.3.0'
-  background_downloader: '^8.9.3'
+  background_downloader: '^9.2.0'
   universal_io: '^2.2.2'
   queue: '^3.4.0'
   google_fonts: '^6.2.1'
@@ -23,11 +23,6 @@ dependencies:
   page_transition: '^2.2.1'
   page_flip: '^0.2.3'
 #  audio_session: '^0.1.23'
-  vinyl:
-#    git:
-#      url: https://github.com/RA341/vinyl
-#      ref: e26f8e5eb57ab36261d6d06c7fbbcf395d188e0f
-    path: ../vinyl
 
   just_audio: '^0.9.43'
   media_kit: '^1.1.11'
@@ -46,6 +41,10 @@ dependencies:
   drift_flutter: ^0.2.4
   synchronized: ^3.3.0+3
   archive: ^4.0.2
+
+  audio_service: ^0.18.16                       # background
+  audio_video_progress_bar: ^2.0.3
+  cached_network_image: ^3.3.1
 
 dev_dependencies:
   flutter_test:

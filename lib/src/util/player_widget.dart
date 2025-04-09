@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:vinyl/vinyl.dart';
 
 import '../models/enums.dart';
 import '../quran_page/quran_page_view.dart';
+import '../vinyl/vinyl.dart';
 import 'common.dart';
 import 'quran_player_global_state.dart';
 

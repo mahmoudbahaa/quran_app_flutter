@@ -9,13 +9,13 @@ import 'package:quran_app_flutter/src/common/quran_info_controller.dart';
 import 'package:quran_app_flutter/src/localization/app_localizations.dart';
 import 'package:quran_app_flutter/src/settings/settings_controller.dart';
 import 'package:universal_io/io.dart';
-import 'package:vinyl/vinyl.dart';
 
 import '../db/db_utils/db_utils.dart';
 import '../db/exposed_models.dart';
 import '../util/download_widget.dart';
 import '../util/player_widget.dart';
 import '../util/quran_player_global_state.dart';
+import '../vinyl/vinyl.dart';
 
 class QuranPlayer extends StatefulWidget {
   const QuranPlayer(
@@ -185,12 +185,12 @@ class QuranPlayerState extends State<QuranPlayer> {
           append: true,
           forward: true);
 
-      downloadNext(
-          surahNumber: surahNumber! - 1,
-          recitationId: recitationId,
-          showDownloadBar: false,
-          append: false,
-          forward: false);
+      // downloadNext(
+      //     surahNumber: surahNumber! - 1,
+      //     recitationId: recitationId,
+      //     showDownloadBar: false,
+      //     append: false,
+      //     forward: false);
     }
 
     seek(play);
@@ -201,6 +201,7 @@ class QuranPlayerState extends State<QuranPlayer> {
     if (mounted) super.setState(fn);
   }
 
+  int i = 1;
   @override
   void initState() {
     super.initState();
@@ -227,12 +228,16 @@ class QuranPlayerState extends State<QuranPlayer> {
       widget.update();
     });
 
+    player.stream.playing.listen((playing) async {
+      print('hello${i++}');
+    });
+
     player.stream.completed.listen((completed) async {
       if (!completed) return;
 
       if (surahNumber == quran.totalSurahCount) return;
       // state.updateSurahNumber(state.surahNumber + 1);
-      // state.playing = false;
+      state.playing = false;
       state.surahNumber++;
       state.verseNumber = 1;
       state.wordNumber = -1;
@@ -240,7 +245,7 @@ class QuranPlayerState extends State<QuranPlayer> {
           quran.getPageNumber(state.surahNumber, state.verseNumber);
 
       await player.next();
-      await player.play();
+      // await player.play();
 
       widget.update();
     });

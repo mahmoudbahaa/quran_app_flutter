@@ -1,15 +1,16 @@
 import 'dart:convert';
 
+import 'package:audio_service/audio_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:just_audio/just_audio.dart';
 import 'package:quran/quran.dart' as quran;
 import 'package:quran_app_flutter/src/common/quran_info_controller.dart';
 import 'package:quran_app_flutter/src/localization/app_localizations.dart';
 import 'package:quran_app_flutter/src/settings/settings_controller.dart';
 import 'package:universal_io/io.dart';
-import 'package:vinyl/vinyl.dart';
 
 import '../db/db_utils/db_utils.dart';
 import '../db/exposed_models.dart';
@@ -33,8 +34,8 @@ class QuranPlayer extends StatefulWidget {
 }
 
 class QuranPlayerState extends State<QuranPlayer> {
-  PlayerInterface get player => vinyl.player;
-  int? surahNumber;
+  final AudioPlayer player = AudioPlayer();
+  int surahNumber = -1;
   int get recitationId => widget.settingsController.recitationId;
   int? lastRecitationId;
   int verseNumber = -1;
@@ -48,20 +49,189 @@ class QuranPlayerState extends State<QuranPlayer> {
   Future<void> setSource(AudioFile? audioFile, String filePath) async {
     if (audioFile == null) return;
 
-    await player.open(getMediaRecord(audioFile, filePath));
+    await player.seek(Duration.zero, index: state.surahNumber - 1);
     await player.play();
     // await player.stop();
     // await player.play();
     // addMediaItem(surahNumber!, recitationId, filePath, true);
-    setState(() {});
+    // setState(() {});
   }
 
-  Future<void> downloadNext(
+  StreamAudioSource getMediaRecord(
+      AudioFile audioFile, String filePath, String url) {
+    String title = '';
+    String artist = '';
+    String album = '';
+    if (mounted) {
+      title = QuranInfoController().getSurahName(context, audioFile.surah);
+      artist =
+          QuranInfoController().getRecitation(context, audioFile.recitation);
+      album = AppLocalizations.of(context)!.album;
+    }
+
+    return LockCachingAudioSource(Uri.parse(url),
+        cacheFile: File(filePath),
+        tag: MediaItem(
+          id: '${recitationId}_$surahNumber',
+          title: title,
+          artist: artist,
+          album: album,
+          displaySubtitle: 'hi',
+          duration: Duration(milliseconds: audioFile.duration.floor()),
+        ));
+
+    // return AudioSource.file(filePath,
+    //     tag: MediaItem(
+    //       id: '${recitationId}_$surahNumber',
+    //       title: title,
+    //       artist: artist,
+    //       album: album,
+    //       displaySubtitle: 'hi',
+    //       duration: Duration(milliseconds: audioFile.duration.floor()),
+    //     ));
+  }
+
+  Future<void> seek(bool play) async {
+    if (surahNumber != state.surahNumber ||
+        verseNumber != state.verseNumber ||
+        wordNumber != state.wordNumber) {
+      surahNumber = state.surahNumber;
+      verseNumber = state.verseNumber;
+      wordNumber = state.wordNumber;
+      if (verseNumber > 1) {
+        VerseTimings? verseTimings = await DBUtils.getSegment(
+            recitationId, surahNumber, verseNumber, wordNumber);
+
+        if (verseTimings != null) {
+          int startPoint = verseTimings.from;
+          await player.seek(Duration(milliseconds: startPoint));
+        }
+      }
+    }
+
+    if (play) {
+      state.playing = true;
+      await player.play();
+    } else {
+      await player.pause();
+    }
+  }
+
+  Future<void> changeSource(bool play) async {
+    if (surahNumber != state.surahNumber || lastRecitationId != recitationId) {
+      surahNumber = state.surahNumber;
+      lastRecitationId = recitationId;
+      await player.pause();
+
+      // downloadNextSurah(
+      //     surahNumber: surahNumber,
+      //     recitationId: recitationId,
+      //     showDownloadBar: true);
+    }
+
+    seek(play);
+  }
+
+  @override
+  void setState(VoidCallback fn) {
+    if (mounted) super.setState(fn);
+  }
+
+  Future<void> preparePlayer() async {
+    List<StreamAudioSource> queue = [];
+    for (int i = 1; i <= quran.totalSurahCount; i++) {
+      await addNextSurah(
+          surahNumber: i, recitationId: recitationId, queue: queue);
+    }
+
+    await player.setAudioSource(ConcatenatingAudioSource(children: queue),
+        preload: false);
+
+    // downloadNextSurah(
+    //     surahNumber: 1, recitationId: recitationId, showDownloadBar: false);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    pageNumber = state.pageNumber;
+
+    // player = SoundPlayer.instance();
+    _init();
+    player.positionStream.listen((duration) async {
+      if (!mounted) return;
+      if (!state.playing) return;
+
+      VerseTimings? verseTiming = await DBUtils.getCurrentSegment(
+          recitationId, player.currentIndex! + 1, duration.inMilliseconds);
+
+      if (verseTiming == null) return;
+
+      String verse = verseTiming.verse;
+      state.surahNumber = int.parse(verse.split(':').first);
+      state.verseNumber = int.parse(verse.split(':').last);
+      state.wordNumber = verseTiming.wordPosition;
+      pageNumber = state.pageNumber =
+          quran.getPageNumber(state.surahNumber, state.verseNumber);
+      widget.update();
+    });
+
+    player.playerStateStream.listen((playerState) async {
+      if (playerState.processingState != ProcessingState.completed) return;
+
+      if (surahNumber == quran.totalSurahCount) return;
+
+      // state.updateSurahNumber(state.surahNumber + 1);
+      state.playing = false;
+      surahNumber++;
+      state.verseNumber = 1;
+      state.wordNumber = -1;
+      pageNumber = state.pageNumber =
+          quran.getPageNumber(state.surahNumber, state.verseNumber);
+
+      state.surahNumber = surahNumber;
+      // await player.seek(Duration.zero, )
+      await player.seek(Duration.zero, index: state.surahNumber - 1);
+      state.playing = true;
+      await player.play();
+
+      widget.update();
+    });
+
+    preparePlayer();
+  }
+
+  Future<void> addNextSurah(
       {required int surahNumber,
       required int recitationId,
-      required bool showDownloadBar,
-      required bool append,
-      required bool forward}) async {
+      required List<StreamAudioSource> queue}) async {
+    if (surahNumber < 1 || surahNumber > quran.totalSurahCount) return;
+
+    String url = getUrl(surahNumber, recitationId);
+    AudioFile? audioFile = await DBUtils.loadVersesData(
+        recitationId: recitationId, surahNumber: surahNumber, url: url);
+    if (audioFile == null) {
+      //TODO: communicate error to user
+      if (kDebugMode) debugPrint('verse Info is null');
+      return;
+    }
+
+    final String downloadUrl = audioFile.url;
+
+    String? filePath;
+    int startIndex = downloadUrl.lastIndexOf('/') + 1;
+    String fileName = downloadUrl.substring(startIndex);
+
+    File file = await DBUtils.getMp3File(recitationId, fileName);
+    filePath = file.path;
+    queue.add(getMediaRecord(audioFile, filePath, downloadUrl));
+  }
+
+  Future<void> downloadNextSurah(
+      {required int surahNumber,
+      required int recitationId,
+      required bool showDownloadBar}) async {
     if (surahNumber < 1 || surahNumber > quran.totalSurahCount) return;
 
     String url = getUrl(surahNumber, recitationId);
@@ -95,155 +265,11 @@ class QuranPlayerState extends State<QuranPlayer> {
       await Dio().download(downloadUrl, filePath);
     }
 
-    if (!showDownloadBar) {
-      await addMediaItem(audioFile, filePath, append);
-    } else {
-      await player.open(getMediaRecord(audioFile, filePath));
-      await player.play();
-    }
-
-    if (forward) {
-      downloadNext(
-          surahNumber: surahNumber + 1,
-          recitationId: recitationId,
-          showDownloadBar: false,
-          append: true,
-          forward: forward);
-    } else {
-      downloadNext(
-          surahNumber: surahNumber - 1,
-          recitationId: recitationId,
-          showDownloadBar: false,
-          append: false,
-          forward: forward);
-    }
-  }
-
-  MediaRecord getMediaRecord(AudioFile audioFile, String filePath) {
-    String title = '';
-    String artist = '';
-    String album = '';
-    if (mounted) {
-      title = QuranInfoController().getSurahName(context, audioFile.surah);
-      artist =
-          QuranInfoController().getRecitation(context, audioFile.recitation);
-      album = AppLocalizations.of(context)!.album;
-    }
-
-    return MediaRecord(
-        id: '${recitationId}_$surahNumber',
-        title: title,
-        artist: artist,
-        album: album,
-        displaySubtitle: 'hi',
-        duration: Duration(milliseconds: audioFile.duration.floor()),
-        mediaUri: filePath);
-  }
-
-  Future<void> addMediaItem(
-      AudioFile audioFile, String filePath, bool append) async {
-    Function addToQueue = append ? player.appendToQueue : player.prependToQueue;
-    await addToQueue(getMediaRecord(audioFile, filePath));
-  }
-
-  Future<void> seek(bool play) async {
-    if (surahNumber != state.surahNumber ||
-        verseNumber != state.verseNumber ||
-        wordNumber != state.wordNumber) {
-      surahNumber = state.surahNumber;
-      verseNumber = state.verseNumber;
-      wordNumber = state.wordNumber;
-      if (verseNumber > 1) {
-        VerseTimings? verseTimings = await DBUtils.getSegment(
-            recitationId, surahNumber!, verseNumber, wordNumber);
-
-        if (verseTimings != null) {
-          int startPoint = verseTimings.from;
-          await player.seek(Duration(milliseconds: startPoint));
-        }
-      }
-    }
-
-    if (play) {
-      state.playing = true;
-      await player.play();
-    } else {
-      await player.pause();
-    }
-  }
-
-  Future<void> changeSource(bool play) async {
-    if (surahNumber != state.surahNumber || lastRecitationId != recitationId) {
-      surahNumber = state.surahNumber;
-      lastRecitationId = recitationId;
-      await player.pause();
-
-      downloadNext(
-          surahNumber: surahNumber!,
-          recitationId: recitationId,
-          showDownloadBar: true,
-          append: true,
-          forward: true);
-
-      downloadNext(
-          surahNumber: surahNumber! - 1,
-          recitationId: recitationId,
-          showDownloadBar: false,
-          append: false,
-          forward: false);
-    }
-
-    seek(play);
-  }
-
-  @override
-  void setState(VoidCallback fn) {
-    if (mounted) super.setState(fn);
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    pageNumber = state.pageNumber;
-
-    // player = SoundPlayer.instance();
-    _init();
-    player.stream.position.listen((duration) async {
-      if (!mounted) return;
-      if (!state.playing) return;
-
-      VerseTimings? verseTiming = await DBUtils.getCurrentSegment(
-          recitationId, state.surahNumber, duration.inMilliseconds);
-
-      if (verseTiming == null) return;
-
-      String verse = verseTiming.verse;
-      state.surahNumber = int.parse(verse.split(':').first);
-      state.verseNumber = int.parse(verse.split(':').last);
-      state.wordNumber = verseTiming.wordPosition;
-      pageNumber = state.pageNumber =
-          quran.getPageNumber(state.surahNumber, state.verseNumber);
-      widget.update();
-    });
-
-    player.stream.completed.listen((completed) async {
-      if (!completed) return;
-
-      if (surahNumber == quran.totalSurahCount) return;
-      // state.updateSurahNumber(state.surahNumber + 1);
-      // state.playing = false;
-      state.surahNumber++;
-      state.verseNumber = 1;
-      state.wordNumber = -1;
-      pageNumber = state.pageNumber =
-          quran.getPageNumber(state.surahNumber, state.verseNumber);
-
-      await player.next();
-      await player.play();
-
-      widget.update();
-    });
+    // if (showDownloadBar) return;
+    // downloadNextSurah(
+    //     surahNumber: surahNumber + 1,
+    //     recitationId: recitationId,
+    //     showDownloadBar: false);
   }
 
   dynamic makeGetRequest(String url) async {

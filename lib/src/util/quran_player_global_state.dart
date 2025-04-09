@@ -11,7 +11,11 @@ class QuranPlayerGlobalState {
 
   int pageNumber = -1;
 
-  int surahNumber = -1;
+  int _surahNumber = -1;
+  int get surahNumber => _surahNumber;
+  set surahNumber(int newSurahNumber) {
+    _surahNumber = newSurahNumber;
+  }
 
   int verseNumber = -1;
 

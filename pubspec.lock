@@ -517,6 +517,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.9.46"
+  just_audio_background:
+    dependency: "direct main"
+    description:
+      name: just_audio_background
+      sha256: "387d83145879bd6943af3fac9d4509dc32b9fb52e08fd15d1193cf4d08a85f93"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1-beta.15"
+  just_audio_media_kit:
+    dependency: "direct main"
+    description:
+      name: just_audio_media_kit
+      sha256: "9f3517213dfc7bbaf6980656feb66c35600f114c7efc0b5b3f4476cd5c18b45e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.6"
   just_audio_platform_interface:
     dependency: transitive
     description:
@@ -630,7 +646,7 @@ packages:
     source: hosted
     version: "1.1.4"
   media_kit_libs_linux:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: media_kit_libs_linux
       sha256: "2b473399a49ec94452c4d4ae51cfc0f6585074398d74216092bf3d54aac37ecf"
@@ -646,7 +662,7 @@ packages:
     source: hosted
     version: "1.1.4"
   media_kit_libs_windows_audio:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: media_kit_libs_windows_audio
       sha256: c2fd558cc87b9d89a801141fcdffe02e338a3b21a41a18fbd63d5b221a1b8e53

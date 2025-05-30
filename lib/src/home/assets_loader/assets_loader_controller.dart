@@ -16,7 +16,7 @@ class AssetsLoaderController {
   // final _codeFontPrefix = const ['', 'v2_', 'v4_'];
   final List<int> _codeVersion = const [1, 2, 2];
   final List<int> _fontVersion = const [1, 2, 4];
-  final queue = Queue(parallel: 16);
+  final queue = Queue(parallel: 12);
 
   Future<void> loadAssets(VoidCallback update) async {
     for (int i = 1; i <= quran.totalPagesCount; i++) {

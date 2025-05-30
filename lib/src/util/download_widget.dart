@@ -48,7 +48,11 @@ class _DownloadWidgetState extends State<DownloadWidget> {
       downloadProgressNotifier.value = (actualBytes / totalBytes * 100).floor();
     }).then((value) {
       widget.state.downloading = false;
-      parent.setSource(audioFile, filePath).then((value) => parent.seek(true));
+      parent.setState(() async {
+        await parent.setSource(audioFile, filePath);
+        ;
+        await parent.seek(true);
+      });
     });
   }
 

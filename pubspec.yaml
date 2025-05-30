@@ -24,8 +24,8 @@ dependencies:
   page_flip: '^0.2.3'
 #  audio_session: '^0.1.23'
 
-  just_audio: '^0.9.43'
-  just_audio_background: '0.0.1-beta.15'
+  just_audio: ^0.10.3
+  just_audio_background: '0.0.1-beta.17'
   just_audio_media_kit: ^2.0.0
 
   # Select the native media_kit libs based on your usage:
@@ -53,11 +53,12 @@ dependencies:
   audio_video_progress_bar: ^2.0.3
   cached_network_image: ^3.3.1
 
+  drift_dev: any
+  intl: any
 dev_dependencies:
   flutter_test:
     sdk: 'flutter'
   flutter_lints: '^5.0.0'
-  drift_dev: ^2.24.0
   build_runner: ^2.4.14
 
 flutter:

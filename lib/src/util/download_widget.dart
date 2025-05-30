@@ -50,7 +50,6 @@ class _DownloadWidgetState extends State<DownloadWidget> {
       widget.state.downloading = false;
       parent.setState(() async {
         await parent.setSource(audioFile, filePath);
-        ;
         await parent.seek(true);
       });
     });

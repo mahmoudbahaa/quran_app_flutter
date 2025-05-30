@@ -81,6 +81,8 @@ flutter:
       fonts:
         - asset: 'assets/fonts/quran/page175.ttf'
 
+  generate: true
+
 inno_build:
   app_id: '60c776c4-dd15-4ea3-b2fb-3b6a725a5853'
 

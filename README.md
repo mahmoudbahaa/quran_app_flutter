@@ -60,4 +60,7 @@ provisioning profile; `--no-codesign` only checks compilation.
 
 `flutter pub outdated` can report newer releases of build_runner and transitive
 tooling that cannot currently be resolved with the other dependencies. Avoid
-forcing these with dependency overrides.
+forcing these with dependency overrides. Specifically, build_runner 2.17.1
+requires build 5, while drift_dev 2.35.1 requires build below 5, so the newest
+compatible build_runner is 2.16.2. Direct dependency constraints are tightened to
+the latest compatible versions recorded in pubspec.lock.

@@ -1,0 +1,19 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "quran-content-backend",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-21",
+  "workers_dev": true,
+  "preview_urls": false,
+  "vars": { "QF_ENV": "prelive" },
+  "env": {
+    "prelive": {
+      "name": "quran-content-prelive",
+      "vars": { "QF_ENV": "prelive" }
+    },
+    "production": {
+      "name": "quran-content-production",
+      "vars": { "QF_ENV": "production" }
+    }
+  }
+}

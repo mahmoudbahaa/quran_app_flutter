@@ -1,0 +1,19 @@
+{
+  "name": "quran-content-backend",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy:prelive": "wrangler deploy --env prelive",
+    "deploy:production": "wrangler deploy --env production",
+    "check": "wrangler deploy --dry-run --env prelive",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "miniflare": "^5.20261019.1-beta",
+    "wrangler": "^4.151.3"
+  }
+}

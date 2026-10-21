@@ -88,6 +88,7 @@ class Words extends Table {
 
 @DataClassName('DatabaseWordInfo')
 class WordInfos extends Table {
+  IntColumn get mushafId => integer().withDefault(const Constant(0))();
   TextColumn get verse => text()();
   IntColumn get position => integer()();
   IntColumn get codeVersion => integer()();
@@ -96,12 +97,17 @@ class WordInfos extends Table {
   IntColumn get lineNumber => integer()();
 
   @override
-  Set<Column<Object>> get primaryKey => {verse, position, codeVersion};
+  Set<Column<Object>> get primaryKey => {
+    verse,
+    position,
+    codeVersion,
+    mushafId,
+  };
 
   @override
   List<String> get customConstraints => [
-        'FOREIGN KEY("verse", "position") REFERENCES "words" ("verse", "position") ON DELETE CASCADE ON UPDATE NO ACTION'
-      ];
+    'FOREIGN KEY("verse", "position") REFERENCES "words" ("verse", "position") ON DELETE CASCADE ON UPDATE NO ACTION',
+  ];
 }
 
 class AudioFiles extends Table {

@@ -68,163 +68,180 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final recitationsItems = <DropdownMenuItem<int>>[];
+    List<DropdownMenuItem<int>> recitationItems() {
+      final recitationsItems = <DropdownMenuItem<int>>[];
 
-    for (int i = 0; i < recitations.length; i++) {
-      dynamic recitation = recitations[i];
-      String style = '';
-      if (recitation['style'] != null) {
-        style = ' (${recitation['style']})';
+      for (int i = 0; i < recitations.length; i++) {
+        dynamic recitation = recitations[i];
+        String style = '';
+        if (recitation['style'] != null) {
+          style = ' (${recitation['style']})';
+        }
+        String recitationName =
+            Localizations.localeOf(context).languageCode == 'ar'
+            ? recitation['translated_name']['name']
+            : recitation['reciter_name'];
+        recitationsItems.add(
+          DropdownMenuItem(
+            value: recitation['id'] as int,
+            child: Text('$recitationName$style'),
+          ),
+        );
       }
-      String recitationName =
-          Localizations.localeOf(context).languageCode == 'ar'
-              ? recitation['translated_name']['name']
-              : recitation['reciter_name'];
-      recitationsItems.add(DropdownMenuItem(
-        value: recitation['id'] as int,
-        child: Text('$recitationName$style'),
-      ));
+
+      return recitationsItems;
     }
 
     List<DropdownMenuItem<int>> numPages = [];
     for (int i = 1; i <= maxNumPages; i++) {
-      numPages.add(DropdownMenuItem(
-        value: i,
-        child: Text(NumberUtils.convertToLocaleNumber(i, context)),
-      ));
+      numPages.add(
+        DropdownMenuItem(
+          value: i,
+          child: Text(NumberUtils.convertToLocaleNumber(i, context)),
+        ),
+      );
     }
 
     List<DropdownMenuItem<MaterialAccentColor>> colors = [];
     for (int i = 0; i < Colors.accents.length; i++) {
-      colors.add(DropdownMenuItem(
-        value: Colors.accents[i],
-        child: Container(
-            color: Colors.accents[i], child: SizedBox(width: 10, height: 10)),
-      ));
+      colors.add(
+        DropdownMenuItem(
+          value: Colors.accents[i],
+          child: Container(
+            color: Colors.accents[i],
+            child: SizedBox(width: 10, height: 10),
+          ),
+        ),
+      );
     }
     return ListenableBuilder(
       listenable: controller,
       builder: (BuildContext context, Widget? child) => Scaffold(
-        appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.settings),
-        ),
+        appBar: AppBar(title: Text(AppLocalizations.of(context)!.settings)),
         body: SingleChildScrollView(
-          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Divider(thickness: dividerThickness, height: dividerHeight),
-            Text(AppLocalizations.of(context)!.theme),
-            DropdownButton<ThemeMode>(
-              // Read the selected themeMode from the controller
-              value: controller.themeMode,
-              // Call the updateThemeMode method any time the user selects a theme.
-              onChanged: controller.updateThemeMode,
-              items: [
-                DropdownMenuItem(
-                  value: ThemeMode.system,
-                  child: Text(AppLocalizations.of(context)!.system),
-                ),
-                DropdownMenuItem(
-                  value: ThemeMode.light,
-                  child: Text(AppLocalizations.of(context)!.light),
-                ),
-                DropdownMenuItem(
-                  value: ThemeMode.dark,
-                  child: Text(AppLocalizations.of(context)!.dark),
-                ),
-              ],
-            ),
-            Divider(thickness: dividerThickness, height: dividerHeight),
-            Text(AppLocalizations.of(context)!.loadAtStartupStyle),
-            DropdownButton<bool>(
-              // Read the selected themeMode from the controller
-              value: controller.loadCachedOnly,
-              // Call the updateThemeMode method any time the user selects a theme.
-              onChanged: controller.updateLoadCachedOnly,
-              items: [
-                DropdownMenuItem(
-                  value: true,
-                  child: Text(AppLocalizations.of(context)!.cachedOnly),
-                ),
-                DropdownMenuItem(
-                  value: false,
-                  child: Text(AppLocalizations.of(context)!.all),
-                ),
-              ],
-            ),
-            Divider(thickness: dividerThickness, height: dividerHeight),
-            Text(AppLocalizations.of(context)!.quranTextRepresentation),
-            DropdownButton<TextRepresentation>(
-              // Read the selected themeMode from the controller
-              value: controller.textRepresentation,
-              // Call the updateThemeMode method any time the user selects a theme.
-              onChanged: controller.updateTextRepresentation,
-              items: [
-                DropdownMenuItem(
-                  value: TextRepresentation.codeV1,
-                  child: Text(AppLocalizations.of(context)!.version1),
-                ),
-                DropdownMenuItem(
-                  value: TextRepresentation.codeV2,
-                  child: Text(AppLocalizations.of(context)!.version2),
-                ),
-                DropdownMenuItem(
-                  value: TextRepresentation.codeV4,
-                  child: Text(AppLocalizations.of(context)!.tagweed),
-                ),
-              ],
-            ),
-            Divider(thickness: dividerThickness, height: dividerHeight),
-            Text(AppLocalizations.of(context)!.numberOfPagesOnScreen),
-            DropdownButton<int>(
-              // Read the selected themeMode from the controller
-              value: controller.numPages,
-              // Call the updateThemeMode method any time the user selects a theme.
-              onChanged: controller.updateNumPages,
-              items: numPages,
-            ),
-            Divider(thickness: dividerThickness, height: dividerHeight),
-            Text(AppLocalizations.of(context)!.recitation),
-            DropdownButton<int>(
-              // Read the selected themeMode from the controller
-              value: controller.recitationId,
-              // Call the updateThemeMode method any time the user selects a theme.
-              onChanged: controller.updateRecitationId,
-              items: recitationsItems,
-            ),
-            Divider(thickness: dividerThickness, height: dividerHeight),
-            Text('Theme main Color'),
-            Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Divider(thickness: dividerThickness, height: dividerHeight),
+              Text(AppLocalizations.of(context)!.theme),
+              DropdownButton<ThemeMode>(
+                // Read the selected themeMode from the controller
+                value: controller.themeMode,
+                // Call the updateThemeMode method any time the user selects a theme.
+                onChanged: controller.updateThemeMode,
+                items: [
+                  DropdownMenuItem(
+                    value: ThemeMode.system,
+                    child: Text(AppLocalizations.of(context)!.system),
+                  ),
+                  DropdownMenuItem(
+                    value: ThemeMode.light,
+                    child: Text(AppLocalizations.of(context)!.light),
+                  ),
+                  DropdownMenuItem(
+                    value: ThemeMode.dark,
+                    child: Text(AppLocalizations.of(context)!.dark),
+                  ),
+                ],
+              ),
+              Divider(thickness: dividerThickness, height: dividerHeight),
+              Text(AppLocalizations.of(context)!.loadAtStartupStyle),
+              DropdownButton<bool>(
+                // Read the selected themeMode from the controller
+                value: controller.loadCachedOnly,
+                // Call the updateThemeMode method any time the user selects a theme.
+                onChanged: controller.updateLoadCachedOnly,
+                items: [
+                  DropdownMenuItem(
+                    value: true,
+                    child: Text(AppLocalizations.of(context)!.cachedOnly),
+                  ),
+                  DropdownMenuItem(
+                    value: false,
+                    child: Text(AppLocalizations.of(context)!.all),
+                  ),
+                ],
+              ),
+              Divider(thickness: dividerThickness, height: dividerHeight),
+              Text(AppLocalizations.of(context)!.quranTextRepresentation),
+              DropdownButton<TextRepresentation>(
+                // Read the selected themeMode from the controller
+                value: controller.textRepresentation,
+                // Call the updateThemeMode method any time the user selects a theme.
+                onChanged: controller.updateTextRepresentation,
+                items: [
+                  DropdownMenuItem(
+                    value: TextRepresentation.codeV1,
+                    child: Text(AppLocalizations.of(context)!.version1),
+                  ),
+                  DropdownMenuItem(
+                    value: TextRepresentation.codeV2,
+                    child: Text(AppLocalizations.of(context)!.version2),
+                  ),
+                  DropdownMenuItem(
+                    value: TextRepresentation.codeV4,
+                    child: Text(AppLocalizations.of(context)!.tagweed),
+                  ),
+                ],
+              ),
+              Divider(thickness: dividerThickness, height: dividerHeight),
+              Text(AppLocalizations.of(context)!.numberOfPagesOnScreen),
+              DropdownButton<int>(
+                // Read the selected themeMode from the controller
+                value: controller.numPages,
+                // Call the updateThemeMode method any time the user selects a theme.
+                onChanged: controller.updateNumPages,
+                items: numPages,
+              ),
+              Divider(thickness: dividerThickness, height: dividerHeight),
+              Text(AppLocalizations.of(context)!.recitation),
+              DropdownButton<int>(
+                // Read the selected themeMode from the controller
+                value:
+                    recitations.any(
+                      (item) => item['id'] == controller.recitationId,
+                    )
+                    ? controller.recitationId
+                    : null,
+                // Call the updateThemeMode method any time the user selects a theme.
+                onChanged: controller.updateRecitationId,
+                items: recitationItems(),
+              ),
+              Divider(thickness: dividerThickness, height: dividerHeight),
+              Text('Theme main Color'),
+              Container(
                 color: controller.mainColor,
                 child: TextButton(
-                    onPressed: () =>
-                        showColorPicker(context, controller.mainColor),
-                    child: Text('change Theme Color'))),
-            // <MaterialAccentColor>(
-            //   // Read the selected themeMode from the controller
-            //   value: controller.mainColor,
-            //   // Call the updateThemeMode method any time the user selects a theme.
-            //   onChanged: controller.updateMainColor,
-            //   items: colors,
-            // ),
-            Divider(thickness: dividerThickness, height: dividerHeight),
-            Text('Page View Mode'),
-            DropdownButton<bool>(
-              // Read the selected themeMode from the controller
-              value: controller.selectableViews,
-              // Call the updateThemeMode method any time the user selects a theme.
-              onChanged: controller.updateSelectableViews,
-              items: [
-                DropdownMenuItem(
-                  value: false,
-                  child: Text('View only'),
+                  onPressed: () =>
+                      showColorPicker(context, controller.mainColor),
+                  child: Text('change Theme Color'),
                 ),
-                DropdownMenuItem(
-                  value: true,
-                  child: Text('Selection and copy mode'),
-                ),
-              ],
-            ),
-            Divider(thickness: dividerThickness, height: dividerHeight),
-          ]),
+              ),
+              // <MaterialAccentColor>(
+              //   // Read the selected themeMode from the controller
+              //   value: controller.mainColor,
+              //   // Call the updateThemeMode method any time the user selects a theme.
+              //   onChanged: controller.updateMainColor,
+              //   items: colors,
+              // ),
+              Divider(thickness: dividerThickness, height: dividerHeight),
+              Text('Page View Mode'),
+              DropdownButton<bool>(
+                // Read the selected themeMode from the controller
+                value: controller.selectableViews,
+                // Call the updateThemeMode method any time the user selects a theme.
+                onChanged: controller.updateSelectableViews,
+                items: [
+                  DropdownMenuItem(value: false, child: Text('View only')),
+                  DropdownMenuItem(
+                    value: true,
+                    child: Text('Selection and copy mode'),
+                  ),
+                ],
+              ),
+              Divider(thickness: dividerThickness, height: dividerHeight),
+            ],
+          ),
         ),
       ),
     );

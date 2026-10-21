@@ -8,11 +8,12 @@ import '../../localization/app_localizations.dart';
 import '../../util/quran_player_global_state.dart';
 
 class AssetsLoaderWidget extends StatefulWidget {
-  const AssetsLoaderWidget(
-      {super.key,
-      required this.settingsController,
-      required this.state,
-      required this.update});
+  const AssetsLoaderWidget({
+    super.key,
+    required this.settingsController,
+    required this.state,
+    required this.update,
+  });
 
   final SettingsController settingsController;
   final QuranPlayerGlobalState state;
@@ -26,6 +27,8 @@ class AssetsLoaderWidget extends StatefulWidget {
 
 class _AssetsDownloaderWidget extends State<AssetsLoaderWidget> {
   final ValueNotifier<double> downloadProgressNotifier = ValueNotifier(0);
+
+  String? downloadError;
 
   int startTime = DateTime.now().millisecondsSinceEpoch;
   int assetsLoaded = 0;
@@ -61,24 +64,63 @@ class _AssetsDownloaderWidget extends State<AssetsLoaderWidget> {
   }
 
   void update() {
+    if (!mounted) return;
     assetsLoaded++;
     if (assetsLoaded >= totalAssets) {
       setState(() => widget.state.loading = false);
       widget.update();
     }
-    setState(() => downloadProgressNotifier.value =
-        double.parse(((assetsLoaded / totalAssets) * 100).toStringAsFixed(2)));
+    setState(
+      () => downloadProgressNotifier.value = double.parse(
+        ((assetsLoaded / totalAssets) * 100).toStringAsFixed(2),
+      ),
+    );
   }
 
   @override
   void initState() {
     super.initState();
-    AssetsLoaderController(settingsController: widget.settingsController)
-        .loadAssets(update);
+    _download();
+  }
+
+  Future<void> _download() async {
+    try {
+      await AssetsLoaderController(
+        settingsController: widget.settingsController,
+      ).loadAssets(update);
+    } catch (error) {
+      if (mounted) setState(() => downloadError = error.toString());
+    }
+  }
+
+  @override
+  void dispose() {
+    downloadProgressNotifier.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (downloadError != null) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(downloadError!, textAlign: TextAlign.center),
+              TextButton(
+                onPressed: () {
+                  widget.state.loading = false;
+                  widget.update();
+                },
+                child: const Text('Continue reading'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -88,28 +130,27 @@ class _AssetsDownloaderWidget extends State<AssetsLoaderWidget> {
             AppLocalizations.of(context)!.loading,
             style: TextStyle(fontSize: 40),
           ),
-          const SizedBox(
-            height: 32,
-          ),
+          const SizedBox(height: 32),
           ValueListenableBuilder(
-              valueListenable: downloadProgressNotifier,
-              builder: (context, value, snapshot) {
-                return CircularPercentIndicator(
-                  radius: 75.0,
-                  lineWidth: 15.0,
-                  // animation: true,
-                  percent: downloadProgressNotifier.value / 100,
-                  center: Text(
-                    '${downloadProgressNotifier.value}%',
-                    style: const TextStyle(
-                        fontSize: 24.0, fontWeight: FontWeight.w600),
+            valueListenable: downloadProgressNotifier,
+            builder: (context, value, snapshot) {
+              return CircularPercentIndicator(
+                radius: 75.0,
+                lineWidth: 15.0,
+                // animation: true,
+                percent: downloadProgressNotifier.value / 100,
+                center: Text(
+                  '${downloadProgressNotifier.value}%',
+                  style: const TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.w600,
                   ),
-                  circularStrokeCap: CircularStrokeCap.round,
-                );
-              }),
-          const SizedBox(
-            height: 32,
+                ),
+                circularStrokeCap: CircularStrokeCap.round,
+              );
+            },
           ),
+          const SizedBox(height: 32),
           Text(
             textDirection: TextDirection.ltr,
             '$assetsLoaded/$totalAssets',

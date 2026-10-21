@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:queue/queue.dart';
 import 'package:quran/quran.dart' as quran;
 import 'package:quran_app_flutter/src/home/assets_loader/assets_loader_service.dart';
 import 'package:quran_app_flutter/src/settings/settings_controller.dart';
@@ -16,19 +15,24 @@ class AssetsLoaderController {
   // final _codeFontPrefix = const ['', 'v2_', 'v4_'];
   final List<int> _codeVersion = const [1, 2, 2];
   final List<int> _fontVersion = const [1, 2, 4];
-  final queue = Queue(parallel: 12);
-
   Future<void> loadAssets(VoidCallback update) async {
-    for (int i = 1; i <= quran.totalPagesCount; i++) {
-      queue.add(() async => await _loadPageFonts(i, update));
-      queue.add(() async => await _loadVerseWordsData(i, update));
+    // Keep concurrency bounded and propagate failures to the download screen.
+    for (var start = 1; start <= quran.totalPagesCount; start += 6) {
+      await Future.wait([
+        for (
+          var page = start;
+          page < start + 6 && page <= quran.totalPagesCount;
+          page++
+        ) ...[_loadPageFonts(page, update), _loadVerseWordsData(page, update)],
+      ]);
     }
-
-    await queue.onComplete;
   }
 
   Future<void> _loadAsset(
-      int pageNumber, Function assetFunc, Function update) async {
+    int pageNumber,
+    Function assetFunc,
+    Function update,
+  ) async {
     await assetFunc(pageNumber);
 
     update();
@@ -55,26 +59,31 @@ class AssetsLoaderController {
     return _fontsLoaded[_getFontName(pageNumber, dark)] != null;
   }
 
-  Future<void> loadPageFont(int pageNumber,
-      {bool dark = false, bool? cacheOnly}) async {
+  Future<void> loadPageFont(
+    int pageNumber, {
+    bool dark = false,
+    bool? cacheOnly,
+  }) async {
     if (isFontLoaded(pageNumber, dark)) return;
 
     final codeVersion =
         _fontVersion[settingsController.textRepresentation.index];
     bool loaded = await _assetsLoaderService.loadFont(
-        pageNumber,
-        codeVersion,
-        settingsController.textRepresentation,
-        dark,
-        cacheOnly ?? settingsController.loadCachedOnly);
+      pageNumber,
+      codeVersion,
+      settingsController.textRepresentation,
+      dark,
+      cacheOnly ?? settingsController.loadCachedOnly,
+    );
     if (loaded) _fontsLoaded[_getFontName(pageNumber, dark)] = true;
   }
 
   Future<void> loadWordsData(int pageNumber, {bool? cacheOnly}) async {
     return await _assetsLoaderService.loadWordsData(
-        pageNumber,
-        settingsController.textRepresentation,
-        cacheOnly ?? settingsController.loadCachedOnly,
-        _codeVersion[settingsController.textRepresentation.index]);
+      pageNumber,
+      settingsController.textRepresentation,
+      cacheOnly ?? settingsController.loadCachedOnly,
+      _codeVersion[settingsController.textRepresentation.index],
+    );
   }
 }

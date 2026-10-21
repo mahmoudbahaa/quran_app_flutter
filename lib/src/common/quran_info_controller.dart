@@ -15,16 +15,26 @@ class QuranInfoController {
   const QuranInfoController();
 
   String getRecitation(BuildContext context, int recitationId) {
-    dynamic recitation =
-        recitations.firstWhere((element) => element['id'] == recitationId);
+    dynamic recitation = recitations.firstWhere(
+      (element) => element['id'] == recitationId,
+      orElse: () => {
+        'reciter_name': 'Reciter $recitationId',
+        'translated_name': {'name': 'Reciter $recitationId'},
+      },
+    );
 
     return Localizations.localeOf(context).languageCode == 'ar'
         ? recitation['translated_name']['name']
         : recitation['reciter_name'];
   }
 
-  void goToPage(int pageNumber, int surahNumber, BuildContext context,
-      SettingsController settingsController, QuranPlayerGlobalState state) {
+  void goToPage(
+    int pageNumber,
+    int surahNumber,
+    BuildContext context,
+    SettingsController settingsController,
+    QuranPlayerGlobalState state,
+  ) {
     state.surahNumber = surahNumber;
     state.pageNumber = pageNumber;
     state.verseNumber = 1;
@@ -86,22 +96,27 @@ class QuranInfoController {
 
   String getSurahName(BuildContext context, int surahNumber) {
     String surahPrefix = AppLocalizations.of(context)!.surahPrefix;
-    String surahName = surahNames[Localizations.localeOf(context).languageCode]
-        [surahNumber - 1];
+    String surahName =
+        surahNames[Localizations.localeOf(context)
+            .languageCode][surahNumber - 1];
     return '$surahPrefix$surahName';
   }
 
   String getSurahNameWithTranslation(int surahNumber, BuildContext context) {
     int surahIndex = surahNumber - 1;
     String langCode = Localizations.localeOf(context).languageCode;
-    String surahTranslation =
-        langCode == 'ar' ? '' : ' (${surahTranslations[langCode][surahIndex]})';
+    String surahTranslation = langCode == 'ar'
+        ? ''
+        : ' (${surahTranslations[langCode][surahIndex]})';
 
     return '${getSurahName(context, surahNumber)}$surahTranslation';
   }
 
   RubHizbVerseInfo getRubHizbPreview(
-      int hizbNumber, int quarterNumber, BuildContext context) {
+    int hizbNumber,
+    int quarterNumber,
+    BuildContext context,
+  ) {
     final int key = (hizbNumber - 1) * 4 + (quarterNumber - 1);
     final String verseKey = rubHizbInfo[key]['verse_key'] as String;
     final int pageNumber = getPageNumber(hizbNumber, quarterNumber);
@@ -132,19 +147,21 @@ class QuranInfoController {
     String verseInfo =
         '${getSurahName(context, surahNumber - 1)} ${AppLocalizations.of(context)!.verse} ';
     return RubHizbVerseInfo(
-        verseInfo: verseInfo,
-        versePreview: versePreview,
-        verseNumber: verseNumber,
-        pageNumber: pageNumber);
+      verseInfo: verseInfo,
+      versePreview: versePreview,
+      verseNumber: verseNumber,
+      pageNumber: pageNumber,
+    );
   }
 }
 
 class RubHizbVerseInfo {
-  const RubHizbVerseInfo(
-      {required this.verseInfo,
-      required this.versePreview,
-      required this.verseNumber,
-      required this.pageNumber});
+  const RubHizbVerseInfo({
+    required this.verseInfo,
+    required this.versePreview,
+    required this.verseNumber,
+    required this.pageNumber,
+  });
 
   final String verseInfo;
   final String versePreview;

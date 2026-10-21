@@ -27,22 +27,28 @@ class DbUtilsDrift extends DBUtils {
       _database.insertFont(code, page, font);
 
   @override
-  Future<List<int?>> getWordsInfoLoaded(int code, int page) =>
-      _database.getWordsInfoLoaded(code);
+  Future<List<int?>> getWordsInfoLoaded(int code, int page, int mushaf) =>
+      _database.getWordsInfoLoaded(code, mushaf);
 
   @override
-  Future<void> loadWordsInfo(int code, int page, data) =>
-      _database.loadWordsInfo(code, page, data);
+  Future<void> loadWordsInfo(int code, int page, int mushaf, data) async {
+    await _database.loadWordsInfo(code, page, mushaf, data);
+    _cache.remove('$mushaf:$code:$page');
+  }
 
   static final Map<String, List<exposed.WordInfo>> _cache =
       <String, List<exposed.WordInfo>>{};
 
   @override
   Future<List<exposed.WordInfo>> getActualLinesWords(
-      int code, int page, int line) async {
-    String cacheKey = '$code:$page';
+    int code,
+    int page,
+    int line,
+    int mushaf,
+  ) async {
+    String cacheKey = '$mushaf:$code:$page';
     if (_cache[cacheKey] == null) {
-      _cache[cacheKey] = await _database.getLinesWords(code, page);
+      _cache[cacheKey] = await _database.getLinesWords(code, page, mushaf);
     }
 
     return _cache[cacheKey]!.where((element) => element.line == line).toList();
@@ -58,11 +64,16 @@ class DbUtilsDrift extends DBUtils {
 
   @override
   Future<VerseTimings?> actualGetCurrentSegment(
-          int recitationId, int surahNumber, int ms) =>
-      _database.getCurrentSegment(recitationId, surahNumber, ms);
+    int recitationId,
+    int surahNumber,
+    int ms,
+  ) => _database.getCurrentSegment(recitationId, surahNumber, ms);
 
   @override
   Future<VerseTimings?> actualGetSegment(
-          int recitationId, int surahNumber, int verseNumber, int wordNumber) =>
-      _database.getSegment(recitationId, surahNumber, verseNumber, wordNumber);
+    int recitationId,
+    int surahNumber,
+    int verseNumber,
+    int wordNumber,
+  ) => _database.getSegment(recitationId, surahNumber, verseNumber, wordNumber);
 }

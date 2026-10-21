@@ -1,4 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+
+import '../api/content_catalog.dart';
+import '../models/recitations.dart';
 
 import '../models/enums.dart';
 import 'settings_service.dart';
@@ -43,13 +48,31 @@ class SettingsController with ChangeNotifier {
     _textRepresentation = await _settingsService.textRepresentation();
     _loadCachedOnly = await _settingsService.loadCachedOnly();
     _numPages = await _settingsService.numPages();
+    await ContentCatalog.loadCached();
     _recitationId = await _settingsService.recitationId();
+    if (!recitations.any((item) => item['id'] == _recitationId)) {
+      _recitationId = recitations.first['id'] as int;
+    }
     _appLocale = await _settingsService.appLocale();
     _mainColor = await _settingsService.mainColor();
     _selectableViews = await _settingsService.selectableViews();
 
     // Important! Inform listeners a change has occurred.
     notifyListeners();
+    unawaited(_refreshContentCatalog());
+  }
+
+  Future<void> _refreshContentCatalog() async {
+    try {
+      await ContentCatalog.refresh();
+      if (!recitations.any((item) => item['id'] == _recitationId)) {
+        _recitationId = recitations.first['id'] as int;
+        await _settingsService.updateRecitationId(_recitationId);
+      }
+      notifyListeners();
+    } catch (error) {
+      debugPrint('Quran catalog refresh failed: $error');
+    }
   }
 
   Future<void> updateAppLocale(AppLocale? appLocale) async {
@@ -80,7 +103,8 @@ class SettingsController with ChangeNotifier {
 
   /// Update and persist the TextRepresentation based on the user's selection.
   Future<void> updateTextRepresentation(
-      TextRepresentation? newTextRepresentation) async {
+    TextRepresentation? newTextRepresentation,
+  ) async {
     if (newTextRepresentation == null) return;
     if (newTextRepresentation == _textRepresentation) return;
     _textRepresentation = newTextRepresentation;

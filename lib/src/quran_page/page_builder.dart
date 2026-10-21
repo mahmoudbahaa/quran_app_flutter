@@ -10,12 +10,13 @@ import '../models/enums.dart';
 import '../util/quran_player_global_state.dart';
 
 class PageBuilder {
-  const PageBuilder(
-      {required this.context,
-      required this.state,
-      required this.update,
-      required this.fontSize,
-      required this.textRepresentation});
+  const PageBuilder({
+    required this.context,
+    required this.state,
+    required this.update,
+    required this.fontSize,
+    required this.textRepresentation,
+  });
 
   final BuildContext context;
   final fontCode = const [1, 2, 4];
@@ -27,8 +28,13 @@ class PageBuilder {
   final TextRepresentation textRepresentation;
   final double fontSize;
 
-  TextSpan getText(String element, String originalText, String fontFamily,
-      TextType type, QuranPlayerGlobalState newState) {
+  TextSpan getText(
+    String element,
+    String originalText,
+    String fontFamily,
+    TextType type,
+    QuranPlayerGlobalState newState,
+  ) {
     final pageNumber = newState.pageNumber;
     final surahNumber = newState.surahNumber;
     final verseNumber = newState.verseNumber;
@@ -119,12 +125,18 @@ class PageBuilder {
   //   return children;
   // }
 
-  Future<List<InlineSpan>> buildPage(bool isDark, int pageNumber,
-      SettingsController settingsController) async {
+  Future<List<InlineSpan>> buildPage(
+    bool isDark,
+    int pageNumber,
+    SettingsController settingsController,
+  ) async {
     final AssetsLoaderController assetsLoaderController =
         AssetsLoaderController(settingsController: settingsController);
-    await assetsLoaderController.loadPageFont(pageNumber,
-        cacheOnly: false, dark: isDark);
+    await assetsLoaderController.loadPageFont(
+      pageNumber,
+      cacheOnly: false,
+      dark: isDark,
+    );
     await assetsLoaderController.loadWordsData(pageNumber, cacheOnly: false);
 
     final codeVersion = code[settingsController.textRepresentation.index];
@@ -140,15 +152,26 @@ class PageBuilder {
     int surahNumber = -1;
     for (int line = 1; line <= 15; line++) {
       List<WordInfo> wordInfos = await DBUtils.getLinesWords(
-          code: codeVersion, page: pageNumber, line: line);
+        code: codeVersion,
+        page: pageNumber,
+        line: line,
+        mushaf: mushafIds[settingsController.textRepresentation.index],
+      );
 
       if (wordInfos.isEmpty) {
         if (line == 15) {
           surahNumber++;
           String surahCode = '${surahNumber.toString().padLeft(3, '0')}surah\n';
           String surahName = quran.getSurahNameArabic(surahNumber);
-          children.add(getText(surahCode, surahName, 'surahNames',
-              TextType.surahName, newState));
+          children.add(
+            getText(
+              surahCode,
+              surahName,
+              'surahNames',
+              TextType.surahName,
+              newState,
+            ),
+          );
         }
         if (addBismallah) {
           addSurahName = true;
@@ -174,15 +197,23 @@ class PageBuilder {
         if (addSurahName || (addBismallah && surahNumber == 9)) {
           String surahCode = '${surahNumber.toString().padLeft(3, '0')}surah\n';
           String surahName = quran.getSurahNameArabic(surahNumber);
-          children.add(getText(surahCode, surahName, 'surahNames',
-              TextType.surahName, newState));
+          children.add(
+            getText(
+              surahCode,
+              surahName,
+              'surahNames',
+              TextType.surahName,
+              newState,
+            ),
+          );
           addSurahName = false;
         }
 
         if (addBismallah) {
           if (surahNumber != 1 && surahNumber != 9) {
-            children.add(getText(
-                '﷽\n', '﷽\n', 'uthmanic', TextType.bismallah, newState));
+            children.add(
+              getText('﷽\n', '﷽\n', 'uthmanic', TextType.bismallah, newState),
+            );
           }
 
           addBismallah = false;
@@ -191,14 +222,16 @@ class PageBuilder {
         final fontSuffix = isDark ? '_dark' : '';
         final font =
             '${fontCode[textRepresentation.index]}_$pageNumber$fontSuffix';
-        final suffix = line == 1 &&
+        final suffix =
+            line == 1 &&
                 wordNumber == 1 &&
                 textRepresentation != TextRepresentation.codeV1
             ? ' '
             // ? ''
             : '';
 
-        TextType type = (highlightSurah == surahNumber &&
+        TextType type =
+            (highlightSurah == surahNumber &&
                 highlightVerse == verseNumber &&
                 highlightWord == wordNumber)
             ? TextType.highlightedVerse
@@ -206,8 +239,13 @@ class PageBuilder {
 
         final wordCode = '${wordInfo.code}$suffix';
         final actualText = '${wordInfo.word.textImlaei} ';
-        InlineSpan wordSpan =
-            getText(wordCode, actualText, font, type, newState);
+        InlineSpan wordSpan = getText(
+          wordCode,
+          actualText,
+          font,
+          type,
+          newState,
+        );
         children.add(wordSpan);
       }
 

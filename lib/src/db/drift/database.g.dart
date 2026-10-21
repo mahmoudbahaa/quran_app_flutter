@@ -956,6 +956,18 @@ class $WordInfosTable extends WordInfos
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $WordInfosTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _mushafIdMeta = const VerificationMeta(
+    'mushafId',
+  );
+  @override
+  late final GeneratedColumn<int> mushafId = GeneratedColumn<int>(
+    'mushaf_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
+  );
   static const VerificationMeta _verseMeta = const VerificationMeta('verse');
   @override
   late final GeneratedColumn<String> verse = GeneratedColumn<String>(
@@ -1020,6 +1032,7 @@ class $WordInfosTable extends WordInfos
   );
   @override
   List<GeneratedColumn> get $columns => [
+    mushafId,
     verse,
     position,
     codeVersion,
@@ -1039,6 +1052,12 @@ class $WordInfosTable extends WordInfos
   }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
+    if (data.containsKey('mushaf_id')) {
+      context.handle(
+        _mushafIdMeta,
+        mushafId.isAcceptableOrUnknown(data['mushaf_id']!, _mushafIdMeta),
+      );
+    }
     if (data.containsKey('verse')) {
       context.handle(
         _verseMeta,
@@ -1094,11 +1113,20 @@ class $WordInfosTable extends WordInfos
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {verse, position, codeVersion};
+  Set<GeneratedColumn> get $primaryKey => {
+    verse,
+    position,
+    codeVersion,
+    mushafId,
+  };
   @override
   DatabaseWordInfo map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return DatabaseWordInfo(
+      mushafId: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}mushaf_id'],
+      )!,
       verse: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}verse'],
@@ -1134,6 +1162,7 @@ class $WordInfosTable extends WordInfos
 
 class DatabaseWordInfo extends DataClass
     implements Insertable<DatabaseWordInfo> {
+  final int mushafId;
   final String verse;
   final int position;
   final int codeVersion;
@@ -1141,6 +1170,7 @@ class DatabaseWordInfo extends DataClass
   final int pageNumber;
   final int lineNumber;
   const DatabaseWordInfo({
+    required this.mushafId,
     required this.verse,
     required this.position,
     required this.codeVersion,
@@ -1151,6 +1181,7 @@ class DatabaseWordInfo extends DataClass
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    map['mushaf_id'] = Variable<int>(mushafId);
     map['verse'] = Variable<String>(verse);
     map['position'] = Variable<int>(position);
     map['code_version'] = Variable<int>(codeVersion);
@@ -1162,6 +1193,7 @@ class DatabaseWordInfo extends DataClass
 
   WordInfosCompanion toCompanion(bool nullToAbsent) {
     return WordInfosCompanion(
+      mushafId: Value(mushafId),
       verse: Value(verse),
       position: Value(position),
       codeVersion: Value(codeVersion),
@@ -1177,6 +1209,7 @@ class DatabaseWordInfo extends DataClass
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return DatabaseWordInfo(
+      mushafId: serializer.fromJson<int>(json['mushafId']),
       verse: serializer.fromJson<String>(json['verse']),
       position: serializer.fromJson<int>(json['position']),
       codeVersion: serializer.fromJson<int>(json['codeVersion']),
@@ -1189,6 +1222,7 @@ class DatabaseWordInfo extends DataClass
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
+      'mushafId': serializer.toJson<int>(mushafId),
       'verse': serializer.toJson<String>(verse),
       'position': serializer.toJson<int>(position),
       'codeVersion': serializer.toJson<int>(codeVersion),
@@ -1199,6 +1233,7 @@ class DatabaseWordInfo extends DataClass
   }
 
   DatabaseWordInfo copyWith({
+    int? mushafId,
     String? verse,
     int? position,
     int? codeVersion,
@@ -1206,6 +1241,7 @@ class DatabaseWordInfo extends DataClass
     int? pageNumber,
     int? lineNumber,
   }) => DatabaseWordInfo(
+    mushafId: mushafId ?? this.mushafId,
     verse: verse ?? this.verse,
     position: position ?? this.position,
     codeVersion: codeVersion ?? this.codeVersion,
@@ -1215,6 +1251,7 @@ class DatabaseWordInfo extends DataClass
   );
   DatabaseWordInfo copyWithCompanion(WordInfosCompanion data) {
     return DatabaseWordInfo(
+      mushafId: data.mushafId.present ? data.mushafId.value : this.mushafId,
       verse: data.verse.present ? data.verse.value : this.verse,
       position: data.position.present ? data.position.value : this.position,
       codeVersion: data.codeVersion.present
@@ -1233,6 +1270,7 @@ class DatabaseWordInfo extends DataClass
   @override
   String toString() {
     return (StringBuffer('DatabaseWordInfo(')
+          ..write('mushafId: $mushafId, ')
           ..write('verse: $verse, ')
           ..write('position: $position, ')
           ..write('codeVersion: $codeVersion, ')
@@ -1244,12 +1282,20 @@ class DatabaseWordInfo extends DataClass
   }
 
   @override
-  int get hashCode =>
-      Object.hash(verse, position, codeVersion, code, pageNumber, lineNumber);
+  int get hashCode => Object.hash(
+    mushafId,
+    verse,
+    position,
+    codeVersion,
+    code,
+    pageNumber,
+    lineNumber,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is DatabaseWordInfo &&
+          other.mushafId == this.mushafId &&
           other.verse == this.verse &&
           other.position == this.position &&
           other.codeVersion == this.codeVersion &&
@@ -1259,6 +1305,7 @@ class DatabaseWordInfo extends DataClass
 }
 
 class WordInfosCompanion extends UpdateCompanion<DatabaseWordInfo> {
+  final Value<int> mushafId;
   final Value<String> verse;
   final Value<int> position;
   final Value<int> codeVersion;
@@ -1267,6 +1314,7 @@ class WordInfosCompanion extends UpdateCompanion<DatabaseWordInfo> {
   final Value<int> lineNumber;
   final Value<int> rowid;
   const WordInfosCompanion({
+    this.mushafId = const Value.absent(),
     this.verse = const Value.absent(),
     this.position = const Value.absent(),
     this.codeVersion = const Value.absent(),
@@ -1276,6 +1324,7 @@ class WordInfosCompanion extends UpdateCompanion<DatabaseWordInfo> {
     this.rowid = const Value.absent(),
   });
   WordInfosCompanion.insert({
+    this.mushafId = const Value.absent(),
     required String verse,
     required int position,
     required int codeVersion,
@@ -1290,6 +1339,7 @@ class WordInfosCompanion extends UpdateCompanion<DatabaseWordInfo> {
        pageNumber = Value(pageNumber),
        lineNumber = Value(lineNumber);
   static Insertable<DatabaseWordInfo> custom({
+    Expression<int>? mushafId,
     Expression<String>? verse,
     Expression<int>? position,
     Expression<int>? codeVersion,
@@ -1299,6 +1349,7 @@ class WordInfosCompanion extends UpdateCompanion<DatabaseWordInfo> {
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
+      if (mushafId != null) 'mushaf_id': mushafId,
       if (verse != null) 'verse': verse,
       if (position != null) 'position': position,
       if (codeVersion != null) 'code_version': codeVersion,
@@ -1310,6 +1361,7 @@ class WordInfosCompanion extends UpdateCompanion<DatabaseWordInfo> {
   }
 
   WordInfosCompanion copyWith({
+    Value<int>? mushafId,
     Value<String>? verse,
     Value<int>? position,
     Value<int>? codeVersion,
@@ -1319,6 +1371,7 @@ class WordInfosCompanion extends UpdateCompanion<DatabaseWordInfo> {
     Value<int>? rowid,
   }) {
     return WordInfosCompanion(
+      mushafId: mushafId ?? this.mushafId,
       verse: verse ?? this.verse,
       position: position ?? this.position,
       codeVersion: codeVersion ?? this.codeVersion,
@@ -1332,6 +1385,9 @@ class WordInfosCompanion extends UpdateCompanion<DatabaseWordInfo> {
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
+    if (mushafId.present) {
+      map['mushaf_id'] = Variable<int>(mushafId.value);
+    }
     if (verse.present) {
       map['verse'] = Variable<String>(verse.value);
     }
@@ -1359,6 +1415,7 @@ class WordInfosCompanion extends UpdateCompanion<DatabaseWordInfo> {
   @override
   String toString() {
     return (StringBuffer('WordInfosCompanion(')
+          ..write('mushafId: $mushafId, ')
           ..write('verse: $verse, ')
           ..write('position: $position, ')
           ..write('codeVersion: $codeVersion, ')
@@ -3380,6 +3437,7 @@ typedef $$WordsTableProcessedTableManager =
       PrefetchHooks Function({bool verse})
     >;
 typedef $$WordInfosTableCreateCompanionBuilder = WordInfosCompanion Function({
+  Value<int> mushafId,
   required String verse,
   required int position,
   required int codeVersion,
@@ -3389,6 +3447,7 @@ typedef $$WordInfosTableCreateCompanionBuilder = WordInfosCompanion Function({
   Value<int> rowid,
 });
 typedef $$WordInfosTableUpdateCompanionBuilder = WordInfosCompanion Function({
+  Value<int> mushafId,
   Value<String> verse,
   Value<int> position,
   Value<int> codeVersion,
@@ -3407,6 +3466,11 @@ class $$WordInfosTableFilterComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
+  ColumnFilters<int> get mushafId => $composableBuilder(
+    column: $table.mushafId,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get verse => $composableBuilder(
     column: $table.verse,
     builder: (column) => ColumnFilters(column),
@@ -3447,6 +3511,11 @@ class $$WordInfosTableOrderingComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
+  ColumnOrderings<int> get mushafId => $composableBuilder(
+    column: $table.mushafId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get verse => $composableBuilder(
     column: $table.verse,
     builder: (column) => ColumnOrderings(column),
@@ -3487,6 +3556,9 @@ class $$WordInfosTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
+  GeneratedColumn<int> get mushafId =>
+      $composableBuilder(column: $table.mushafId, builder: (column) => column);
+
   GeneratedColumn<String> get verse =>
       $composableBuilder(column: $table.verse, builder: (column) => column);
 
@@ -3543,6 +3615,7 @@ class $$WordInfosTableTableManager
               $$WordInfosTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
+                Value<int> mushafId = const Value.absent(),
                 Value<String> verse = const Value.absent(),
                 Value<int> position = const Value.absent(),
                 Value<int> codeVersion = const Value.absent(),
@@ -3551,6 +3624,7 @@ class $$WordInfosTableTableManager
                 Value<int> lineNumber = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => WordInfosCompanion(
+                mushafId: mushafId,
                 verse: verse,
                 position: position,
                 codeVersion: codeVersion,
@@ -3561,6 +3635,7 @@ class $$WordInfosTableTableManager
               ),
           createCompanionCallback:
               ({
+                Value<int> mushafId = const Value.absent(),
                 required String verse,
                 required int position,
                 required int codeVersion,
@@ -3569,6 +3644,7 @@ class $$WordInfosTableTableManager
                 required int lineNumber,
                 Value<int> rowid = const Value.absent(),
               }) => WordInfosCompanion.insert(
+                mushafId: mushafId,
                 verse: verse,
                 position: position,
                 codeVersion: codeVersion,

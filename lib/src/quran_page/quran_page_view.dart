@@ -18,8 +18,11 @@ import 'page_builder.dart';
 import 'quran_player.dart';
 
 class QuranPageView extends StatefulWidget {
-  const QuranPageView(
-      {super.key, required this.settingsController, required this.state});
+  const QuranPageView({
+    super.key,
+    required this.settingsController,
+    required this.state,
+  });
 
   final SettingsController settingsController;
   final QuranPlayerGlobalState state;
@@ -100,8 +103,9 @@ class _QuranPageViewState extends State<QuranPageView> {
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: state.curPageInPageView);
-    assetsLoaderController =
-        AssetsLoaderController(settingsController: settingsController);
+    assetsLoaderController = AssetsLoaderController(
+      settingsController: settingsController,
+    );
   }
 
   void update() {
@@ -109,77 +113,113 @@ class _QuranPageViewState extends State<QuranPageView> {
   }
 
   void addPage(
-      List<Widget> pages, int pageNumber, int numPages, double fontSize) {
+    List<Widget> pages,
+    int pageNumber,
+    int numPages,
+    double fontSize,
+  ) {
     Size size = MediaQuery.sizeOf(context);
-    bool isDark = Theme.of(context).brightness == Brightness.dark &&
+    bool isDark =
+        Theme.of(context).brightness == Brightness.dark &&
         settingsController.textRepresentation == TextRepresentation.codeV4;
 
     final Widget child = FutureBuilder(
-        future: pageBuilder.buildPage(isDark, pageNumber, settingsController),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Align(
-                alignment: Alignment.center,
-                child: CircularProgressIndicator());
-          }
-
-          final surahNumber = quran.getPageData(pageNumber)[0]['surah'];
-          final surahName = controller.getSurahName(context, surahNumber);
-
-          final hizbInfo =
-              controller.getRubHizbInfo(surahNumber, pageNumber, context);
-
-          final header = Row(children: [
-            Expanded(
-                child:
-                    Text(hizbInfo, style: TextStyle(fontSize: fontSize * 0.5))),
-            Text(surahName,
-                style: TextStyle(fontSize: fontSize * 0.5),
-                textDirection: TextDirection.ltr),
-          ]);
-
-          final footer = Align(
+      future: pageBuilder.buildPage(isDark, pageNumber, settingsController),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(snapshot.error.toString(), textAlign: TextAlign.center),
+                  TextButton(
+                    onPressed: () => setState(() {}),
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }
+        if (!snapshot.hasData) {
+          return Align(
             alignment: Alignment.center,
-            child: Text(NumberUtils.convertToLocaleNumber(pageNumber, context),
-                style: TextStyle(fontSize: fontSize * 0.5)),
+            child: CircularProgressIndicator(),
           );
+        }
 
-          Widget child;
+        final surahNumber = quran.getPageData(pageNumber)[0]['surah'];
+        final surahName = controller.getSurahName(context, surahNumber);
 
-          child = custom_text.Text.rich(
-            style:
-                TextStyle(color: Theme.of(context).textTheme.bodyMedium!.color),
-            TextSpan(children: snapshot.data),
-            textAlign: TextAlign.center,
-            maxLines: 15,
+        final hizbInfo = controller.getRubHizbInfo(
+          surahNumber,
+          pageNumber,
+          context,
+        );
+
+        final header = Row(
+          children: [
+            Expanded(
+              child: Text(hizbInfo, style: TextStyle(fontSize: fontSize * 0.5)),
+            ),
+            Text(
+              surahName,
+              style: TextStyle(fontSize: fontSize * 0.5),
+              textDirection: TextDirection.ltr,
+            ),
+          ],
+        );
+
+        final footer = Align(
+          alignment: Alignment.center,
+          child: Text(
+            NumberUtils.convertToLocaleNumber(pageNumber, context),
+            style: TextStyle(fontSize: fontSize * 0.5),
+          ),
+        );
+
+        Widget child;
+
+        child = custom_text.Text.rich(
+          style: TextStyle(
+            color: Theme.of(context).textTheme.bodyMedium!.color,
+          ),
+          TextSpan(children: snapshot.data),
+          textAlign: TextAlign.center,
+          maxLines: 15,
+        );
+
+        if (settingsController.selectableViews) {
+          child = SelectionArea(child: child);
+        }
+
+        child = IntrinsicWidth(
+          child: Column(children: [header, child, footer]),
+        );
+
+        if (numPages == 1 &&
+            size.width > size.height &&
+            (Platform.isAndroid || Platform.isIOS)) {
+          child = SingleChildScrollView(
+            child: FittedBox(fit: BoxFit.fitWidth, child: child),
           );
+        } else {
+          child = FittedBox(fit: BoxFit.contain, child: child);
+        }
 
-          if (settingsController.selectableViews) {
-            child = SelectionArea(child: child);
-          }
-
-          child = IntrinsicWidth(
-            child: Column(children: [header, child, footer]),
-          );
-
-          if (numPages == 1 &&
-              size.width > size.height &&
-              (Platform.isAndroid || Platform.isIOS)) {
-            child = SingleChildScrollView(
-                child: FittedBox(fit: BoxFit.fitWidth, child: child));
-          } else {
-            child = FittedBox(fit: BoxFit.contain, child: child);
-          }
-
-          return child;
-        });
+        return child;
+      },
+    );
 
     pages.add(
       Expanded(
         child: IntrinsicHeight(
           child: SizedBox(
-              height: ((size.width / numPages - spacing * 2) * 2),
-              child: child),
+            height: ((size.width / numPages - spacing * 2) * 2),
+            child: child,
+          ),
         ),
       ),
     );
@@ -212,9 +252,13 @@ class _QuranPageViewState extends State<QuranPageView> {
     return Localizations.override(
       context: context,
       locale: Locale('ar'),
-      child: Column(children: [
-        Expanded(child: Align(alignment: Alignment.center, child: child)),
-      ]),
+      child: Column(
+        children: [
+          Expanded(
+            child: Align(alignment: Alignment.center, child: child),
+          ),
+        ],
+      ),
     );
   }
 
@@ -227,11 +271,12 @@ class _QuranPageViewState extends State<QuranPageView> {
   @override
   Widget build(BuildContext context) {
     pageBuilder = PageBuilder(
-        context: context,
-        state: state,
-        update: update,
-        fontSize: getMainFontSize(MediaQuery.orientationOf(context)),
-        textRepresentation: settingsController.textRepresentation);
+      context: context,
+      state: state,
+      update: update,
+      fontSize: getMainFontSize(MediaQuery.orientationOf(context)),
+      textRepresentation: settingsController.textRepresentation,
+    );
 
     if (state.surahNumber == -1) {
       state.surahNumber = quran.getPageData(state.pageNumber).first['surah'];
@@ -242,136 +287,159 @@ class _QuranPageViewState extends State<QuranPageView> {
     double height = size.height;
     double aspectRatio = 2;
 
-    return OrientationBuilder(builder: (context, orientation) {
-      if (MediaQuery.orientationOf(context) == Orientation.landscape) {
-        double temp = height;
-        height = width;
-        width = temp;
-      }
+    return OrientationBuilder(
+      builder: (context, orientation) {
+        if (MediaQuery.orientationOf(context) == Orientation.landscape) {
+          double temp = height;
+          height = width;
+          width = temp;
+        }
 
-      if (width * aspectRatio > height) {
-        width = height / aspectRatio;
-      }
+        if (width * aspectRatio > height) {
+          width = height / aspectRatio;
+        }
 
-      final int numPages = getNumPages(orientation);
-      state.curPageInPageView = ((state.pageNumber - 1) / numPages).floor();
+        final int numPages = getNumPages(orientation);
+        state.curPageInPageView = ((state.pageNumber - 1) / numPages).floor();
 
-      if (_initialized) {
-        _pageController.jumpToPage(state.curPageInPageView);
-      } else {
-        _pageController.dispose();
-        _pageController = PageController(initialPage: state.curPageInPageView);
-        _initialized = true;
-      }
+        if (_initialized) {
+          _pageController.jumpToPage(state.curPageInPageView);
+        } else {
+          _pageController.dispose();
+          _pageController = PageController(
+            initialPage: state.curPageInPageView,
+          );
+          _initialized = true;
+        }
 
-      Widget body = DesktopPageScroll(
-        controller: _pageController,
-        itemCount: (quran.totalPagesCount / numPages).ceil(),
-        numPages: numPages,
-        state: state,
-        update: update,
-        child: Focus(
-          autofocus: true,
-          child: PageView.builder(
-            onPageChanged: (value) => state.curPageInPageView = value,
-            scrollDirection: Axis.horizontal,
-            controller: _pageController,
-            scrollBehavior: ScrollConfiguration.of(context)
-                .copyWith(scrollbars: true, dragDevices: {
-              PointerDeviceKind.touch,
-            }),
-            itemCount: (quran.totalPagesCount / numPages).ceil(),
-            reverse: !isRtl(context),
-            itemBuilder: (context, index) =>
-                buildPages(context, orientation, index * numPages),
-            physics: BouncingScrollPhysics(),
+        Widget body = DesktopPageScroll(
+          controller: _pageController,
+          itemCount: (quran.totalPagesCount / numPages).ceil(),
+          numPages: numPages,
+          state: state,
+          update: update,
+          child: Focus(
+            autofocus: true,
+            child: PageView.builder(
+              onPageChanged: (value) => state.curPageInPageView = value,
+              scrollDirection: Axis.horizontal,
+              controller: _pageController,
+              scrollBehavior: ScrollConfiguration.of(context).copyWith(
+                scrollbars: true,
+                dragDevices: {PointerDeviceKind.touch},
+              ),
+              itemCount: (quran.totalPagesCount / numPages).ceil(),
+              reverse: !isRtl(context),
+              itemBuilder: (context, index) =>
+                  buildPages(context, orientation, index * numPages),
+              physics: BouncingScrollPhysics(),
+            ),
           ),
-        ),
-      );
+        );
 
-      List<Widget> stackChildren = [
-        body,
-        Align(
-          alignment: Alignment.topCenter,
-          child: Transform.translate(
-            offset: Offset(
+        List<Widget> stackChildren = [
+          body,
+          Align(
+            alignment: Alignment.topCenter,
+            child: Transform.translate(
+              offset: Offset(
                 0,
                 -1 * QuranPageView.iconsSize / 2 +
-                    ((Platform.isIOS || Platform.isAndroid) ? -4 : 0)),
-            child: MaterialButton(
-              shape: CircleBorder(),
-              color: Theme.of(context).colorScheme.secondary,
-              onPressed: () => setState(() => showAppBar = !showAppBar),
-              child: showAppBar
-                  ? Icon(Icons.arrow_drop_up_rounded,
-                      size: QuranPageView.iconsSize)
-                  : Icon(Icons.arrow_drop_down_rounded,
-                      size: QuranPageView.iconsSize),
+                    ((Platform.isIOS || Platform.isAndroid) ? -4 : 0),
+              ),
+              child: MaterialButton(
+                shape: CircleBorder(),
+                color: Theme.of(context).colorScheme.secondary,
+                onPressed: () => setState(() => showAppBar = !showAppBar),
+                child: showAppBar
+                    ? Icon(
+                        Icons.arrow_drop_up_rounded,
+                        size: QuranPageView.iconsSize,
+                      )
+                    : Icon(
+                        Icons.arrow_drop_down_rounded,
+                        size: QuranPageView.iconsSize,
+                      ),
+              ),
             ),
           ),
-        )
-      ];
+        ];
 
-      double playerHeight =
-          MediaQuery.orientationOf(context) == Orientation.landscape
-              ? QuranPageView.iconsSize * 1.6
-              : QuranPageView.iconsSize * 2.0;
+        double playerHeight =
+            MediaQuery.orientationOf(context) == Orientation.landscape
+            ? QuranPageView.iconsSize * 1.6
+            : QuranPageView.iconsSize * 2.0;
 
-      return Scaffold(
-        key: scaffoldKey,
-        endDrawer:
-            AppDrawer(state: state, settingsController: settingsController),
-        appBar: showAppBar
-            ? AppTopBar(
-                scaffoldKey: scaffoldKey,
-                settingsController: settingsController,
-                state: state,
-                hasNotch: true,
-                iconsSize: QuranPageView.iconsSize)
-            : null,
-        body: Padding(
-            padding: EdgeInsets.only(bottom: QuranPageView.iconsSize / 2 - 4),
-            child: Stack(children: stackChildren)),
-        floatingActionButton: Align(
-          alignment: Alignment.bottomCenter,
-          child: Transform.translate(
-              offset: Offset(
-                  0,
-                  showPlayer
-                      ? QuranPageView.iconsSize / 2 -
-                          playerHeight +
-                          ((Platform.isIOS || Platform.isAndroid) ? 4 : 0)
-                      : QuranPageView.iconsSize / 2 +
-                          ((Platform.isIOS || Platform.isAndroid) ? 4 : 0)),
-              child: MaterialButton(
-                  shape: CircleBorder(),
-                  color: Theme.of(context).colorScheme.secondary,
-                  onPressed: () => setState(() => showPlayer = !showPlayer),
-                  child: !showPlayer
-                      ? Icon(Icons.arrow_drop_up_rounded,
-                          size: QuranPageView.iconsSize)
-                      : Icon(Icons.arrow_drop_down_rounded,
-                          size: QuranPageView.iconsSize))),
-        ),
-        bottomNavigationBar: Visibility(
-          visible: showPlayer,
-          maintainState: true,
-          child: ClipPath(
-            clipper: NotchedAppBarClipper(
-                iconsSize: QuranPageView.iconsSize, top: false),
-            child: BottomAppBar(
-              padding: EdgeInsets.zero,
-              height: playerHeight,
-              child: QuranPlayer(
+        return Scaffold(
+          key: scaffoldKey,
+          endDrawer: AppDrawer(
+            state: state,
+            settingsController: settingsController,
+          ),
+          appBar: showAppBar
+              ? AppTopBar(
+                  scaffoldKey: scaffoldKey,
                   settingsController: settingsController,
                   state: state,
-                  update: update),
+                  hasNotch: true,
+                  iconsSize: QuranPageView.iconsSize,
+                )
+              : null,
+          body: Padding(
+            padding: EdgeInsets.only(bottom: QuranPageView.iconsSize / 2 - 4),
+            child: Stack(children: stackChildren),
+          ),
+          floatingActionButton: Align(
+            alignment: Alignment.bottomCenter,
+            child: Transform.translate(
+              offset: Offset(
+                0,
+                showPlayer
+                    ? QuranPageView.iconsSize / 2 -
+                          playerHeight +
+                          ((Platform.isIOS || Platform.isAndroid) ? 4 : 0)
+                    : QuranPageView.iconsSize / 2 +
+                          ((Platform.isIOS || Platform.isAndroid) ? 4 : 0),
+              ),
+              child: MaterialButton(
+                shape: CircleBorder(),
+                color: Theme.of(context).colorScheme.secondary,
+                onPressed: () => setState(() => showPlayer = !showPlayer),
+                child: !showPlayer
+                    ? Icon(
+                        Icons.arrow_drop_up_rounded,
+                        size: QuranPageView.iconsSize,
+                      )
+                    : Icon(
+                        Icons.arrow_drop_down_rounded,
+                        size: QuranPageView.iconsSize,
+                      ),
+              ),
             ),
           ),
-        ),
-        floatingActionButtonLocation:
-            FloatingActionButtonLocation.miniCenterDocked,
-      );
-    });
+          bottomNavigationBar: Visibility(
+            visible: showPlayer,
+            maintainState: true,
+            child: ClipPath(
+              clipper: NotchedAppBarClipper(
+                iconsSize: QuranPageView.iconsSize,
+                top: false,
+              ),
+              child: BottomAppBar(
+                padding: EdgeInsets.zero,
+                height: playerHeight,
+                child: QuranPlayer(
+                  settingsController: settingsController,
+                  state: state,
+                  update: update,
+                ),
+              ),
+            ),
+          ),
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.miniCenterDocked,
+        );
+      },
+    );
   }
 }

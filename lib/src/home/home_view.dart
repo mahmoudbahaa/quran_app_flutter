@@ -11,8 +11,11 @@ import 'juzs_list_view.dart';
 
 /// Displays a list of SampleItems.
 class QuranChaptersListView extends StatefulWidget {
-  const QuranChaptersListView(
-      {super.key, required this.controller, required this.state});
+  const QuranChaptersListView({
+    super.key,
+    required this.controller,
+    required this.state,
+  });
 
   final SettingsController controller;
   final QuranPlayerGlobalState state;
@@ -36,7 +39,7 @@ class _QuranChaptersListViewState extends State<QuranChaptersListView> {
   @override
   void initState() {
     super.initState();
-    state.loading = true;
+    state.loading = false;
   }
 
   @override
@@ -53,15 +56,16 @@ class _QuranChaptersListViewState extends State<QuranChaptersListView> {
                 iconsSize: _iconsSize,
                 scaffoldKey: scaffoldKey,
                 tabs: [
-                    SizedBox(
-                      height: 30,
-                      child: Tab(text: AppLocalizations.of(context)!.chapters),
-                    ),
-                    SizedBox(
-                      height: 30,
-                      child: Tab(text: AppLocalizations.of(context)!.hizb),
-                    ),
-                  ])
+                  SizedBox(
+                    height: 30,
+                    child: Tab(text: AppLocalizations.of(context)!.chapters),
+                  ),
+                  SizedBox(
+                    height: 30,
+                    child: Tab(text: AppLocalizations.of(context)!.hizb),
+                  ),
+                ],
+              )
             : null,
 
         // To work with lists that may contain a large number of items, it’s best
@@ -70,24 +74,35 @@ class _QuranChaptersListViewState extends State<QuranChaptersListView> {
         // In contrast to the default ListView constructor, which requires
         // building all Widgets up front, the ListView.builder constructor lazily
         // builds Widgets as they’re scrolled into view.
-        body: Builder(builder: (context) {
-          if (state.loading) {
-            return AssetsLoaderWidget(
+        body: Builder(
+          builder: (context) {
+            if (state.loading) {
+              return AssetsLoaderWidget(
                 settingsController: settingsController,
                 state: state,
-                update: () => setState(() {}));
-          } else {
-            return TabBarView(children: [
-              SurahsListView(
-                  settingsController: settingsController, state: state),
-              JuzsListView(
-                  settingsController: settingsController, state: state),
-            ]);
-          }
-        }),
+                update: () => setState(() {}),
+              );
+            } else {
+              return TabBarView(
+                children: [
+                  SurahsListView(
+                    settingsController: settingsController,
+                    state: state,
+                  ),
+                  JuzsListView(
+                    settingsController: settingsController,
+                    state: state,
+                  ),
+                ],
+              );
+            }
+          },
+        ),
 
-        endDrawer:
-            AppDrawer(state: state, settingsController: settingsController),
+        endDrawer: AppDrawer(
+          state: state,
+          settingsController: settingsController,
+        ),
       ),
     );
   }

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:archive/archive.dart';
@@ -9,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:synchronized/synchronized.dart';
 
 import '../exposed_models.dart';
+import '../../api/quran_api_client.dart';
 
 DBUtils dbUtils() => DBUtils.instance;
 Future<void> initDbUtils() async {
@@ -34,13 +34,22 @@ class DBUtils {
   @protected
   Future<void> insertFont(int code, int page, Uint8List font) async {}
   @protected
-  Future<List<int?>> getWordsInfoLoaded(int code, int page) async => [];
+  Future<List<int?>> getWordsInfoLoaded(int code, int page, int mushaf) async =>
+      [];
   @protected
-  Future<void> loadWordsInfo(int code, int page, dynamic data) async {}
+  Future<void> loadWordsInfo(
+    int code,
+    int page,
+    int mushaf,
+    dynamic data,
+  ) async {}
   @protected
   Future<List<WordInfo>> getActualLinesWords(
-          int code, int page, int line) async =>
-      [];
+    int code,
+    int page,
+    int line,
+    int mushaf,
+  ) async => [];
 
   @protected
   Future<AudioFile?> getVersesInfo(int surahNumber, int recitationId) async =>
@@ -49,12 +58,17 @@ class DBUtils {
   Future<void> loadVersesInfo(int surahNumber, int recitationId, data) async {}
   @protected
   Future<VerseTimings?> actualGetCurrentSegment(
-          int recitationId, int surahNumber, int ms) async =>
-      null;
+    int recitationId,
+    int surahNumber,
+    int ms,
+  ) async => null;
   @protected
-  Future<VerseTimings?> actualGetSegment(int recitationId, int surahNumber,
-          int verseNumber, int wordNumber) async =>
-      null;
+  Future<VerseTimings?> actualGetSegment(
+    int recitationId,
+    int surahNumber,
+    int verseNumber,
+    int wordNumber,
+  ) async => null;
 
   static Future<Directory> _getAppRootDirectory() async {
     return (await getApplicationSupportDirectory());
@@ -86,12 +100,13 @@ class DBUtils {
     }
   }
 
-  static Future<Uint8List?> getFontFile(
-      {required int code,
-      required int page,
-      required String url,
-      required bool dark,
-      required bool cacheOnly}) async {
+  static Future<Uint8List?> getFontFile({
+    required int code,
+    required int page,
+    required String url,
+    required bool dark,
+    required bool cacheOnly,
+  }) async {
     String suffix = dark ? '_dark' : '';
     if (fonts[code] == null) {
       await _lock.synchronized(() async {
@@ -129,80 +144,99 @@ class DBUtils {
     return font;
   }
 
-  static Map<int, List<int?>> wordsData = {};
+  static Map<String, List<int?>> wordsData = {};
 
-  static Future<void> loadWordsData(
-      {required int code,
-      required int page,
-      required String url,
-      required bool cacheOnly}) async {
-    if (wordsData[code] == null) {
-      await _lock.synchronized(() async {
-        if (wordsData[code] == null) {
-          wordsData[code] = await instance.getWordsInfoLoaded(code, page);
-        }
-      });
-    }
-
-    if (cacheOnly) return;
-    bool isLoaded = wordsData[code]!.contains(page);
-    if (isLoaded) return;
-    String? jsonString = await _downloadIfNotExistString(url);
-    if (jsonString == null) return;
-
-    dynamic data = await json.decode(jsonString);
-
-    await instance.loadWordsInfo(code, page, data);
-    wordsData[code]!.add(page);
+  static Future<void> loadWordsData({
+    required int code,
+    required int page,
+    required int mushaf,
+    required String url,
+    required bool cacheOnly,
+  }) async {
+    final key = '$mushaf:$code';
+    await _lock.synchronized(() async {
+      wordsData[key] ??= await instance.getWordsInfoLoaded(code, page, mushaf);
+      if (cacheOnly || wordsData[key]!.contains(page)) return;
+      final data = await QuranApiClient.instance.pageWordsFromUri(
+        Uri.parse(url),
+      );
+      await instance.loadWordsInfo(code, page, mushaf, data);
+      wordsData[key]!.add(page);
+    });
   }
 
-  static Future<List<WordInfo>> getLinesWords(
-          {required int code, required int page, required int line}) async =>
-      instance.getActualLinesWords(code, page, line);
+  static Future<List<WordInfo>> getLinesWords({
+    required int code,
+    required int page,
+    required int line,
+    required int mushaf,
+  }) => instance.getActualLinesWords(code, page, line, mushaf);
 
-  static Future<File?> getBackgroundImage(
-      {required int pageNumber,
-      required String url,
-      required bool cacheOnly}) async {
+  static Future<File?> getBackgroundImage({
+    required int pageNumber,
+    required String url,
+    required bool cacheOnly,
+  }) async {
     File file = await _getFile('images/background/$pageNumber.png');
     return await _downloadIfNotExist(
-        file: file, url: url, cacheOnly: cacheOnly);
+      file: file,
+      url: url,
+      cacheOnly: cacheOnly,
+    );
   }
 
   static Future<File> getMp3File(int recitationId, String fileName) async {
     return await _getFile('mp3/${recitationId}_$fileName');
   }
 
-  static Future<AudioFile?> loadVersesData(
-      {required int surahNumber,
-      required int recitationId,
-      required String url}) async {
-    AudioFile? audioFile =
-        await instance.getVersesInfo(surahNumber, recitationId);
+  static Future<AudioFile?> loadVersesData({
+    required int surahNumber,
+    required int recitationId,
+    required String url,
+  }) async {
+    AudioFile? audioFile = await instance.getVersesInfo(
+      surahNumber,
+      recitationId,
+    );
     if (audioFile != null) return audioFile;
 
-    String? jsonString = await _downloadIfNotExistString(url);
-    if (jsonString == null) return null;
-    dynamic data = jsonDecode(jsonString);
+    final data = await QuranApiClient.instance.getJson(Uri.parse(url));
     await instance.loadVersesInfo(surahNumber, recitationId, data);
 
     return await instance.getVersesInfo(surahNumber, recitationId);
   }
 
   static Future<VerseTimings?> getCurrentSegment(
-      int recitationId, int surahNumber, int ms) async {
+    int recitationId,
+    int surahNumber,
+    int ms,
+  ) async {
     return await instance.actualGetCurrentSegment(
-        recitationId, surahNumber, ms);
+      recitationId,
+      surahNumber,
+      ms,
+    );
   }
 
-  static Future<VerseTimings?> getSegment(int recitationId, int surahNumber,
-      int verseNumber, int wordNumber) async {
+  static Future<VerseTimings?> getSegment(
+    int recitationId,
+    int surahNumber,
+    int verseNumber,
+    int wordNumber,
+  ) async {
     return await instance.actualGetSegment(
-        recitationId, surahNumber, verseNumber, wordNumber);
+      recitationId,
+      surahNumber,
+      verseNumber,
+      wordNumber,
+    );
   }
 
-  static Future<File?> _downloadIfNotExist(
-      {required File file, required String url, required cacheOnly}) async {
+  static Future<File?> _downloadIfNotExist({
+    required File file,
+    required String url,
+    required cacheOnly,
+  }) async {
     try {
       if (file.existsSync()) {
         return file;
@@ -214,16 +248,6 @@ class DBUtils {
       return file;
     } catch (e) {
       if (kDebugMode) debugPrint(e.toString());
-      return null;
-    }
-  }
-
-  static Future<String?> _downloadIfNotExistString(String url) async {
-    try {
-      http.Response? response = await _downloadFile(url);
-      if (response == null) return null;
-      return response.body;
-    } catch (e) {
       return null;
     }
   }

@@ -1,7 +1,7 @@
 # Quran Foundation content backend
 
-A Cloudflare Worker for read-only Quran Foundation Content v4 calls. Flutter
-continues using its current API until a separate client migration is made.
+A Cloudflare Worker for read-only Quran Foundation Content v4 calls. Flutter uses this backend through the QURAN_API_BASE_URL build setting.
+See the root README for client configuration and current prelive limitations.
 
 ## Manual dashboard deployment
 

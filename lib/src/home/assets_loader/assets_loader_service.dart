@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
 import '../../db/db_utils/db_utils.dart';
+import '../../api/quran_api_client.dart';
 import '../../models/enums.dart';
 
 class AssetsLoaderService {
@@ -27,22 +28,28 @@ class AssetsLoaderService {
     // 'https://quran.com/fonts/quran/hafs/v4/ot-svg/sepia/ttf/p',
   ];
 
-  String _getVerseDataUrl(int pageNumber, int mushafId,
-          TextRepresentation textRepresentation, int codeVersion) =>
-      'https://quran.com/api/proxy/content/api/qdc/verses/by_page/$pageNumber?per_page=all&mushaf=$mushafId&words=true&word_fields=code_v$codeVersion,text_uthmani_simple,text_imlaei,text_imlaei_simple';
-
   String _getPageImageUrl(int pageNumber) =>
       'https://github.com/mahmoudbahaa/quran_app_flutter/raw/refs/heads/main/assets/images/hollow/$pageNumber.png';
 
   Map<int, Uint8List> fonts = {};
 
-  Future<bool> loadFont(int page, int code,
-      TextRepresentation textRepresentation, bool dark, bool cacheOnly) async {
+  Future<bool> loadFont(
+    int page,
+    int code,
+    TextRepresentation textRepresentation,
+    bool dark,
+    bool cacheOnly,
+  ) async {
     final fontBaseUrl = _codeFontBaseUrl[textRepresentation.index];
     final fontSuffix = _codeFontSuffix[textRepresentation.index];
     final fontUrl = '$fontBaseUrl$page$fontSuffix';
     Uint8List? font = await DBUtils.getFontFile(
-        code: code, page: page, url: fontUrl, dark: dark, cacheOnly: cacheOnly);
+      code: code,
+      page: page,
+      url: fontUrl,
+      dark: dark,
+      cacheOnly: cacheOnly,
+    );
     if (font == null) return false;
 
     final fontName = '${code}_$page${dark ? '_dark' : ''}';
@@ -55,27 +62,44 @@ class AssetsLoaderService {
   }
 
   Future<void> loadWordsData(
-      int pageNumber,
-      TextRepresentation textRepresentation,
-      bool cacheOnly,
-      int codeVersion) async {
+    int pageNumber,
+    TextRepresentation textRepresentation,
+    bool cacheOnly,
+    int codeVersion,
+  ) async {
     final int mushafId = mushafIds[textRepresentation.index];
-    String url =
-        _getVerseDataUrl(pageNumber, mushafId, textRepresentation, codeVersion);
+    final url = QuranApiClient.instance.uri('verses/by_page/$pageNumber', {
+      'mushaf': '$mushafId',
+      'words': 'true',
+      'per_page': '50',
+      'word_fields':
+          'code_v$codeVersion,text_uthmani_simple,text_imlaei,text_imlaei_simple,line_number,page_number',
+    }).toString();
 
     return await DBUtils.loadWordsData(
-        code: codeVersion, page: pageNumber, url: url, cacheOnly: cacheOnly);
+      code: codeVersion,
+      page: pageNumber,
+      mushaf: mushafId,
+      url: url,
+      cacheOnly: cacheOnly,
+    );
   }
 
   Future<File?> getPageImageFile(int pageNumber) async {
     return await DBUtils.getBackgroundImage(
-        pageNumber: pageNumber, url: '', cacheOnly: true);
+      pageNumber: pageNumber,
+      url: '',
+      cacheOnly: true,
+    );
   }
 
   Future<String?> loadImage(int pageNumber, cacheOnly) async {
     String url = _getPageImageUrl(pageNumber);
     File? file = await DBUtils.getBackgroundImage(
-        pageNumber: pageNumber, url: url, cacheOnly: cacheOnly);
+      pageNumber: pageNumber,
+      url: url,
+      cacheOnly: cacheOnly,
+    );
     if (file != null && file.existsSync()) {
       return file.path;
     }

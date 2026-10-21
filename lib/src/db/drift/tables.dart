@@ -74,6 +74,7 @@ class VerseInfos extends Table {
 //   Set<Column<Object>> get primaryKey => {rubHizb};
 // }
 
+@DataClassName('DatabaseWord')
 class Words extends Table {
   TextColumn get verse => text().references(Verses, #id)();
   IntColumn get position => integer()();
@@ -85,6 +86,7 @@ class Words extends Table {
   Set<Column<Object>> get primaryKey => {verse, position};
 }
 
+@DataClassName('DatabaseWordInfo')
 class WordInfos extends Table {
   TextColumn get verse => text()();
   IntColumn get position => integer()();

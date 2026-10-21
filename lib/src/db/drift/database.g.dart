@@ -11,25 +11,40 @@ class $VersesTable extends Verses with TableInfo<$VersesTable, Verse> {
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
-      'id', aliasedName, false,
-      additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 8),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
+    'id',
+    aliasedName,
+    false,
+    additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 8),
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _juzMeta = const VerificationMeta('juz');
   @override
   late final GeneratedColumn<int> juz = GeneratedColumn<int>(
-      'juz', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'juz',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _hizbMeta = const VerificationMeta('hizb');
   @override
   late final GeneratedColumn<int> hizb = GeneratedColumn<int>(
-      'hizb', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'hizb',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _rubMeta = const VerificationMeta('rub');
   @override
   late final GeneratedColumn<int> rub = GeneratedColumn<int>(
-      'rub', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'rub',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   @override
   List<GeneratedColumn> get $columns => [id, juz, hizb, rub];
   @override
@@ -38,8 +53,10 @@ class $VersesTable extends Verses with TableInfo<$VersesTable, Verse> {
   String get actualTableName => $name;
   static const String $name = 'verses';
   @override
-  VerificationContext validateIntegrity(Insertable<Verse> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<Verse> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -49,19 +66,25 @@ class $VersesTable extends Verses with TableInfo<$VersesTable, Verse> {
     }
     if (data.containsKey('juz')) {
       context.handle(
-          _juzMeta, juz.isAcceptableOrUnknown(data['juz']!, _juzMeta));
+        _juzMeta,
+        juz.isAcceptableOrUnknown(data['juz']!, _juzMeta),
+      );
     } else if (isInserting) {
       context.missing(_juzMeta);
     }
     if (data.containsKey('hizb')) {
       context.handle(
-          _hizbMeta, hizb.isAcceptableOrUnknown(data['hizb']!, _hizbMeta));
+        _hizbMeta,
+        hizb.isAcceptableOrUnknown(data['hizb']!, _hizbMeta),
+      );
     } else if (isInserting) {
       context.missing(_hizbMeta);
     }
     if (data.containsKey('rub')) {
       context.handle(
-          _rubMeta, rub.isAcceptableOrUnknown(data['rub']!, _rubMeta));
+        _rubMeta,
+        rub.isAcceptableOrUnknown(data['rub']!, _rubMeta),
+      );
     } else if (isInserting) {
       context.missing(_rubMeta);
     }
@@ -74,14 +97,22 @@ class $VersesTable extends Verses with TableInfo<$VersesTable, Verse> {
   Verse map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return Verse(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      juz: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}juz'])!,
-      hizb: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}hizb'])!,
-      rub: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}rub'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      juz: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}juz'],
+      )!,
+      hizb: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}hizb'],
+      )!,
+      rub: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}rub'],
+      )!,
     );
   }
 
@@ -96,11 +127,12 @@ class Verse extends DataClass implements Insertable<Verse> {
   final int juz;
   final int hizb;
   final int rub;
-  const Verse(
-      {required this.id,
-      required this.juz,
-      required this.hizb,
-      required this.rub});
+  const Verse({
+    required this.id,
+    required this.juz,
+    required this.hizb,
+    required this.rub,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -120,8 +152,10 @@ class Verse extends DataClass implements Insertable<Verse> {
     );
   }
 
-  factory Verse.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory Verse.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Verse(
       id: serializer.fromJson<String>(json['id']),
@@ -142,11 +176,11 @@ class Verse extends DataClass implements Insertable<Verse> {
   }
 
   Verse copyWith({String? id, int? juz, int? hizb, int? rub}) => Verse(
-        id: id ?? this.id,
-        juz: juz ?? this.juz,
-        hizb: hizb ?? this.hizb,
-        rub: rub ?? this.rub,
-      );
+    id: id ?? this.id,
+    juz: juz ?? this.juz,
+    hizb: hizb ?? this.hizb,
+    rub: rub ?? this.rub,
+  );
   Verse copyWithCompanion(VersesCompanion data) {
     return Verse(
       id: data.id.present ? data.id.value : this.id,
@@ -198,10 +232,10 @@ class VersesCompanion extends UpdateCompanion<Verse> {
     required int hizb,
     required int rub,
     this.rowid = const Value.absent(),
-  })  : id = Value(id),
-        juz = Value(juz),
-        hizb = Value(hizb),
-        rub = Value(rub);
+  }) : id = Value(id),
+       juz = Value(juz),
+       hizb = Value(hizb),
+       rub = Value(rub);
   static Insertable<Verse> custom({
     Expression<String>? id,
     Expression<int>? juz,
@@ -218,12 +252,13 @@ class VersesCompanion extends UpdateCompanion<Verse> {
     });
   }
 
-  VersesCompanion copyWith(
-      {Value<String>? id,
-      Value<int>? juz,
-      Value<int>? hizb,
-      Value<int>? rub,
-      Value<int>? rowid}) {
+  VersesCompanion copyWith({
+    Value<String>? id,
+    Value<int>? juz,
+    Value<int>? hizb,
+    Value<int>? rub,
+    Value<int>? rowid,
+  }) {
     return VersesCompanion(
       id: id ?? this.id,
       juz: juz ?? this.juz,
@@ -276,21 +311,33 @@ class $VerseInfosTable extends VerseInfos
   static const VerificationMeta _verseMeta = const VerificationMeta('verse');
   @override
   late final GeneratedColumn<String> verse = GeneratedColumn<String>(
-      'verse', aliasedName, false,
-      type: DriftSqlType.string,
-      requiredDuringInsert: true,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES verses (id)'));
+    'verse',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES verses (id)',
+    ),
+  );
   static const VerificationMeta _codeMeta = const VerificationMeta('code');
   @override
   late final GeneratedColumn<int> code = GeneratedColumn<int>(
-      'code', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'code',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _pageMeta = const VerificationMeta('page');
   @override
   late final GeneratedColumn<int> page = GeneratedColumn<int>(
-      'page', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'page',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   @override
   List<GeneratedColumn> get $columns => [verse, code, page];
   @override
@@ -299,25 +346,33 @@ class $VerseInfosTable extends VerseInfos
   String get actualTableName => $name;
   static const String $name = 'verse_infos';
   @override
-  VerificationContext validateIntegrity(Insertable<VerseInfo> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<VerseInfo> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('verse')) {
       context.handle(
-          _verseMeta, verse.isAcceptableOrUnknown(data['verse']!, _verseMeta));
+        _verseMeta,
+        verse.isAcceptableOrUnknown(data['verse']!, _verseMeta),
+      );
     } else if (isInserting) {
       context.missing(_verseMeta);
     }
     if (data.containsKey('code')) {
       context.handle(
-          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+        _codeMeta,
+        code.isAcceptableOrUnknown(data['code']!, _codeMeta),
+      );
     } else if (isInserting) {
       context.missing(_codeMeta);
     }
     if (data.containsKey('page')) {
       context.handle(
-          _pageMeta, page.isAcceptableOrUnknown(data['page']!, _pageMeta));
+        _pageMeta,
+        page.isAcceptableOrUnknown(data['page']!, _pageMeta),
+      );
     } else if (isInserting) {
       context.missing(_pageMeta);
     }
@@ -330,12 +385,18 @@ class $VerseInfosTable extends VerseInfos
   VerseInfo map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return VerseInfo(
-      verse: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}verse'])!,
-      code: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}code'])!,
-      page: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}page'])!,
+      verse: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}verse'],
+      )!,
+      code: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}code'],
+      )!,
+      page: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}page'],
+      )!,
     );
   }
 
@@ -349,8 +410,11 @@ class VerseInfo extends DataClass implements Insertable<VerseInfo> {
   final String verse;
   final int code;
   final int page;
-  const VerseInfo(
-      {required this.verse, required this.code, required this.page});
+  const VerseInfo({
+    required this.verse,
+    required this.code,
+    required this.page,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -368,8 +432,10 @@ class VerseInfo extends DataClass implements Insertable<VerseInfo> {
     );
   }
 
-  factory VerseInfo.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory VerseInfo.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return VerseInfo(
       verse: serializer.fromJson<String>(json['verse']),
@@ -388,10 +454,10 @@ class VerseInfo extends DataClass implements Insertable<VerseInfo> {
   }
 
   VerseInfo copyWith({String? verse, int? code, int? page}) => VerseInfo(
-        verse: verse ?? this.verse,
-        code: code ?? this.code,
-        page: page ?? this.page,
-      );
+    verse: verse ?? this.verse,
+    code: code ?? this.code,
+    page: page ?? this.page,
+  );
   VerseInfo copyWithCompanion(VerseInfosCompanion data) {
     return VerseInfo(
       verse: data.verse.present ? data.verse.value : this.verse,
@@ -437,9 +503,9 @@ class VerseInfosCompanion extends UpdateCompanion<VerseInfo> {
     required int code,
     required int page,
     this.rowid = const Value.absent(),
-  })  : verse = Value(verse),
-        code = Value(code),
-        page = Value(page);
+  }) : verse = Value(verse),
+       code = Value(code),
+       page = Value(page);
   static Insertable<VerseInfo> custom({
     Expression<String>? verse,
     Expression<int>? code,
@@ -454,11 +520,12 @@ class VerseInfosCompanion extends UpdateCompanion<VerseInfo> {
     });
   }
 
-  VerseInfosCompanion copyWith(
-      {Value<String>? verse,
-      Value<int>? code,
-      Value<int>? page,
-      Value<int>? rowid}) {
+  VerseInfosCompanion copyWith({
+    Value<String>? verse,
+    Value<int>? code,
+    Value<int>? page,
+    Value<int>? rowid,
+  }) {
     return VerseInfosCompanion(
       verse: verse ?? this.verse,
       code: code ?? this.code,
@@ -497,7 +564,7 @@ class VerseInfosCompanion extends UpdateCompanion<VerseInfo> {
   }
 }
 
-class $WordsTable extends Words with TableInfo<$WordsTable, Word> {
+class $WordsTable extends Words with TableInfo<$WordsTable, DatabaseWord> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -505,81 +572,123 @@ class $WordsTable extends Words with TableInfo<$WordsTable, Word> {
   static const VerificationMeta _verseMeta = const VerificationMeta('verse');
   @override
   late final GeneratedColumn<String> verse = GeneratedColumn<String>(
-      'verse', aliasedName, false,
-      type: DriftSqlType.string,
-      requiredDuringInsert: true,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('REFERENCES verses (id)'));
-  static const VerificationMeta _positionMeta =
-      const VerificationMeta('position');
+    'verse',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES verses (id)',
+    ),
+  );
+  static const VerificationMeta _positionMeta = const VerificationMeta(
+    'position',
+  );
   @override
   late final GeneratedColumn<int> position = GeneratedColumn<int>(
-      'position', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _textUthmaniSimpleMeta =
-      const VerificationMeta('textUthmaniSimple');
+    'position',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _textUthmaniSimpleMeta = const VerificationMeta(
+    'textUthmaniSimple',
+  );
   @override
   late final GeneratedColumn<String> textUthmaniSimple =
-      GeneratedColumn<String>('text_uthmani_simple', aliasedName, false,
-          type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _textImlaeiMeta =
-      const VerificationMeta('textImlaei');
+      GeneratedColumn<String>(
+        'text_uthmani_simple',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _textImlaeiMeta = const VerificationMeta(
+    'textImlaei',
+  );
   @override
   late final GeneratedColumn<String> textImlaei = GeneratedColumn<String>(
-      'text_imlaei', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _textImlaeiSimpleMeta =
-      const VerificationMeta('textImlaeiSimple');
+    'text_imlaei',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _textImlaeiSimpleMeta = const VerificationMeta(
+    'textImlaeiSimple',
+  );
   @override
   late final GeneratedColumn<String> textImlaeiSimple = GeneratedColumn<String>(
-      'text_imlaei_simple', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'text_imlaei_simple',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   @override
-  List<GeneratedColumn> get $columns =>
-      [verse, position, textUthmaniSimple, textImlaei, textImlaeiSimple];
+  List<GeneratedColumn> get $columns => [
+    verse,
+    position,
+    textUthmaniSimple,
+    textImlaei,
+    textImlaeiSimple,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'words';
   @override
-  VerificationContext validateIntegrity(Insertable<Word> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<DatabaseWord> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('verse')) {
       context.handle(
-          _verseMeta, verse.isAcceptableOrUnknown(data['verse']!, _verseMeta));
+        _verseMeta,
+        verse.isAcceptableOrUnknown(data['verse']!, _verseMeta),
+      );
     } else if (isInserting) {
       context.missing(_verseMeta);
     }
     if (data.containsKey('position')) {
-      context.handle(_positionMeta,
-          position.isAcceptableOrUnknown(data['position']!, _positionMeta));
+      context.handle(
+        _positionMeta,
+        position.isAcceptableOrUnknown(data['position']!, _positionMeta),
+      );
     } else if (isInserting) {
       context.missing(_positionMeta);
     }
     if (data.containsKey('text_uthmani_simple')) {
       context.handle(
+        _textUthmaniSimpleMeta,
+        textUthmaniSimple.isAcceptableOrUnknown(
+          data['text_uthmani_simple']!,
           _textUthmaniSimpleMeta,
-          textUthmaniSimple.isAcceptableOrUnknown(
-              data['text_uthmani_simple']!, _textUthmaniSimpleMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_textUthmaniSimpleMeta);
     }
     if (data.containsKey('text_imlaei')) {
       context.handle(
-          _textImlaeiMeta,
-          textImlaei.isAcceptableOrUnknown(
-              data['text_imlaei']!, _textImlaeiMeta));
+        _textImlaeiMeta,
+        textImlaei.isAcceptableOrUnknown(data['text_imlaei']!, _textImlaeiMeta),
+      );
     } else if (isInserting) {
       context.missing(_textImlaeiMeta);
     }
     if (data.containsKey('text_imlaei_simple')) {
       context.handle(
+        _textImlaeiSimpleMeta,
+        textImlaeiSimple.isAcceptableOrUnknown(
+          data['text_imlaei_simple']!,
           _textImlaeiSimpleMeta,
-          textImlaeiSimple.isAcceptableOrUnknown(
-              data['text_imlaei_simple']!, _textImlaeiSimpleMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_textImlaeiSimpleMeta);
     }
@@ -589,19 +698,29 @@ class $WordsTable extends Words with TableInfo<$WordsTable, Word> {
   @override
   Set<GeneratedColumn> get $primaryKey => {verse, position};
   @override
-  Word map(Map<String, dynamic> data, {String? tablePrefix}) {
+  DatabaseWord map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return Word(
-      verse: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}verse'])!,
-      position: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}position'])!,
+    return DatabaseWord(
+      verse: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}verse'],
+      )!,
+      position: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}position'],
+      )!,
       textUthmaniSimple: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}text_uthmani_simple'])!,
-      textImlaei: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}text_imlaei'])!,
+        DriftSqlType.string,
+        data['${effectivePrefix}text_uthmani_simple'],
+      )!,
+      textImlaei: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}text_imlaei'],
+      )!,
       textImlaeiSimple: attachedDatabase.typeMapping.read(
-          DriftSqlType.string, data['${effectivePrefix}text_imlaei_simple'])!,
+        DriftSqlType.string,
+        data['${effectivePrefix}text_imlaei_simple'],
+      )!,
     );
   }
 
@@ -611,18 +730,19 @@ class $WordsTable extends Words with TableInfo<$WordsTable, Word> {
   }
 }
 
-class Word extends DataClass implements Insertable<Word> {
+class DatabaseWord extends DataClass implements Insertable<DatabaseWord> {
   final String verse;
   final int position;
   final String textUthmaniSimple;
   final String textImlaei;
   final String textImlaeiSimple;
-  const Word(
-      {required this.verse,
-      required this.position,
-      required this.textUthmaniSimple,
-      required this.textImlaei,
-      required this.textImlaeiSimple});
+  const DatabaseWord({
+    required this.verse,
+    required this.position,
+    required this.textUthmaniSimple,
+    required this.textImlaei,
+    required this.textImlaeiSimple,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -644,10 +764,12 @@ class Word extends DataClass implements Insertable<Word> {
     );
   }
 
-  factory Word.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory DatabaseWord.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return Word(
+    return DatabaseWord(
       verse: serializer.fromJson<String>(json['verse']),
       position: serializer.fromJson<int>(json['position']),
       textUthmaniSimple: serializer.fromJson<String>(json['textUthmaniSimple']),
@@ -667,28 +789,29 @@ class Word extends DataClass implements Insertable<Word> {
     };
   }
 
-  Word copyWith(
-          {String? verse,
-          int? position,
-          String? textUthmaniSimple,
-          String? textImlaei,
-          String? textImlaeiSimple}) =>
-      Word(
-        verse: verse ?? this.verse,
-        position: position ?? this.position,
-        textUthmaniSimple: textUthmaniSimple ?? this.textUthmaniSimple,
-        textImlaei: textImlaei ?? this.textImlaei,
-        textImlaeiSimple: textImlaeiSimple ?? this.textImlaeiSimple,
-      );
-  Word copyWithCompanion(WordsCompanion data) {
-    return Word(
+  DatabaseWord copyWith({
+    String? verse,
+    int? position,
+    String? textUthmaniSimple,
+    String? textImlaei,
+    String? textImlaeiSimple,
+  }) => DatabaseWord(
+    verse: verse ?? this.verse,
+    position: position ?? this.position,
+    textUthmaniSimple: textUthmaniSimple ?? this.textUthmaniSimple,
+    textImlaei: textImlaei ?? this.textImlaei,
+    textImlaeiSimple: textImlaeiSimple ?? this.textImlaeiSimple,
+  );
+  DatabaseWord copyWithCompanion(WordsCompanion data) {
+    return DatabaseWord(
       verse: data.verse.present ? data.verse.value : this.verse,
       position: data.position.present ? data.position.value : this.position,
       textUthmaniSimple: data.textUthmaniSimple.present
           ? data.textUthmaniSimple.value
           : this.textUthmaniSimple,
-      textImlaei:
-          data.textImlaei.present ? data.textImlaei.value : this.textImlaei,
+      textImlaei: data.textImlaei.present
+          ? data.textImlaei.value
+          : this.textImlaei,
       textImlaeiSimple: data.textImlaeiSimple.present
           ? data.textImlaeiSimple.value
           : this.textImlaeiSimple,
@@ -697,7 +820,7 @@ class Word extends DataClass implements Insertable<Word> {
 
   @override
   String toString() {
-    return (StringBuffer('Word(')
+    return (StringBuffer('DatabaseWord(')
           ..write('verse: $verse, ')
           ..write('position: $position, ')
           ..write('textUthmaniSimple: $textUthmaniSimple, ')
@@ -709,11 +832,16 @@ class Word extends DataClass implements Insertable<Word> {
 
   @override
   int get hashCode => Object.hash(
-      verse, position, textUthmaniSimple, textImlaei, textImlaeiSimple);
+    verse,
+    position,
+    textUthmaniSimple,
+    textImlaei,
+    textImlaeiSimple,
+  );
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Word &&
+      (other is DatabaseWord &&
           other.verse == this.verse &&
           other.position == this.position &&
           other.textUthmaniSimple == this.textUthmaniSimple &&
@@ -721,7 +849,7 @@ class Word extends DataClass implements Insertable<Word> {
           other.textImlaeiSimple == this.textImlaeiSimple);
 }
 
-class WordsCompanion extends UpdateCompanion<Word> {
+class WordsCompanion extends UpdateCompanion<DatabaseWord> {
   final Value<String> verse;
   final Value<int> position;
   final Value<String> textUthmaniSimple;
@@ -743,12 +871,12 @@ class WordsCompanion extends UpdateCompanion<Word> {
     required String textImlaei,
     required String textImlaeiSimple,
     this.rowid = const Value.absent(),
-  })  : verse = Value(verse),
-        position = Value(position),
-        textUthmaniSimple = Value(textUthmaniSimple),
-        textImlaei = Value(textImlaei),
-        textImlaeiSimple = Value(textImlaeiSimple);
-  static Insertable<Word> custom({
+  }) : verse = Value(verse),
+       position = Value(position),
+       textUthmaniSimple = Value(textUthmaniSimple),
+       textImlaei = Value(textImlaei),
+       textImlaeiSimple = Value(textImlaeiSimple);
+  static Insertable<DatabaseWord> custom({
     Expression<String>? verse,
     Expression<int>? position,
     Expression<String>? textUthmaniSimple,
@@ -766,13 +894,14 @@ class WordsCompanion extends UpdateCompanion<Word> {
     });
   }
 
-  WordsCompanion copyWith(
-      {Value<String>? verse,
-      Value<int>? position,
-      Value<String>? textUthmaniSimple,
-      Value<String>? textImlaei,
-      Value<String>? textImlaeiSimple,
-      Value<int>? rowid}) {
+  WordsCompanion copyWith({
+    Value<String>? verse,
+    Value<int>? position,
+    Value<String>? textUthmaniSimple,
+    Value<String>? textImlaei,
+    Value<String>? textImlaeiSimple,
+    Value<int>? rowid,
+  }) {
     return WordsCompanion(
       verse: verse ?? this.verse,
       position: position ?? this.position,
@@ -822,7 +951,7 @@ class WordsCompanion extends UpdateCompanion<Word> {
 }
 
 class $WordInfosTable extends WordInfos
-    with TableInfo<$WordInfosTable, WordInfo> {
+    with TableInfo<$WordInfosTable, DatabaseWordInfo> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -830,89 +959,134 @@ class $WordInfosTable extends WordInfos
   static const VerificationMeta _verseMeta = const VerificationMeta('verse');
   @override
   late final GeneratedColumn<String> verse = GeneratedColumn<String>(
-      'verse', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _positionMeta =
-      const VerificationMeta('position');
+    'verse',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _positionMeta = const VerificationMeta(
+    'position',
+  );
   @override
   late final GeneratedColumn<int> position = GeneratedColumn<int>(
-      'position', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _codeVersionMeta =
-      const VerificationMeta('codeVersion');
+    'position',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _codeVersionMeta = const VerificationMeta(
+    'codeVersion',
+  );
   @override
   late final GeneratedColumn<int> codeVersion = GeneratedColumn<int>(
-      'code_version', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'code_version',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _codeMeta = const VerificationMeta('code');
   @override
   late final GeneratedColumn<String> code = GeneratedColumn<String>(
-      'code', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _pageNumberMeta =
-      const VerificationMeta('pageNumber');
+    'code',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _pageNumberMeta = const VerificationMeta(
+    'pageNumber',
+  );
   @override
   late final GeneratedColumn<int> pageNumber = GeneratedColumn<int>(
-      'page_number', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _lineNumberMeta =
-      const VerificationMeta('lineNumber');
+    'page_number',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _lineNumberMeta = const VerificationMeta(
+    'lineNumber',
+  );
   @override
   late final GeneratedColumn<int> lineNumber = GeneratedColumn<int>(
-      'line_number', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'line_number',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   @override
-  List<GeneratedColumn> get $columns =>
-      [verse, position, codeVersion, code, pageNumber, lineNumber];
+  List<GeneratedColumn> get $columns => [
+    verse,
+    position,
+    codeVersion,
+    code,
+    pageNumber,
+    lineNumber,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'word_infos';
   @override
-  VerificationContext validateIntegrity(Insertable<WordInfo> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<DatabaseWordInfo> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('verse')) {
       context.handle(
-          _verseMeta, verse.isAcceptableOrUnknown(data['verse']!, _verseMeta));
+        _verseMeta,
+        verse.isAcceptableOrUnknown(data['verse']!, _verseMeta),
+      );
     } else if (isInserting) {
       context.missing(_verseMeta);
     }
     if (data.containsKey('position')) {
-      context.handle(_positionMeta,
-          position.isAcceptableOrUnknown(data['position']!, _positionMeta));
+      context.handle(
+        _positionMeta,
+        position.isAcceptableOrUnknown(data['position']!, _positionMeta),
+      );
     } else if (isInserting) {
       context.missing(_positionMeta);
     }
     if (data.containsKey('code_version')) {
       context.handle(
+        _codeVersionMeta,
+        codeVersion.isAcceptableOrUnknown(
+          data['code_version']!,
           _codeVersionMeta,
-          codeVersion.isAcceptableOrUnknown(
-              data['code_version']!, _codeVersionMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_codeVersionMeta);
     }
     if (data.containsKey('code')) {
       context.handle(
-          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+        _codeMeta,
+        code.isAcceptableOrUnknown(data['code']!, _codeMeta),
+      );
     } else if (isInserting) {
       context.missing(_codeMeta);
     }
     if (data.containsKey('page_number')) {
       context.handle(
-          _pageNumberMeta,
-          pageNumber.isAcceptableOrUnknown(
-              data['page_number']!, _pageNumberMeta));
+        _pageNumberMeta,
+        pageNumber.isAcceptableOrUnknown(data['page_number']!, _pageNumberMeta),
+      );
     } else if (isInserting) {
       context.missing(_pageNumberMeta);
     }
     if (data.containsKey('line_number')) {
       context.handle(
-          _lineNumberMeta,
-          lineNumber.isAcceptableOrUnknown(
-              data['line_number']!, _lineNumberMeta));
+        _lineNumberMeta,
+        lineNumber.isAcceptableOrUnknown(data['line_number']!, _lineNumberMeta),
+      );
     } else if (isInserting) {
       context.missing(_lineNumberMeta);
     }
@@ -922,21 +1096,33 @@ class $WordInfosTable extends WordInfos
   @override
   Set<GeneratedColumn> get $primaryKey => {verse, position, codeVersion};
   @override
-  WordInfo map(Map<String, dynamic> data, {String? tablePrefix}) {
+  DatabaseWordInfo map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return WordInfo(
-      verse: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}verse'])!,
-      position: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}position'])!,
-      codeVersion: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}code_version'])!,
-      code: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}code'])!,
-      pageNumber: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}page_number'])!,
-      lineNumber: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}line_number'])!,
+    return DatabaseWordInfo(
+      verse: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}verse'],
+      )!,
+      position: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}position'],
+      )!,
+      codeVersion: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}code_version'],
+      )!,
+      code: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}code'],
+      )!,
+      pageNumber: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}page_number'],
+      )!,
+      lineNumber: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}line_number'],
+      )!,
     );
   }
 
@@ -946,20 +1132,22 @@ class $WordInfosTable extends WordInfos
   }
 }
 
-class WordInfo extends DataClass implements Insertable<WordInfo> {
+class DatabaseWordInfo extends DataClass
+    implements Insertable<DatabaseWordInfo> {
   final String verse;
   final int position;
   final int codeVersion;
   final String code;
   final int pageNumber;
   final int lineNumber;
-  const WordInfo(
-      {required this.verse,
-      required this.position,
-      required this.codeVersion,
-      required this.code,
-      required this.pageNumber,
-      required this.lineNumber});
+  const DatabaseWordInfo({
+    required this.verse,
+    required this.position,
+    required this.codeVersion,
+    required this.code,
+    required this.pageNumber,
+    required this.lineNumber,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -983,10 +1171,12 @@ class WordInfo extends DataClass implements Insertable<WordInfo> {
     );
   }
 
-  factory WordInfo.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory DatabaseWordInfo.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return WordInfo(
+    return DatabaseWordInfo(
       verse: serializer.fromJson<String>(json['verse']),
       position: serializer.fromJson<int>(json['position']),
       codeVersion: serializer.fromJson<int>(json['codeVersion']),
@@ -1008,38 +1198,41 @@ class WordInfo extends DataClass implements Insertable<WordInfo> {
     };
   }
 
-  WordInfo copyWith(
-          {String? verse,
-          int? position,
-          int? codeVersion,
-          String? code,
-          int? pageNumber,
-          int? lineNumber}) =>
-      WordInfo(
-        verse: verse ?? this.verse,
-        position: position ?? this.position,
-        codeVersion: codeVersion ?? this.codeVersion,
-        code: code ?? this.code,
-        pageNumber: pageNumber ?? this.pageNumber,
-        lineNumber: lineNumber ?? this.lineNumber,
-      );
-  WordInfo copyWithCompanion(WordInfosCompanion data) {
-    return WordInfo(
+  DatabaseWordInfo copyWith({
+    String? verse,
+    int? position,
+    int? codeVersion,
+    String? code,
+    int? pageNumber,
+    int? lineNumber,
+  }) => DatabaseWordInfo(
+    verse: verse ?? this.verse,
+    position: position ?? this.position,
+    codeVersion: codeVersion ?? this.codeVersion,
+    code: code ?? this.code,
+    pageNumber: pageNumber ?? this.pageNumber,
+    lineNumber: lineNumber ?? this.lineNumber,
+  );
+  DatabaseWordInfo copyWithCompanion(WordInfosCompanion data) {
+    return DatabaseWordInfo(
       verse: data.verse.present ? data.verse.value : this.verse,
       position: data.position.present ? data.position.value : this.position,
-      codeVersion:
-          data.codeVersion.present ? data.codeVersion.value : this.codeVersion,
+      codeVersion: data.codeVersion.present
+          ? data.codeVersion.value
+          : this.codeVersion,
       code: data.code.present ? data.code.value : this.code,
-      pageNumber:
-          data.pageNumber.present ? data.pageNumber.value : this.pageNumber,
-      lineNumber:
-          data.lineNumber.present ? data.lineNumber.value : this.lineNumber,
+      pageNumber: data.pageNumber.present
+          ? data.pageNumber.value
+          : this.pageNumber,
+      lineNumber: data.lineNumber.present
+          ? data.lineNumber.value
+          : this.lineNumber,
     );
   }
 
   @override
   String toString() {
-    return (StringBuffer('WordInfo(')
+    return (StringBuffer('DatabaseWordInfo(')
           ..write('verse: $verse, ')
           ..write('position: $position, ')
           ..write('codeVersion: $codeVersion, ')
@@ -1056,7 +1249,7 @@ class WordInfo extends DataClass implements Insertable<WordInfo> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is WordInfo &&
+      (other is DatabaseWordInfo &&
           other.verse == this.verse &&
           other.position == this.position &&
           other.codeVersion == this.codeVersion &&
@@ -1065,7 +1258,7 @@ class WordInfo extends DataClass implements Insertable<WordInfo> {
           other.lineNumber == this.lineNumber);
 }
 
-class WordInfosCompanion extends UpdateCompanion<WordInfo> {
+class WordInfosCompanion extends UpdateCompanion<DatabaseWordInfo> {
   final Value<String> verse;
   final Value<int> position;
   final Value<int> codeVersion;
@@ -1090,13 +1283,13 @@ class WordInfosCompanion extends UpdateCompanion<WordInfo> {
     required int pageNumber,
     required int lineNumber,
     this.rowid = const Value.absent(),
-  })  : verse = Value(verse),
-        position = Value(position),
-        codeVersion = Value(codeVersion),
-        code = Value(code),
-        pageNumber = Value(pageNumber),
-        lineNumber = Value(lineNumber);
-  static Insertable<WordInfo> custom({
+  }) : verse = Value(verse),
+       position = Value(position),
+       codeVersion = Value(codeVersion),
+       code = Value(code),
+       pageNumber = Value(pageNumber),
+       lineNumber = Value(lineNumber);
+  static Insertable<DatabaseWordInfo> custom({
     Expression<String>? verse,
     Expression<int>? position,
     Expression<int>? codeVersion,
@@ -1116,14 +1309,15 @@ class WordInfosCompanion extends UpdateCompanion<WordInfo> {
     });
   }
 
-  WordInfosCompanion copyWith(
-      {Value<String>? verse,
-      Value<int>? position,
-      Value<int>? codeVersion,
-      Value<String>? code,
-      Value<int>? pageNumber,
-      Value<int>? lineNumber,
-      Value<int>? rowid}) {
+  WordInfosCompanion copyWith({
+    Value<String>? verse,
+    Value<int>? position,
+    Value<int>? codeVersion,
+    Value<String>? code,
+    Value<int>? pageNumber,
+    Value<int>? lineNumber,
+    Value<int>? rowid,
+  }) {
     return WordInfosCompanion(
       verse: verse ?? this.verse,
       position: position ?? this.position,
@@ -1183,76 +1377,114 @@ class $AudioFilesTable extends AudioFiles
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $AudioFilesTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _recitationMeta =
-      const VerificationMeta('recitation');
+  static const VerificationMeta _recitationMeta = const VerificationMeta(
+    'recitation',
+  );
   @override
   late final GeneratedColumn<int> recitation = GeneratedColumn<int>(
-      'recitation', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'recitation',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _surahMeta = const VerificationMeta('surah');
   @override
   late final GeneratedColumn<int> surah = GeneratedColumn<int>(
-      'surah', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  static const VerificationMeta _fileSizeMeta =
-      const VerificationMeta('fileSize');
+    'surah',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _fileSizeMeta = const VerificationMeta(
+    'fileSize',
+  );
   @override
   late final GeneratedColumn<double> fileSize = GeneratedColumn<double>(
-      'file_size', aliasedName, false,
-      type: DriftSqlType.double, requiredDuringInsert: true);
-  static const VerificationMeta _durationMeta =
-      const VerificationMeta('duration');
+    'file_size',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _durationMeta = const VerificationMeta(
+    'duration',
+  );
   @override
   late final GeneratedColumn<double> duration = GeneratedColumn<double>(
-      'duration', aliasedName, false,
-      type: DriftSqlType.double, requiredDuringInsert: true);
+    'duration',
+    aliasedName,
+    false,
+    type: DriftSqlType.double,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _urlMeta = const VerificationMeta('url');
   @override
   late final GeneratedColumn<String> url = GeneratedColumn<String>(
-      'url', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+    'url',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
   @override
-  List<GeneratedColumn> get $columns =>
-      [recitation, surah, fileSize, duration, url];
+  List<GeneratedColumn> get $columns => [
+    recitation,
+    surah,
+    fileSize,
+    duration,
+    url,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'audio_files';
   @override
-  VerificationContext validateIntegrity(Insertable<AudioFile> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<AudioFile> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('recitation')) {
       context.handle(
-          _recitationMeta,
-          recitation.isAcceptableOrUnknown(
-              data['recitation']!, _recitationMeta));
+        _recitationMeta,
+        recitation.isAcceptableOrUnknown(data['recitation']!, _recitationMeta),
+      );
     } else if (isInserting) {
       context.missing(_recitationMeta);
     }
     if (data.containsKey('surah')) {
       context.handle(
-          _surahMeta, surah.isAcceptableOrUnknown(data['surah']!, _surahMeta));
+        _surahMeta,
+        surah.isAcceptableOrUnknown(data['surah']!, _surahMeta),
+      );
     } else if (isInserting) {
       context.missing(_surahMeta);
     }
     if (data.containsKey('file_size')) {
-      context.handle(_fileSizeMeta,
-          fileSize.isAcceptableOrUnknown(data['file_size']!, _fileSizeMeta));
+      context.handle(
+        _fileSizeMeta,
+        fileSize.isAcceptableOrUnknown(data['file_size']!, _fileSizeMeta),
+      );
     } else if (isInserting) {
       context.missing(_fileSizeMeta);
     }
     if (data.containsKey('duration')) {
-      context.handle(_durationMeta,
-          duration.isAcceptableOrUnknown(data['duration']!, _durationMeta));
+      context.handle(
+        _durationMeta,
+        duration.isAcceptableOrUnknown(data['duration']!, _durationMeta),
+      );
     } else if (isInserting) {
       context.missing(_durationMeta);
     }
     if (data.containsKey('url')) {
       context.handle(
-          _urlMeta, url.isAcceptableOrUnknown(data['url']!, _urlMeta));
+        _urlMeta,
+        url.isAcceptableOrUnknown(data['url']!, _urlMeta),
+      );
     } else if (isInserting) {
       context.missing(_urlMeta);
     }
@@ -1265,16 +1497,26 @@ class $AudioFilesTable extends AudioFiles
   AudioFile map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return AudioFile(
-      recitation: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}recitation'])!,
-      surah: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}surah'])!,
-      fileSize: attachedDatabase.typeMapping
-          .read(DriftSqlType.double, data['${effectivePrefix}file_size'])!,
-      duration: attachedDatabase.typeMapping
-          .read(DriftSqlType.double, data['${effectivePrefix}duration'])!,
-      url: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}url'])!,
+      recitation: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}recitation'],
+      )!,
+      surah: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}surah'],
+      )!,
+      fileSize: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}file_size'],
+      )!,
+      duration: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}duration'],
+      )!,
+      url: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}url'],
+      )!,
     );
   }
 
@@ -1290,12 +1532,13 @@ class AudioFile extends DataClass implements Insertable<AudioFile> {
   final double fileSize;
   final double duration;
   final String url;
-  const AudioFile(
-      {required this.recitation,
-      required this.surah,
-      required this.fileSize,
-      required this.duration,
-      required this.url});
+  const AudioFile({
+    required this.recitation,
+    required this.surah,
+    required this.fileSize,
+    required this.duration,
+    required this.url,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1317,8 +1560,10 @@ class AudioFile extends DataClass implements Insertable<AudioFile> {
     );
   }
 
-  factory AudioFile.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory AudioFile.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return AudioFile(
       recitation: serializer.fromJson<int>(json['recitation']),
@@ -1340,23 +1585,24 @@ class AudioFile extends DataClass implements Insertable<AudioFile> {
     };
   }
 
-  AudioFile copyWith(
-          {int? recitation,
-          int? surah,
-          double? fileSize,
-          double? duration,
-          String? url}) =>
-      AudioFile(
-        recitation: recitation ?? this.recitation,
-        surah: surah ?? this.surah,
-        fileSize: fileSize ?? this.fileSize,
-        duration: duration ?? this.duration,
-        url: url ?? this.url,
-      );
+  AudioFile copyWith({
+    int? recitation,
+    int? surah,
+    double? fileSize,
+    double? duration,
+    String? url,
+  }) => AudioFile(
+    recitation: recitation ?? this.recitation,
+    surah: surah ?? this.surah,
+    fileSize: fileSize ?? this.fileSize,
+    duration: duration ?? this.duration,
+    url: url ?? this.url,
+  );
   AudioFile copyWithCompanion(AudioFilesCompanion data) {
     return AudioFile(
-      recitation:
-          data.recitation.present ? data.recitation.value : this.recitation,
+      recitation: data.recitation.present
+          ? data.recitation.value
+          : this.recitation,
       surah: data.surah.present ? data.surah.value : this.surah,
       fileSize: data.fileSize.present ? data.fileSize.value : this.fileSize,
       duration: data.duration.present ? data.duration.value : this.duration,
@@ -1411,11 +1657,11 @@ class AudioFilesCompanion extends UpdateCompanion<AudioFile> {
     required double duration,
     required String url,
     this.rowid = const Value.absent(),
-  })  : recitation = Value(recitation),
-        surah = Value(surah),
-        fileSize = Value(fileSize),
-        duration = Value(duration),
-        url = Value(url);
+  }) : recitation = Value(recitation),
+       surah = Value(surah),
+       fileSize = Value(fileSize),
+       duration = Value(duration),
+       url = Value(url);
   static Insertable<AudioFile> custom({
     Expression<int>? recitation,
     Expression<int>? surah,
@@ -1434,13 +1680,14 @@ class AudioFilesCompanion extends UpdateCompanion<AudioFile> {
     });
   }
 
-  AudioFilesCompanion copyWith(
-      {Value<int>? recitation,
-      Value<int>? surah,
-      Value<double>? fileSize,
-      Value<double>? duration,
-      Value<String>? url,
-      Value<int>? rowid}) {
+  AudioFilesCompanion copyWith({
+    Value<int>? recitation,
+    Value<int>? surah,
+    Value<double>? fileSize,
+    Value<double>? duration,
+    Value<String>? url,
+    Value<int>? rowid,
+  }) {
     return AudioFilesCompanion(
       recitation: recitation ?? this.recitation,
       surah: surah ?? this.surah,
@@ -1495,82 +1742,125 @@ class $VersesTimingsTable extends VersesTimings
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $VersesTimingsTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _recitationMeta =
-      const VerificationMeta('recitation');
+  static const VerificationMeta _recitationMeta = const VerificationMeta(
+    'recitation',
+  );
   @override
   late final GeneratedColumn<int> recitation = GeneratedColumn<int>(
-      'recitation', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'recitation',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _surahMeta = const VerificationMeta('surah');
   @override
   late final GeneratedColumn<int> surah = GeneratedColumn<int>(
-      'surah', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'surah',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _verseMeta = const VerificationMeta('verse');
   @override
   late final GeneratedColumn<String> verse = GeneratedColumn<String>(
-      'verse', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _wordPositionMeta =
-      const VerificationMeta('wordPosition');
+    'verse',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _wordPositionMeta = const VerificationMeta(
+    'wordPosition',
+  );
   @override
   late final GeneratedColumn<int> wordPosition = GeneratedColumn<int>(
-      'word_position', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'word_position',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _fromMeta = const VerificationMeta('from');
   @override
   late final GeneratedColumn<int> from = GeneratedColumn<int>(
-      'from', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'from',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _toMeta = const VerificationMeta('to');
   @override
   late final GeneratedColumn<int> to = GeneratedColumn<int>(
-      'to', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'to',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   @override
-  List<GeneratedColumn> get $columns =>
-      [recitation, surah, verse, wordPosition, from, to];
+  List<GeneratedColumn> get $columns => [
+    recitation,
+    surah,
+    verse,
+    wordPosition,
+    from,
+    to,
+  ];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
   static const String $name = 'verses_timings';
   @override
-  VerificationContext validateIntegrity(Insertable<VerseTimings> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<VerseTimings> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('recitation')) {
       context.handle(
-          _recitationMeta,
-          recitation.isAcceptableOrUnknown(
-              data['recitation']!, _recitationMeta));
+        _recitationMeta,
+        recitation.isAcceptableOrUnknown(data['recitation']!, _recitationMeta),
+      );
     } else if (isInserting) {
       context.missing(_recitationMeta);
     }
     if (data.containsKey('surah')) {
       context.handle(
-          _surahMeta, surah.isAcceptableOrUnknown(data['surah']!, _surahMeta));
+        _surahMeta,
+        surah.isAcceptableOrUnknown(data['surah']!, _surahMeta),
+      );
     } else if (isInserting) {
       context.missing(_surahMeta);
     }
     if (data.containsKey('verse')) {
       context.handle(
-          _verseMeta, verse.isAcceptableOrUnknown(data['verse']!, _verseMeta));
+        _verseMeta,
+        verse.isAcceptableOrUnknown(data['verse']!, _verseMeta),
+      );
     } else if (isInserting) {
       context.missing(_verseMeta);
     }
     if (data.containsKey('word_position')) {
       context.handle(
+        _wordPositionMeta,
+        wordPosition.isAcceptableOrUnknown(
+          data['word_position']!,
           _wordPositionMeta,
-          wordPosition.isAcceptableOrUnknown(
-              data['word_position']!, _wordPositionMeta));
+        ),
+      );
     } else if (isInserting) {
       context.missing(_wordPositionMeta);
     }
     if (data.containsKey('from')) {
       context.handle(
-          _fromMeta, from.isAcceptableOrUnknown(data['from']!, _fromMeta));
+        _fromMeta,
+        from.isAcceptableOrUnknown(data['from']!, _fromMeta),
+      );
     } else if (isInserting) {
       context.missing(_fromMeta);
     }
@@ -1588,18 +1878,30 @@ class $VersesTimingsTable extends VersesTimings
   VerseTimings map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return VerseTimings(
-      recitation: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}recitation'])!,
-      surah: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}surah'])!,
-      verse: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}verse'])!,
-      wordPosition: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}word_position'])!,
-      from: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}from'])!,
-      to: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}to'])!,
+      recitation: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}recitation'],
+      )!,
+      surah: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}surah'],
+      )!,
+      verse: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}verse'],
+      )!,
+      wordPosition: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}word_position'],
+      )!,
+      from: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}from'],
+      )!,
+      to: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}to'],
+      )!,
     );
   }
 
@@ -1616,13 +1918,14 @@ class VerseTimings extends DataClass implements Insertable<VerseTimings> {
   final int wordPosition;
   final int from;
   final int to;
-  const VerseTimings(
-      {required this.recitation,
-      required this.surah,
-      required this.verse,
-      required this.wordPosition,
-      required this.from,
-      required this.to});
+  const VerseTimings({
+    required this.recitation,
+    required this.surah,
+    required this.verse,
+    required this.wordPosition,
+    required this.from,
+    required this.to,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -1646,8 +1949,10 @@ class VerseTimings extends DataClass implements Insertable<VerseTimings> {
     );
   }
 
-  factory VerseTimings.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory VerseTimings.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return VerseTimings(
       recitation: serializer.fromJson<int>(json['recitation']),
@@ -1671,25 +1976,26 @@ class VerseTimings extends DataClass implements Insertable<VerseTimings> {
     };
   }
 
-  VerseTimings copyWith(
-          {int? recitation,
-          int? surah,
-          String? verse,
-          int? wordPosition,
-          int? from,
-          int? to}) =>
-      VerseTimings(
-        recitation: recitation ?? this.recitation,
-        surah: surah ?? this.surah,
-        verse: verse ?? this.verse,
-        wordPosition: wordPosition ?? this.wordPosition,
-        from: from ?? this.from,
-        to: to ?? this.to,
-      );
+  VerseTimings copyWith({
+    int? recitation,
+    int? surah,
+    String? verse,
+    int? wordPosition,
+    int? from,
+    int? to,
+  }) => VerseTimings(
+    recitation: recitation ?? this.recitation,
+    surah: surah ?? this.surah,
+    verse: verse ?? this.verse,
+    wordPosition: wordPosition ?? this.wordPosition,
+    from: from ?? this.from,
+    to: to ?? this.to,
+  );
   VerseTimings copyWithCompanion(VersesTimingsCompanion data) {
     return VerseTimings(
-      recitation:
-          data.recitation.present ? data.recitation.value : this.recitation,
+      recitation: data.recitation.present
+          ? data.recitation.value
+          : this.recitation,
       surah: data.surah.present ? data.surah.value : this.surah,
       verse: data.verse.present ? data.verse.value : this.verse,
       wordPosition: data.wordPosition.present
@@ -1753,12 +2059,12 @@ class VersesTimingsCompanion extends UpdateCompanion<VerseTimings> {
     required int from,
     required int to,
     this.rowid = const Value.absent(),
-  })  : recitation = Value(recitation),
-        surah = Value(surah),
-        verse = Value(verse),
-        wordPosition = Value(wordPosition),
-        from = Value(from),
-        to = Value(to);
+  }) : recitation = Value(recitation),
+       surah = Value(surah),
+       verse = Value(verse),
+       wordPosition = Value(wordPosition),
+       from = Value(from),
+       to = Value(to);
   static Insertable<VerseTimings> custom({
     Expression<int>? recitation,
     Expression<int>? surah,
@@ -1779,14 +2085,15 @@ class VersesTimingsCompanion extends UpdateCompanion<VerseTimings> {
     });
   }
 
-  VersesTimingsCompanion copyWith(
-      {Value<int>? recitation,
-      Value<int>? surah,
-      Value<String>? verse,
-      Value<int>? wordPosition,
-      Value<int>? from,
-      Value<int>? to,
-      Value<int>? rowid}) {
+  VersesTimingsCompanion copyWith({
+    Value<int>? recitation,
+    Value<int>? surah,
+    Value<String>? verse,
+    Value<int>? wordPosition,
+    Value<int>? from,
+    Value<int>? to,
+    Value<int>? rowid,
+  }) {
     return VersesTimingsCompanion(
       recitation: recitation ?? this.recitation,
       surah: surah ?? this.surah,
@@ -1849,18 +2156,30 @@ class $FontFilesTable extends FontFiles
   static const VerificationMeta _codeMeta = const VerificationMeta('code');
   @override
   late final GeneratedColumn<int> code = GeneratedColumn<int>(
-      'code', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'code',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _pageMeta = const VerificationMeta('page');
   @override
   late final GeneratedColumn<int> page = GeneratedColumn<int>(
-      'page', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+    'page',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _fontMeta = const VerificationMeta('font');
   @override
   late final GeneratedColumn<Uint8List> font = GeneratedColumn<Uint8List>(
-      'font', aliasedName, false,
-      type: DriftSqlType.blob, requiredDuringInsert: true);
+    'font',
+    aliasedName,
+    false,
+    type: DriftSqlType.blob,
+    requiredDuringInsert: true,
+  );
   @override
   List<GeneratedColumn> get $columns => [code, page, font];
   @override
@@ -1869,25 +2188,33 @@ class $FontFilesTable extends FontFiles
   String get actualTableName => $name;
   static const String $name = 'font_files';
   @override
-  VerificationContext validateIntegrity(Insertable<FontFile> instance,
-      {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<FontFile> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('code')) {
       context.handle(
-          _codeMeta, code.isAcceptableOrUnknown(data['code']!, _codeMeta));
+        _codeMeta,
+        code.isAcceptableOrUnknown(data['code']!, _codeMeta),
+      );
     } else if (isInserting) {
       context.missing(_codeMeta);
     }
     if (data.containsKey('page')) {
       context.handle(
-          _pageMeta, page.isAcceptableOrUnknown(data['page']!, _pageMeta));
+        _pageMeta,
+        page.isAcceptableOrUnknown(data['page']!, _pageMeta),
+      );
     } else if (isInserting) {
       context.missing(_pageMeta);
     }
     if (data.containsKey('font')) {
       context.handle(
-          _fontMeta, font.isAcceptableOrUnknown(data['font']!, _fontMeta));
+        _fontMeta,
+        font.isAcceptableOrUnknown(data['font']!, _fontMeta),
+      );
     } else if (isInserting) {
       context.missing(_fontMeta);
     }
@@ -1900,12 +2227,18 @@ class $FontFilesTable extends FontFiles
   FontFile map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return FontFile(
-      code: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}code'])!,
-      page: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}page'])!,
-      font: attachedDatabase.typeMapping
-          .read(DriftSqlType.blob, data['${effectivePrefix}font'])!,
+      code: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}code'],
+      )!,
+      page: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}page'],
+      )!,
+      font: attachedDatabase.typeMapping.read(
+        DriftSqlType.blob,
+        data['${effectivePrefix}font'],
+      )!,
     );
   }
 
@@ -1937,8 +2270,10 @@ class FontFile extends DataClass implements Insertable<FontFile> {
     );
   }
 
-  factory FontFile.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
+  factory FontFile.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return FontFile(
       code: serializer.fromJson<int>(json['code']),
@@ -1957,10 +2292,10 @@ class FontFile extends DataClass implements Insertable<FontFile> {
   }
 
   FontFile copyWith({int? code, int? page, Uint8List? font}) => FontFile(
-        code: code ?? this.code,
-        page: page ?? this.page,
-        font: font ?? this.font,
-      );
+    code: code ?? this.code,
+    page: page ?? this.page,
+    font: font ?? this.font,
+  );
   FontFile copyWithCompanion(FontFilesCompanion data) {
     return FontFile(
       code: data.code.present ? data.code.value : this.code,
@@ -2006,9 +2341,9 @@ class FontFilesCompanion extends UpdateCompanion<FontFile> {
     required int page,
     required Uint8List font,
     this.rowid = const Value.absent(),
-  })  : code = Value(code),
-        page = Value(page),
-        font = Value(font);
+  }) : code = Value(code),
+       page = Value(page),
+       font = Value(font);
   static Insertable<FontFile> custom({
     Expression<int>? code,
     Expression<int>? page,
@@ -2023,11 +2358,12 @@ class FontFilesCompanion extends UpdateCompanion<FontFile> {
     });
   }
 
-  FontFilesCompanion copyWith(
-      {Value<int>? code,
-      Value<int>? page,
-      Value<Uint8List>? font,
-      Value<int>? rowid}) {
+  FontFilesCompanion copyWith({
+    Value<int>? code,
+    Value<int>? page,
+    Value<Uint8List>? font,
+    Value<int>? rowid,
+  }) {
     return FontFilesCompanion(
       code: code ?? this.code,
       page: page ?? this.page,
@@ -2081,14 +2417,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
-        verses,
-        verseInfos,
-        words,
-        wordInfos,
-        audioFiles,
-        versesTimings,
-        fontFiles
-      ];
+    verses,
+    verseInfos,
+    words,
+    wordInfos,
+    audioFiles,
+    versesTimings,
+    fontFiles,
+  ];
 }
 
 typedef $$VersesTableCreateCompanionBuilder = VersesCompanion Function({
@@ -2111,31 +2447,40 @@ final class $$VersesTableReferences
   $$VersesTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
   static MultiTypedResultKey<$VerseInfosTable, List<VerseInfo>>
-      _verseInfosRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
-          db.verseInfos,
-          aliasName: $_aliasNameGenerator(db.verses.id, db.verseInfos.verse));
+  _verseInfosRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.verseInfos,
+    aliasName: 'verses__id__verse_infos__verse',
+  );
 
   $$VerseInfosTableProcessedTableManager get verseInfosRefs {
-    final manager = $$VerseInfosTableTableManager($_db, $_db.verseInfos)
-        .filter((f) => f.verse.id.sqlEquals($_itemColumn<String>('id')!));
+    final manager = $$VerseInfosTableTableManager(
+      $_db,
+      $_db.verseInfos,
+    ).filter((f) => f.verse.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_verseInfosRefsTable($_db));
     return ProcessedTableManager(
-        manager.$state.copyWith(prefetchedData: cache));
+      manager.$state.copyWith(prefetchedData: cache),
+    );
   }
 
-  static MultiTypedResultKey<$WordsTable, List<Word>> _wordsRefsTable(
-          _$AppDatabase db) =>
-      MultiTypedResultKey.fromTable(db.words,
-          aliasName: $_aliasNameGenerator(db.verses.id, db.words.verse));
+  static MultiTypedResultKey<$WordsTable, List<DatabaseWord>> _wordsRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.words,
+    aliasName: 'verses__id__words__verse',
+  );
 
   $$WordsTableProcessedTableManager get wordsRefs {
-    final manager = $$WordsTableTableManager($_db, $_db.words)
-        .filter((f) => f.verse.id.sqlEquals($_itemColumn<String>('id')!));
+    final manager = $$WordsTableTableManager(
+      $_db,
+      $_db.words,
+    ).filter((f) => f.verse.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_wordsRefsTable($_db));
     return ProcessedTableManager(
-        manager.$state.copyWith(prefetchedData: cache));
+      manager.$state.copyWith(prefetchedData: cache),
+    );
   }
 }
 
@@ -2149,56 +2494,72 @@ class $$VersesTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<String> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get juz => $composableBuilder(
-      column: $table.juz, builder: (column) => ColumnFilters(column));
+    column: $table.juz,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get hizb => $composableBuilder(
-      column: $table.hizb, builder: (column) => ColumnFilters(column));
+    column: $table.hizb,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get rub => $composableBuilder(
-      column: $table.rub, builder: (column) => ColumnFilters(column));
+    column: $table.rub,
+    builder: (column) => ColumnFilters(column),
+  );
 
   Expression<bool> verseInfosRefs(
-      Expression<bool> Function($$VerseInfosTableFilterComposer f) f) {
+    Expression<bool> Function($$VerseInfosTableFilterComposer f) f,
+  ) {
     final $$VerseInfosTableFilterComposer composer = $composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.id,
-        referencedTable: $db.verseInfos,
-        getReferencedColumn: (t) => t.verse,
-        builder: (joinBuilder,
-                {$addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer}) =>
-            $$VerseInfosTableFilterComposer(
-              $db: $db,
-              $table: $db.verseInfos,
-              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-              joinBuilder: joinBuilder,
-              $removeJoinBuilderFromRootComposer:
-                  $removeJoinBuilderFromRootComposer,
-            ));
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.verseInfos,
+      getReferencedColumn: (t) => t.verse,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$VerseInfosTableFilterComposer(
+            $db: $db,
+            $table: $db.verseInfos,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
     return f(composer);
   }
 
   Expression<bool> wordsRefs(
-      Expression<bool> Function($$WordsTableFilterComposer f) f) {
+    Expression<bool> Function($$WordsTableFilterComposer f) f,
+  ) {
     final $$WordsTableFilterComposer composer = $composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.id,
-        referencedTable: $db.words,
-        getReferencedColumn: (t) => t.verse,
-        builder: (joinBuilder,
-                {$addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer}) =>
-            $$WordsTableFilterComposer(
-              $db: $db,
-              $table: $db.words,
-              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-              joinBuilder: joinBuilder,
-              $removeJoinBuilderFromRootComposer:
-                  $removeJoinBuilderFromRootComposer,
-            ));
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.words,
+      getReferencedColumn: (t) => t.verse,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$WordsTableFilterComposer(
+            $db: $db,
+            $table: $db.words,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
     return f(composer);
   }
 }
@@ -2213,16 +2574,24 @@ class $$VersesTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<String> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get juz => $composableBuilder(
-      column: $table.juz, builder: (column) => ColumnOrderings(column));
+    column: $table.juz,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get hizb => $composableBuilder(
-      column: $table.hizb, builder: (column) => ColumnOrderings(column));
+    column: $table.hizb,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get rub => $composableBuilder(
-      column: $table.rub, builder: (column) => ColumnOrderings(column));
+    column: $table.rub,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$VersesTableAnnotationComposer
@@ -2247,62 +2616,74 @@ class $$VersesTableAnnotationComposer
       $composableBuilder(column: $table.rub, builder: (column) => column);
 
   Expression<T> verseInfosRefs<T extends Object>(
-      Expression<T> Function($$VerseInfosTableAnnotationComposer a) f) {
+    Expression<T> Function($$VerseInfosTableAnnotationComposer a) f,
+  ) {
     final $$VerseInfosTableAnnotationComposer composer = $composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.id,
-        referencedTable: $db.verseInfos,
-        getReferencedColumn: (t) => t.verse,
-        builder: (joinBuilder,
-                {$addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer}) =>
-            $$VerseInfosTableAnnotationComposer(
-              $db: $db,
-              $table: $db.verseInfos,
-              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-              joinBuilder: joinBuilder,
-              $removeJoinBuilderFromRootComposer:
-                  $removeJoinBuilderFromRootComposer,
-            ));
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.verseInfos,
+      getReferencedColumn: (t) => t.verse,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$VerseInfosTableAnnotationComposer(
+            $db: $db,
+            $table: $db.verseInfos,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
     return f(composer);
   }
 
   Expression<T> wordsRefs<T extends Object>(
-      Expression<T> Function($$WordsTableAnnotationComposer a) f) {
+    Expression<T> Function($$WordsTableAnnotationComposer a) f,
+  ) {
     final $$WordsTableAnnotationComposer composer = $composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.id,
-        referencedTable: $db.words,
-        getReferencedColumn: (t) => t.verse,
-        builder: (joinBuilder,
-                {$addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer}) =>
-            $$WordsTableAnnotationComposer(
-              $db: $db,
-              $table: $db.words,
-              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-              joinBuilder: joinBuilder,
-              $removeJoinBuilderFromRootComposer:
-                  $removeJoinBuilderFromRootComposer,
-            ));
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.words,
+      getReferencedColumn: (t) => t.verse,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$WordsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.words,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
     return f(composer);
   }
 }
 
-class $$VersesTableTableManager extends RootTableManager<
-    _$AppDatabase,
-    $VersesTable,
-    Verse,
-    $$VersesTableFilterComposer,
-    $$VersesTableOrderingComposer,
-    $$VersesTableAnnotationComposer,
-    $$VersesTableCreateCompanionBuilder,
-    $$VersesTableUpdateCompanionBuilder,
-    (Verse, $$VersesTableReferences),
-    Verse,
-    PrefetchHooks Function({bool verseInfosRefs, bool wordsRefs})> {
+class $$VersesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $VersesTable,
+          Verse,
+          $$VersesTableFilterComposer,
+          $$VersesTableOrderingComposer,
+          $$VersesTableAnnotationComposer,
+          $$VersesTableCreateCompanionBuilder,
+          $$VersesTableUpdateCompanionBuilder,
+          (Verse, $$VersesTableReferences),
+          Verse,
+          PrefetchHooks Function({bool verseInfosRefs, bool wordsRefs})
+        > {
   $$VersesTableTableManager(_$AppDatabase db, $VersesTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -2311,90 +2692,101 @@ class $$VersesTableTableManager extends RootTableManager<
               $$VersesTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$VersesTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<String> id = const Value.absent(),
-            Value<int> juz = const Value.absent(),
-            Value<int> hizb = const Value.absent(),
-            Value<int> rub = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              VersesCompanion(
-            id: id,
-            juz: juz,
-            hizb: hizb,
-            rub: rub,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required String id,
-            required int juz,
-            required int hizb,
-            required int rub,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              VersesCompanion.insert(
-            id: id,
-            juz: juz,
-            hizb: hizb,
-            rub: rub,
-            rowid: rowid,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<int> juz = const Value.absent(),
+                Value<int> hizb = const Value.absent(),
+                Value<int> rub = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => VersesCompanion(
+                id: id,
+                juz: juz,
+                hizb: hizb,
+                rub: rub,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required int juz,
+                required int hizb,
+                required int rub,
+                Value<int> rowid = const Value.absent(),
+              }) => VersesCompanion.insert(
+                id: id,
+                juz: juz,
+                hizb: hizb,
+                rub: rub,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
-              .map((e) =>
-                  (e.readTable(table), $$VersesTableReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<$VersesTable, Verse>(table),
+                  $$VersesTableReferences(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: ({verseInfosRefs = false, wordsRefs = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [
                 if (verseInfosRefs) db.verseInfos,
-                if (wordsRefs) db.words
+                if (wordsRefs) db.words,
               ],
               addJoins: null,
               getPrefetchedDataCallback: (items) async {
                 return [
                   if (verseInfosRefs)
-                    await $_getPrefetchedData(
-                        currentTable: table,
-                        referencedTable:
-                            $$VersesTableReferences._verseInfosRefsTable(db),
-                        managerFromTypedResult: (p0) =>
-                            $$VersesTableReferences(db, table, p0)
-                                .verseInfosRefs,
-                        referencedItemsForCurrentItem: (item,
-                                referencedItems) =>
-                            referencedItems.where((e) => e.verse == item.id),
-                        typedResults: items),
+                    await $_getPrefetchedData<Verse, $VersesTable, VerseInfo>(
+                      currentTable: table,
+                      referencedTable: $$VersesTableReferences
+                          ._verseInfosRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$VersesTableReferences(db, table, p0).verseInfosRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where((e) => e.verse == item.id),
+                      typedResults: items,
+                    ),
                   if (wordsRefs)
-                    await $_getPrefetchedData(
-                        currentTable: table,
-                        referencedTable:
-                            $$VersesTableReferences._wordsRefsTable(db),
-                        managerFromTypedResult: (p0) =>
-                            $$VersesTableReferences(db, table, p0).wordsRefs,
-                        referencedItemsForCurrentItem: (item,
-                                referencedItems) =>
-                            referencedItems.where((e) => e.verse == item.id),
-                        typedResults: items)
+                    await $_getPrefetchedData<
+                      Verse,
+                      $VersesTable,
+                      DatabaseWord
+                    >(
+                      currentTable: table,
+                      referencedTable: $$VersesTableReferences._wordsRefsTable(
+                        db,
+                      ),
+                      managerFromTypedResult: (p0) =>
+                          $$VersesTableReferences(db, table, p0).wordsRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where((e) => e.verse == item.id),
+                      typedResults: items,
+                    ),
                 ];
               },
             );
           },
-        ));
+        ),
+      );
 }
 
-typedef $$VersesTableProcessedTableManager = ProcessedTableManager<
-    _$AppDatabase,
-    $VersesTable,
-    Verse,
-    $$VersesTableFilterComposer,
-    $$VersesTableOrderingComposer,
-    $$VersesTableAnnotationComposer,
-    $$VersesTableCreateCompanionBuilder,
-    $$VersesTableUpdateCompanionBuilder,
-    (Verse, $$VersesTableReferences),
-    Verse,
-    PrefetchHooks Function({bool verseInfosRefs, bool wordsRefs})>;
+typedef $$VersesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $VersesTable,
+      Verse,
+      $$VersesTableFilterComposer,
+      $$VersesTableOrderingComposer,
+      $$VersesTableAnnotationComposer,
+      $$VersesTableCreateCompanionBuilder,
+      $$VersesTableUpdateCompanionBuilder,
+      (Verse, $$VersesTableReferences),
+      Verse,
+      PrefetchHooks Function({bool verseInfosRefs, bool wordsRefs})
+    >;
 typedef $$VerseInfosTableCreateCompanionBuilder = VerseInfosCompanion Function({
   required String verse,
   required int code,
@@ -2412,18 +2804,21 @@ final class $$VerseInfosTableReferences
     extends BaseReferences<_$AppDatabase, $VerseInfosTable, VerseInfo> {
   $$VerseInfosTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static $VersesTable _verseTable(_$AppDatabase db) => db.verses
-      .createAlias($_aliasNameGenerator(db.verseInfos.verse, db.verses.id));
+  static $VersesTable _verseTable(_$AppDatabase db) =>
+      db.verses.createAlias('verse_infos__verse__verses__id');
 
   $$VersesTableProcessedTableManager get verse {
     final $_column = $_itemColumn<String>('verse')!;
 
-    final manager = $$VersesTableTableManager($_db, $_db.verses)
-        .filter((f) => f.id.sqlEquals($_column));
+    final manager = $$VersesTableTableManager(
+      $_db,
+      $_db.verses,
+    ).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_verseTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
-        manager.$state.copyWith(prefetchedData: [item]));
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
   }
 }
 
@@ -2437,28 +2832,35 @@ class $$VerseInfosTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get code => $composableBuilder(
-      column: $table.code, builder: (column) => ColumnFilters(column));
+    column: $table.code,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get page => $composableBuilder(
-      column: $table.page, builder: (column) => ColumnFilters(column));
+    column: $table.page,
+    builder: (column) => ColumnFilters(column),
+  );
 
   $$VersesTableFilterComposer get verse {
     final $$VersesTableFilterComposer composer = $composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.verse,
-        referencedTable: $db.verses,
-        getReferencedColumn: (t) => t.id,
-        builder: (joinBuilder,
-                {$addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer}) =>
-            $$VersesTableFilterComposer(
-              $db: $db,
-              $table: $db.verses,
-              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-              joinBuilder: joinBuilder,
-              $removeJoinBuilderFromRootComposer:
-                  $removeJoinBuilderFromRootComposer,
-            ));
+      composer: this,
+      getCurrentColumn: (t) => t.verse,
+      referencedTable: $db.verses,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$VersesTableFilterComposer(
+            $db: $db,
+            $table: $db.verses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
     return composer;
   }
 }
@@ -2473,28 +2875,35 @@ class $$VerseInfosTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get code => $composableBuilder(
-      column: $table.code, builder: (column) => ColumnOrderings(column));
+    column: $table.code,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get page => $composableBuilder(
-      column: $table.page, builder: (column) => ColumnOrderings(column));
+    column: $table.page,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   $$VersesTableOrderingComposer get verse {
     final $$VersesTableOrderingComposer composer = $composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.verse,
-        referencedTable: $db.verses,
-        getReferencedColumn: (t) => t.id,
-        builder: (joinBuilder,
-                {$addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer}) =>
-            $$VersesTableOrderingComposer(
-              $db: $db,
-              $table: $db.verses,
-              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-              joinBuilder: joinBuilder,
-              $removeJoinBuilderFromRootComposer:
-                  $removeJoinBuilderFromRootComposer,
-            ));
+      composer: this,
+      getCurrentColumn: (t) => t.verse,
+      referencedTable: $db.verses,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$VersesTableOrderingComposer(
+            $db: $db,
+            $table: $db.verses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
     return composer;
   }
 }
@@ -2516,39 +2925,46 @@ class $$VerseInfosTableAnnotationComposer
 
   $$VersesTableAnnotationComposer get verse {
     final $$VersesTableAnnotationComposer composer = $composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.verse,
-        referencedTable: $db.verses,
-        getReferencedColumn: (t) => t.id,
-        builder: (joinBuilder,
-                {$addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer}) =>
-            $$VersesTableAnnotationComposer(
-              $db: $db,
-              $table: $db.verses,
-              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-              joinBuilder: joinBuilder,
-              $removeJoinBuilderFromRootComposer:
-                  $removeJoinBuilderFromRootComposer,
-            ));
+      composer: this,
+      getCurrentColumn: (t) => t.verse,
+      referencedTable: $db.verses,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$VersesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.verses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
     return composer;
   }
 }
 
-class $$VerseInfosTableTableManager extends RootTableManager<
-    _$AppDatabase,
-    $VerseInfosTable,
-    VerseInfo,
-    $$VerseInfosTableFilterComposer,
-    $$VerseInfosTableOrderingComposer,
-    $$VerseInfosTableAnnotationComposer,
-    $$VerseInfosTableCreateCompanionBuilder,
-    $$VerseInfosTableUpdateCompanionBuilder,
-    (VerseInfo, $$VerseInfosTableReferences),
-    VerseInfo,
-    PrefetchHooks Function({bool verse})> {
+class $$VerseInfosTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $VerseInfosTable,
+          VerseInfo,
+          $$VerseInfosTableFilterComposer,
+          $$VerseInfosTableOrderingComposer,
+          $$VerseInfosTableAnnotationComposer,
+          $$VerseInfosTableCreateCompanionBuilder,
+          $$VerseInfosTableUpdateCompanionBuilder,
+          (VerseInfo, $$VerseInfosTableReferences),
+          VerseInfo,
+          PrefetchHooks Function({bool verse})
+        > {
   $$VerseInfosTableTableManager(_$AppDatabase db, $VerseInfosTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -2557,42 +2973,45 @@ class $$VerseInfosTableTableManager extends RootTableManager<
               $$VerseInfosTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$VerseInfosTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<String> verse = const Value.absent(),
-            Value<int> code = const Value.absent(),
-            Value<int> page = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              VerseInfosCompanion(
-            verse: verse,
-            code: code,
-            page: page,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required String verse,
-            required int code,
-            required int page,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              VerseInfosCompanion.insert(
-            verse: verse,
-            code: code,
-            page: page,
-            rowid: rowid,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<String> verse = const Value.absent(),
+                Value<int> code = const Value.absent(),
+                Value<int> page = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => VerseInfosCompanion(
+                verse: verse,
+                code: code,
+                page: page,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String verse,
+                required int code,
+                required int page,
+                Value<int> rowid = const Value.absent(),
+              }) => VerseInfosCompanion.insert(
+                verse: verse,
+                code: code,
+                page: page,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (
-                    e.readTable(table),
-                    $$VerseInfosTableReferences(db, table, e)
-                  ))
+              .map(
+                (e) => (
+                  e.readTable<$VerseInfosTable, VerseInfo>(table),
+                  $$VerseInfosTableReferences(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: ({verse = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [],
-              addJoins: <
-                  T extends TableManagerState<
+              addJoins:
+                  <
+                    T extends TableManagerState<
                       dynamic,
                       dynamic,
                       dynamic,
@@ -2603,40 +3022,46 @@ class $$VerseInfosTableTableManager extends RootTableManager<
                       dynamic,
                       dynamic,
                       dynamic,
-                      dynamic>>(state) {
-                if (verse) {
-                  state = state.withJoin(
-                    currentTable: table,
-                    currentColumn: table.verse,
-                    referencedTable:
-                        $$VerseInfosTableReferences._verseTable(db),
-                    referencedColumn:
-                        $$VerseInfosTableReferences._verseTable(db).id,
-                  ) as T;
-                }
+                      dynamic
+                    >
+                  >(state) {
+                    if (verse) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.verse,
+                        referencedTable: $$VerseInfosTableReferences
+                            ._verseTable(db),
+                        referencedColumn: $$VerseInfosTableReferences
+                            ._verseTable(db)
+                            .id,
+                      ) as T;
+                    }
 
-                return state;
-              },
+                    return state;
+                  },
               getPrefetchedDataCallback: (items) async {
                 return [];
               },
             );
           },
-        ));
+        ),
+      );
 }
 
-typedef $$VerseInfosTableProcessedTableManager = ProcessedTableManager<
-    _$AppDatabase,
-    $VerseInfosTable,
-    VerseInfo,
-    $$VerseInfosTableFilterComposer,
-    $$VerseInfosTableOrderingComposer,
-    $$VerseInfosTableAnnotationComposer,
-    $$VerseInfosTableCreateCompanionBuilder,
-    $$VerseInfosTableUpdateCompanionBuilder,
-    (VerseInfo, $$VerseInfosTableReferences),
-    VerseInfo,
-    PrefetchHooks Function({bool verse})>;
+typedef $$VerseInfosTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $VerseInfosTable,
+      VerseInfo,
+      $$VerseInfosTableFilterComposer,
+      $$VerseInfosTableOrderingComposer,
+      $$VerseInfosTableAnnotationComposer,
+      $$VerseInfosTableCreateCompanionBuilder,
+      $$VerseInfosTableUpdateCompanionBuilder,
+      (VerseInfo, $$VerseInfosTableReferences),
+      VerseInfo,
+      PrefetchHooks Function({bool verse})
+    >;
 typedef $$WordsTableCreateCompanionBuilder = WordsCompanion Function({
   required String verse,
   required int position,
@@ -2655,21 +3080,24 @@ typedef $$WordsTableUpdateCompanionBuilder = WordsCompanion Function({
 });
 
 final class $$WordsTableReferences
-    extends BaseReferences<_$AppDatabase, $WordsTable, Word> {
+    extends BaseReferences<_$AppDatabase, $WordsTable, DatabaseWord> {
   $$WordsTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
   static $VersesTable _verseTable(_$AppDatabase db) =>
-      db.verses.createAlias($_aliasNameGenerator(db.words.verse, db.verses.id));
+      db.verses.createAlias('words__verse__verses__id');
 
   $$VersesTableProcessedTableManager get verse {
     final $_column = $_itemColumn<String>('verse')!;
 
-    final manager = $$VersesTableTableManager($_db, $_db.verses)
-        .filter((f) => f.id.sqlEquals($_column));
+    final manager = $$VersesTableTableManager(
+      $_db,
+      $_db.verses,
+    ).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_verseTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
-        manager.$state.copyWith(prefetchedData: [item]));
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
   }
 }
 
@@ -2682,36 +3110,45 @@ class $$WordsTableFilterComposer extends Composer<_$AppDatabase, $WordsTable> {
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get position => $composableBuilder(
-      column: $table.position, builder: (column) => ColumnFilters(column));
+    column: $table.position,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get textUthmaniSimple => $composableBuilder(
-      column: $table.textUthmaniSimple,
-      builder: (column) => ColumnFilters(column));
+    column: $table.textUthmaniSimple,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get textImlaei => $composableBuilder(
-      column: $table.textImlaei, builder: (column) => ColumnFilters(column));
+    column: $table.textImlaei,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get textImlaeiSimple => $composableBuilder(
-      column: $table.textImlaeiSimple,
-      builder: (column) => ColumnFilters(column));
+    column: $table.textImlaeiSimple,
+    builder: (column) => ColumnFilters(column),
+  );
 
   $$VersesTableFilterComposer get verse {
     final $$VersesTableFilterComposer composer = $composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.verse,
-        referencedTable: $db.verses,
-        getReferencedColumn: (t) => t.id,
-        builder: (joinBuilder,
-                {$addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer}) =>
-            $$VersesTableFilterComposer(
-              $db: $db,
-              $table: $db.verses,
-              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-              joinBuilder: joinBuilder,
-              $removeJoinBuilderFromRootComposer:
-                  $removeJoinBuilderFromRootComposer,
-            ));
+      composer: this,
+      getCurrentColumn: (t) => t.verse,
+      referencedTable: $db.verses,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$VersesTableFilterComposer(
+            $db: $db,
+            $table: $db.verses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
     return composer;
   }
 }
@@ -2726,36 +3163,45 @@ class $$WordsTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get position => $composableBuilder(
-      column: $table.position, builder: (column) => ColumnOrderings(column));
+    column: $table.position,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get textUthmaniSimple => $composableBuilder(
-      column: $table.textUthmaniSimple,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.textUthmaniSimple,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get textImlaei => $composableBuilder(
-      column: $table.textImlaei, builder: (column) => ColumnOrderings(column));
+    column: $table.textImlaei,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get textImlaeiSimple => $composableBuilder(
-      column: $table.textImlaeiSimple,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.textImlaeiSimple,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   $$VersesTableOrderingComposer get verse {
     final $$VersesTableOrderingComposer composer = $composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.verse,
-        referencedTable: $db.verses,
-        getReferencedColumn: (t) => t.id,
-        builder: (joinBuilder,
-                {$addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer}) =>
-            $$VersesTableOrderingComposer(
-              $db: $db,
-              $table: $db.verses,
-              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-              joinBuilder: joinBuilder,
-              $removeJoinBuilderFromRootComposer:
-                  $removeJoinBuilderFromRootComposer,
-            ));
+      composer: this,
+      getCurrentColumn: (t) => t.verse,
+      referencedTable: $db.verses,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$VersesTableOrderingComposer(
+            $db: $db,
+            $table: $db.verses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
     return composer;
   }
 }
@@ -2773,49 +3219,62 @@ class $$WordsTableAnnotationComposer
       $composableBuilder(column: $table.position, builder: (column) => column);
 
   GeneratedColumn<String> get textUthmaniSimple => $composableBuilder(
-      column: $table.textUthmaniSimple, builder: (column) => column);
+    column: $table.textUthmaniSimple,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get textImlaei => $composableBuilder(
-      column: $table.textImlaei, builder: (column) => column);
+    column: $table.textImlaei,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get textImlaeiSimple => $composableBuilder(
-      column: $table.textImlaeiSimple, builder: (column) => column);
+    column: $table.textImlaeiSimple,
+    builder: (column) => column,
+  );
 
   $$VersesTableAnnotationComposer get verse {
     final $$VersesTableAnnotationComposer composer = $composerBuilder(
-        composer: this,
-        getCurrentColumn: (t) => t.verse,
-        referencedTable: $db.verses,
-        getReferencedColumn: (t) => t.id,
-        builder: (joinBuilder,
-                {$addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer}) =>
-            $$VersesTableAnnotationComposer(
-              $db: $db,
-              $table: $db.verses,
-              $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-              joinBuilder: joinBuilder,
-              $removeJoinBuilderFromRootComposer:
-                  $removeJoinBuilderFromRootComposer,
-            ));
+      composer: this,
+      getCurrentColumn: (t) => t.verse,
+      referencedTable: $db.verses,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$VersesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.verses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
     return composer;
   }
 }
 
-class $$WordsTableTableManager extends RootTableManager<
-    _$AppDatabase,
-    $WordsTable,
-    Word,
-    $$WordsTableFilterComposer,
-    $$WordsTableOrderingComposer,
-    $$WordsTableAnnotationComposer,
-    $$WordsTableCreateCompanionBuilder,
-    $$WordsTableUpdateCompanionBuilder,
-    (Word, $$WordsTableReferences),
-    Word,
-    PrefetchHooks Function({bool verse})> {
+class $$WordsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $WordsTable,
+          DatabaseWord,
+          $$WordsTableFilterComposer,
+          $$WordsTableOrderingComposer,
+          $$WordsTableAnnotationComposer,
+          $$WordsTableCreateCompanionBuilder,
+          $$WordsTableUpdateCompanionBuilder,
+          (DatabaseWord, $$WordsTableReferences),
+          DatabaseWord,
+          PrefetchHooks Function({bool verse})
+        > {
   $$WordsTableTableManager(_$AppDatabase db, $WordsTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -2824,48 +3283,53 @@ class $$WordsTableTableManager extends RootTableManager<
               $$WordsTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$WordsTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<String> verse = const Value.absent(),
-            Value<int> position = const Value.absent(),
-            Value<String> textUthmaniSimple = const Value.absent(),
-            Value<String> textImlaei = const Value.absent(),
-            Value<String> textImlaeiSimple = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              WordsCompanion(
-            verse: verse,
-            position: position,
-            textUthmaniSimple: textUthmaniSimple,
-            textImlaei: textImlaei,
-            textImlaeiSimple: textImlaeiSimple,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required String verse,
-            required int position,
-            required String textUthmaniSimple,
-            required String textImlaei,
-            required String textImlaeiSimple,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              WordsCompanion.insert(
-            verse: verse,
-            position: position,
-            textUthmaniSimple: textUthmaniSimple,
-            textImlaei: textImlaei,
-            textImlaeiSimple: textImlaeiSimple,
-            rowid: rowid,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<String> verse = const Value.absent(),
+                Value<int> position = const Value.absent(),
+                Value<String> textUthmaniSimple = const Value.absent(),
+                Value<String> textImlaei = const Value.absent(),
+                Value<String> textImlaeiSimple = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => WordsCompanion(
+                verse: verse,
+                position: position,
+                textUthmaniSimple: textUthmaniSimple,
+                textImlaei: textImlaei,
+                textImlaeiSimple: textImlaeiSimple,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String verse,
+                required int position,
+                required String textUthmaniSimple,
+                required String textImlaei,
+                required String textImlaeiSimple,
+                Value<int> rowid = const Value.absent(),
+              }) => WordsCompanion.insert(
+                verse: verse,
+                position: position,
+                textUthmaniSimple: textUthmaniSimple,
+                textImlaei: textImlaei,
+                textImlaeiSimple: textImlaeiSimple,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
-              .map((e) =>
-                  (e.readTable(table), $$WordsTableReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<$WordsTable, DatabaseWord>(table),
+                  $$WordsTableReferences(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: ({verse = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [],
-              addJoins: <
-                  T extends TableManagerState<
+              addJoins:
+                  <
+                    T extends TableManagerState<
                       dynamic,
                       dynamic,
                       dynamic,
@@ -2876,38 +3340,45 @@ class $$WordsTableTableManager extends RootTableManager<
                       dynamic,
                       dynamic,
                       dynamic,
-                      dynamic>>(state) {
-                if (verse) {
-                  state = state.withJoin(
-                    currentTable: table,
-                    currentColumn: table.verse,
-                    referencedTable: $$WordsTableReferences._verseTable(db),
-                    referencedColumn: $$WordsTableReferences._verseTable(db).id,
-                  ) as T;
-                }
+                      dynamic
+                    >
+                  >(state) {
+                    if (verse) {
+                      state = state.withJoin(
+                        currentTable: table,
+                        currentColumn: table.verse,
+                        referencedTable: $$WordsTableReferences._verseTable(db),
+                        referencedColumn: $$WordsTableReferences
+                            ._verseTable(db)
+                            .id,
+                      ) as T;
+                    }
 
-                return state;
-              },
+                    return state;
+                  },
               getPrefetchedDataCallback: (items) async {
                 return [];
               },
             );
           },
-        ));
+        ),
+      );
 }
 
-typedef $$WordsTableProcessedTableManager = ProcessedTableManager<
-    _$AppDatabase,
-    $WordsTable,
-    Word,
-    $$WordsTableFilterComposer,
-    $$WordsTableOrderingComposer,
-    $$WordsTableAnnotationComposer,
-    $$WordsTableCreateCompanionBuilder,
-    $$WordsTableUpdateCompanionBuilder,
-    (Word, $$WordsTableReferences),
-    Word,
-    PrefetchHooks Function({bool verse})>;
+typedef $$WordsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $WordsTable,
+      DatabaseWord,
+      $$WordsTableFilterComposer,
+      $$WordsTableOrderingComposer,
+      $$WordsTableAnnotationComposer,
+      $$WordsTableCreateCompanionBuilder,
+      $$WordsTableUpdateCompanionBuilder,
+      (DatabaseWord, $$WordsTableReferences),
+      DatabaseWord,
+      PrefetchHooks Function({bool verse})
+    >;
 typedef $$WordInfosTableCreateCompanionBuilder = WordInfosCompanion Function({
   required String verse,
   required int position,
@@ -2937,22 +3408,34 @@ class $$WordInfosTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<String> get verse => $composableBuilder(
-      column: $table.verse, builder: (column) => ColumnFilters(column));
+    column: $table.verse,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get position => $composableBuilder(
-      column: $table.position, builder: (column) => ColumnFilters(column));
+    column: $table.position,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get codeVersion => $composableBuilder(
-      column: $table.codeVersion, builder: (column) => ColumnFilters(column));
+    column: $table.codeVersion,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get code => $composableBuilder(
-      column: $table.code, builder: (column) => ColumnFilters(column));
+    column: $table.code,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get pageNumber => $composableBuilder(
-      column: $table.pageNumber, builder: (column) => ColumnFilters(column));
+    column: $table.pageNumber,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get lineNumber => $composableBuilder(
-      column: $table.lineNumber, builder: (column) => ColumnFilters(column));
+    column: $table.lineNumber,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$WordInfosTableOrderingComposer
@@ -2965,22 +3448,34 @@ class $$WordInfosTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<String> get verse => $composableBuilder(
-      column: $table.verse, builder: (column) => ColumnOrderings(column));
+    column: $table.verse,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get position => $composableBuilder(
-      column: $table.position, builder: (column) => ColumnOrderings(column));
+    column: $table.position,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get codeVersion => $composableBuilder(
-      column: $table.codeVersion, builder: (column) => ColumnOrderings(column));
+    column: $table.codeVersion,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get code => $composableBuilder(
-      column: $table.code, builder: (column) => ColumnOrderings(column));
+    column: $table.code,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get pageNumber => $composableBuilder(
-      column: $table.pageNumber, builder: (column) => ColumnOrderings(column));
+    column: $table.pageNumber,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get lineNumber => $composableBuilder(
-      column: $table.lineNumber, builder: (column) => ColumnOrderings(column));
+    column: $table.lineNumber,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$WordInfosTableAnnotationComposer
@@ -2999,32 +3494,45 @@ class $$WordInfosTableAnnotationComposer
       $composableBuilder(column: $table.position, builder: (column) => column);
 
   GeneratedColumn<int> get codeVersion => $composableBuilder(
-      column: $table.codeVersion, builder: (column) => column);
+    column: $table.codeVersion,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get code =>
       $composableBuilder(column: $table.code, builder: (column) => column);
 
   GeneratedColumn<int> get pageNumber => $composableBuilder(
-      column: $table.pageNumber, builder: (column) => column);
+    column: $table.pageNumber,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get lineNumber => $composableBuilder(
-      column: $table.lineNumber, builder: (column) => column);
+    column: $table.lineNumber,
+    builder: (column) => column,
+  );
 }
 
-class $$WordInfosTableTableManager extends RootTableManager<
-    _$AppDatabase,
-    $WordInfosTable,
-    WordInfo,
-    $$WordInfosTableFilterComposer,
-    $$WordInfosTableOrderingComposer,
-    $$WordInfosTableAnnotationComposer,
-    $$WordInfosTableCreateCompanionBuilder,
-    $$WordInfosTableUpdateCompanionBuilder,
-    (WordInfo, BaseReferences<_$AppDatabase, $WordInfosTable, WordInfo>),
-    WordInfo,
-    PrefetchHooks Function()> {
+class $$WordInfosTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $WordInfosTable,
+          DatabaseWordInfo,
+          $$WordInfosTableFilterComposer,
+          $$WordInfosTableOrderingComposer,
+          $$WordInfosTableAnnotationComposer,
+          $$WordInfosTableCreateCompanionBuilder,
+          $$WordInfosTableUpdateCompanionBuilder,
+          (
+            DatabaseWordInfo,
+            BaseReferences<_$AppDatabase, $WordInfosTable, DatabaseWordInfo>,
+          ),
+          DatabaseWordInfo,
+          PrefetchHooks Function()
+        > {
   $$WordInfosTableTableManager(_$AppDatabase db, $WordInfosTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -3033,61 +3541,76 @@ class $$WordInfosTableTableManager extends RootTableManager<
               $$WordInfosTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$WordInfosTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<String> verse = const Value.absent(),
-            Value<int> position = const Value.absent(),
-            Value<int> codeVersion = const Value.absent(),
-            Value<String> code = const Value.absent(),
-            Value<int> pageNumber = const Value.absent(),
-            Value<int> lineNumber = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              WordInfosCompanion(
-            verse: verse,
-            position: position,
-            codeVersion: codeVersion,
-            code: code,
-            pageNumber: pageNumber,
-            lineNumber: lineNumber,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required String verse,
-            required int position,
-            required int codeVersion,
-            required String code,
-            required int pageNumber,
-            required int lineNumber,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              WordInfosCompanion.insert(
-            verse: verse,
-            position: position,
-            codeVersion: codeVersion,
-            code: code,
-            pageNumber: pageNumber,
-            lineNumber: lineNumber,
-            rowid: rowid,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<String> verse = const Value.absent(),
+                Value<int> position = const Value.absent(),
+                Value<int> codeVersion = const Value.absent(),
+                Value<String> code = const Value.absent(),
+                Value<int> pageNumber = const Value.absent(),
+                Value<int> lineNumber = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => WordInfosCompanion(
+                verse: verse,
+                position: position,
+                codeVersion: codeVersion,
+                code: code,
+                pageNumber: pageNumber,
+                lineNumber: lineNumber,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String verse,
+                required int position,
+                required int codeVersion,
+                required String code,
+                required int pageNumber,
+                required int lineNumber,
+                Value<int> rowid = const Value.absent(),
+              }) => WordInfosCompanion.insert(
+                verse: verse,
+                position: position,
+                codeVersion: codeVersion,
+                code: code,
+                pageNumber: pageNumber,
+                lineNumber: lineNumber,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<$WordInfosTable, DatabaseWordInfo>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $WordInfosTable,
+                    DatabaseWordInfo
+                  >(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$WordInfosTableProcessedTableManager = ProcessedTableManager<
-    _$AppDatabase,
-    $WordInfosTable,
-    WordInfo,
-    $$WordInfosTableFilterComposer,
-    $$WordInfosTableOrderingComposer,
-    $$WordInfosTableAnnotationComposer,
-    $$WordInfosTableCreateCompanionBuilder,
-    $$WordInfosTableUpdateCompanionBuilder,
-    (WordInfo, BaseReferences<_$AppDatabase, $WordInfosTable, WordInfo>),
-    WordInfo,
-    PrefetchHooks Function()>;
+typedef $$WordInfosTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $WordInfosTable,
+      DatabaseWordInfo,
+      $$WordInfosTableFilterComposer,
+      $$WordInfosTableOrderingComposer,
+      $$WordInfosTableAnnotationComposer,
+      $$WordInfosTableCreateCompanionBuilder,
+      $$WordInfosTableUpdateCompanionBuilder,
+      (
+        DatabaseWordInfo,
+        BaseReferences<_$AppDatabase, $WordInfosTable, DatabaseWordInfo>,
+      ),
+      DatabaseWordInfo,
+      PrefetchHooks Function()
+    >;
 typedef $$AudioFilesTableCreateCompanionBuilder = AudioFilesCompanion Function({
   required int recitation,
   required int surah,
@@ -3115,19 +3638,29 @@ class $$AudioFilesTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get recitation => $composableBuilder(
-      column: $table.recitation, builder: (column) => ColumnFilters(column));
+    column: $table.recitation,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get surah => $composableBuilder(
-      column: $table.surah, builder: (column) => ColumnFilters(column));
+    column: $table.surah,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<double> get fileSize => $composableBuilder(
-      column: $table.fileSize, builder: (column) => ColumnFilters(column));
+    column: $table.fileSize,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<double> get duration => $composableBuilder(
-      column: $table.duration, builder: (column) => ColumnFilters(column));
+    column: $table.duration,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get url => $composableBuilder(
-      column: $table.url, builder: (column) => ColumnFilters(column));
+    column: $table.url,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$AudioFilesTableOrderingComposer
@@ -3140,19 +3673,29 @@ class $$AudioFilesTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get recitation => $composableBuilder(
-      column: $table.recitation, builder: (column) => ColumnOrderings(column));
+    column: $table.recitation,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get surah => $composableBuilder(
-      column: $table.surah, builder: (column) => ColumnOrderings(column));
+    column: $table.surah,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<double> get fileSize => $composableBuilder(
-      column: $table.fileSize, builder: (column) => ColumnOrderings(column));
+    column: $table.fileSize,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<double> get duration => $composableBuilder(
-      column: $table.duration, builder: (column) => ColumnOrderings(column));
+    column: $table.duration,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get url => $composableBuilder(
-      column: $table.url, builder: (column) => ColumnOrderings(column));
+    column: $table.url,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$AudioFilesTableAnnotationComposer
@@ -3165,7 +3708,9 @@ class $$AudioFilesTableAnnotationComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   GeneratedColumn<int> get recitation => $composableBuilder(
-      column: $table.recitation, builder: (column) => column);
+    column: $table.recitation,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get surah =>
       $composableBuilder(column: $table.surah, builder: (column) => column);
@@ -3180,20 +3725,27 @@ class $$AudioFilesTableAnnotationComposer
       $composableBuilder(column: $table.url, builder: (column) => column);
 }
 
-class $$AudioFilesTableTableManager extends RootTableManager<
-    _$AppDatabase,
-    $AudioFilesTable,
-    AudioFile,
-    $$AudioFilesTableFilterComposer,
-    $$AudioFilesTableOrderingComposer,
-    $$AudioFilesTableAnnotationComposer,
-    $$AudioFilesTableCreateCompanionBuilder,
-    $$AudioFilesTableUpdateCompanionBuilder,
-    (AudioFile, BaseReferences<_$AppDatabase, $AudioFilesTable, AudioFile>),
-    AudioFile,
-    PrefetchHooks Function()> {
+class $$AudioFilesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $AudioFilesTable,
+          AudioFile,
+          $$AudioFilesTableFilterComposer,
+          $$AudioFilesTableOrderingComposer,
+          $$AudioFilesTableAnnotationComposer,
+          $$AudioFilesTableCreateCompanionBuilder,
+          $$AudioFilesTableUpdateCompanionBuilder,
+          (
+            AudioFile,
+            BaseReferences<_$AppDatabase, $AudioFilesTable, AudioFile>,
+          ),
+          AudioFile,
+          PrefetchHooks Function()
+        > {
   $$AudioFilesTableTableManager(_$AppDatabase db, $AudioFilesTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -3202,77 +3754,89 @@ class $$AudioFilesTableTableManager extends RootTableManager<
               $$AudioFilesTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$AudioFilesTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> recitation = const Value.absent(),
-            Value<int> surah = const Value.absent(),
-            Value<double> fileSize = const Value.absent(),
-            Value<double> duration = const Value.absent(),
-            Value<String> url = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              AudioFilesCompanion(
-            recitation: recitation,
-            surah: surah,
-            fileSize: fileSize,
-            duration: duration,
-            url: url,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required int recitation,
-            required int surah,
-            required double fileSize,
-            required double duration,
-            required String url,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              AudioFilesCompanion.insert(
-            recitation: recitation,
-            surah: surah,
-            fileSize: fileSize,
-            duration: duration,
-            url: url,
-            rowid: rowid,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<int> recitation = const Value.absent(),
+                Value<int> surah = const Value.absent(),
+                Value<double> fileSize = const Value.absent(),
+                Value<double> duration = const Value.absent(),
+                Value<String> url = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => AudioFilesCompanion(
+                recitation: recitation,
+                surah: surah,
+                fileSize: fileSize,
+                duration: duration,
+                url: url,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required int recitation,
+                required int surah,
+                required double fileSize,
+                required double duration,
+                required String url,
+                Value<int> rowid = const Value.absent(),
+              }) => AudioFilesCompanion.insert(
+                recitation: recitation,
+                surah: surah,
+                fileSize: fileSize,
+                duration: duration,
+                url: url,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<$AudioFilesTable, AudioFile>(table),
+                  BaseReferences<_$AppDatabase, $AudioFilesTable, AudioFile>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$AudioFilesTableProcessedTableManager = ProcessedTableManager<
-    _$AppDatabase,
-    $AudioFilesTable,
-    AudioFile,
-    $$AudioFilesTableFilterComposer,
-    $$AudioFilesTableOrderingComposer,
-    $$AudioFilesTableAnnotationComposer,
-    $$AudioFilesTableCreateCompanionBuilder,
-    $$AudioFilesTableUpdateCompanionBuilder,
-    (AudioFile, BaseReferences<_$AppDatabase, $AudioFilesTable, AudioFile>),
-    AudioFile,
-    PrefetchHooks Function()>;
-typedef $$VersesTimingsTableCreateCompanionBuilder = VersesTimingsCompanion
-    Function({
-  required int recitation,
-  required int surah,
-  required String verse,
-  required int wordPosition,
-  required int from,
-  required int to,
-  Value<int> rowid,
-});
-typedef $$VersesTimingsTableUpdateCompanionBuilder = VersesTimingsCompanion
-    Function({
-  Value<int> recitation,
-  Value<int> surah,
-  Value<String> verse,
-  Value<int> wordPosition,
-  Value<int> from,
-  Value<int> to,
-  Value<int> rowid,
-});
+typedef $$AudioFilesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $AudioFilesTable,
+      AudioFile,
+      $$AudioFilesTableFilterComposer,
+      $$AudioFilesTableOrderingComposer,
+      $$AudioFilesTableAnnotationComposer,
+      $$AudioFilesTableCreateCompanionBuilder,
+      $$AudioFilesTableUpdateCompanionBuilder,
+      (AudioFile, BaseReferences<_$AppDatabase, $AudioFilesTable, AudioFile>),
+      AudioFile,
+      PrefetchHooks Function()
+    >;
+typedef $$VersesTimingsTableCreateCompanionBuilder =
+    VersesTimingsCompanion Function({
+      required int recitation,
+      required int surah,
+      required String verse,
+      required int wordPosition,
+      required int from,
+      required int to,
+      Value<int> rowid,
+    });
+typedef $$VersesTimingsTableUpdateCompanionBuilder =
+    VersesTimingsCompanion Function({
+      Value<int> recitation,
+      Value<int> surah,
+      Value<String> verse,
+      Value<int> wordPosition,
+      Value<int> from,
+      Value<int> to,
+      Value<int> rowid,
+    });
 
 class $$VersesTimingsTableFilterComposer
     extends Composer<_$AppDatabase, $VersesTimingsTable> {
@@ -3284,22 +3848,34 @@ class $$VersesTimingsTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get recitation => $composableBuilder(
-      column: $table.recitation, builder: (column) => ColumnFilters(column));
+    column: $table.recitation,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get surah => $composableBuilder(
-      column: $table.surah, builder: (column) => ColumnFilters(column));
+    column: $table.surah,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<String> get verse => $composableBuilder(
-      column: $table.verse, builder: (column) => ColumnFilters(column));
+    column: $table.verse,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get wordPosition => $composableBuilder(
-      column: $table.wordPosition, builder: (column) => ColumnFilters(column));
+    column: $table.wordPosition,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get from => $composableBuilder(
-      column: $table.from, builder: (column) => ColumnFilters(column));
+    column: $table.from,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get to => $composableBuilder(
-      column: $table.to, builder: (column) => ColumnFilters(column));
+    column: $table.to,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$VersesTimingsTableOrderingComposer
@@ -3312,23 +3888,34 @@ class $$VersesTimingsTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get recitation => $composableBuilder(
-      column: $table.recitation, builder: (column) => ColumnOrderings(column));
+    column: $table.recitation,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get surah => $composableBuilder(
-      column: $table.surah, builder: (column) => ColumnOrderings(column));
+    column: $table.surah,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<String> get verse => $composableBuilder(
-      column: $table.verse, builder: (column) => ColumnOrderings(column));
+    column: $table.verse,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get wordPosition => $composableBuilder(
-      column: $table.wordPosition,
-      builder: (column) => ColumnOrderings(column));
+    column: $table.wordPosition,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get from => $composableBuilder(
-      column: $table.from, builder: (column) => ColumnOrderings(column));
+    column: $table.from,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get to => $composableBuilder(
-      column: $table.to, builder: (column) => ColumnOrderings(column));
+    column: $table.to,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$VersesTimingsTableAnnotationComposer
@@ -3341,7 +3928,9 @@ class $$VersesTimingsTableAnnotationComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   GeneratedColumn<int> get recitation => $composableBuilder(
-      column: $table.recitation, builder: (column) => column);
+    column: $table.recitation,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get surah =>
       $composableBuilder(column: $table.surah, builder: (column) => column);
@@ -3350,7 +3939,9 @@ class $$VersesTimingsTableAnnotationComposer
       $composableBuilder(column: $table.verse, builder: (column) => column);
 
   GeneratedColumn<int> get wordPosition => $composableBuilder(
-      column: $table.wordPosition, builder: (column) => column);
+    column: $table.wordPosition,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get from =>
       $composableBuilder(column: $table.from, builder: (column) => column);
@@ -3359,23 +3950,27 @@ class $$VersesTimingsTableAnnotationComposer
       $composableBuilder(column: $table.to, builder: (column) => column);
 }
 
-class $$VersesTimingsTableTableManager extends RootTableManager<
-    _$AppDatabase,
-    $VersesTimingsTable,
-    VerseTimings,
-    $$VersesTimingsTableFilterComposer,
-    $$VersesTimingsTableOrderingComposer,
-    $$VersesTimingsTableAnnotationComposer,
-    $$VersesTimingsTableCreateCompanionBuilder,
-    $$VersesTimingsTableUpdateCompanionBuilder,
-    (
-      VerseTimings,
-      BaseReferences<_$AppDatabase, $VersesTimingsTable, VerseTimings>
-    ),
-    VerseTimings,
-    PrefetchHooks Function()> {
+class $$VersesTimingsTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $VersesTimingsTable,
+          VerseTimings,
+          $$VersesTimingsTableFilterComposer,
+          $$VersesTimingsTableOrderingComposer,
+          $$VersesTimingsTableAnnotationComposer,
+          $$VersesTimingsTableCreateCompanionBuilder,
+          $$VersesTimingsTableUpdateCompanionBuilder,
+          (
+            VerseTimings,
+            BaseReferences<_$AppDatabase, $VersesTimingsTable, VerseTimings>,
+          ),
+          VerseTimings,
+          PrefetchHooks Function()
+        > {
   $$VersesTimingsTableTableManager(_$AppDatabase db, $VersesTimingsTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -3384,64 +3979,76 @@ class $$VersesTimingsTableTableManager extends RootTableManager<
               $$VersesTimingsTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$VersesTimingsTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> recitation = const Value.absent(),
-            Value<int> surah = const Value.absent(),
-            Value<String> verse = const Value.absent(),
-            Value<int> wordPosition = const Value.absent(),
-            Value<int> from = const Value.absent(),
-            Value<int> to = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              VersesTimingsCompanion(
-            recitation: recitation,
-            surah: surah,
-            verse: verse,
-            wordPosition: wordPosition,
-            from: from,
-            to: to,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required int recitation,
-            required int surah,
-            required String verse,
-            required int wordPosition,
-            required int from,
-            required int to,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              VersesTimingsCompanion.insert(
-            recitation: recitation,
-            surah: surah,
-            verse: verse,
-            wordPosition: wordPosition,
-            from: from,
-            to: to,
-            rowid: rowid,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<int> recitation = const Value.absent(),
+                Value<int> surah = const Value.absent(),
+                Value<String> verse = const Value.absent(),
+                Value<int> wordPosition = const Value.absent(),
+                Value<int> from = const Value.absent(),
+                Value<int> to = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => VersesTimingsCompanion(
+                recitation: recitation,
+                surah: surah,
+                verse: verse,
+                wordPosition: wordPosition,
+                from: from,
+                to: to,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required int recitation,
+                required int surah,
+                required String verse,
+                required int wordPosition,
+                required int from,
+                required int to,
+                Value<int> rowid = const Value.absent(),
+              }) => VersesTimingsCompanion.insert(
+                recitation: recitation,
+                surah: surah,
+                verse: verse,
+                wordPosition: wordPosition,
+                from: from,
+                to: to,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<$VersesTimingsTable, VerseTimings>(table),
+                  BaseReferences<
+                    _$AppDatabase,
+                    $VersesTimingsTable,
+                    VerseTimings
+                  >(db, table, e),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$VersesTimingsTableProcessedTableManager = ProcessedTableManager<
-    _$AppDatabase,
-    $VersesTimingsTable,
-    VerseTimings,
-    $$VersesTimingsTableFilterComposer,
-    $$VersesTimingsTableOrderingComposer,
-    $$VersesTimingsTableAnnotationComposer,
-    $$VersesTimingsTableCreateCompanionBuilder,
-    $$VersesTimingsTableUpdateCompanionBuilder,
-    (
+typedef $$VersesTimingsTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $VersesTimingsTable,
       VerseTimings,
-      BaseReferences<_$AppDatabase, $VersesTimingsTable, VerseTimings>
-    ),
-    VerseTimings,
-    PrefetchHooks Function()>;
+      $$VersesTimingsTableFilterComposer,
+      $$VersesTimingsTableOrderingComposer,
+      $$VersesTimingsTableAnnotationComposer,
+      $$VersesTimingsTableCreateCompanionBuilder,
+      $$VersesTimingsTableUpdateCompanionBuilder,
+      (
+        VerseTimings,
+        BaseReferences<_$AppDatabase, $VersesTimingsTable, VerseTimings>,
+      ),
+      VerseTimings,
+      PrefetchHooks Function()
+    >;
 typedef $$FontFilesTableCreateCompanionBuilder = FontFilesCompanion Function({
   required int code,
   required int page,
@@ -3465,13 +4072,19 @@ class $$FontFilesTableFilterComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnFilters<int> get code => $composableBuilder(
-      column: $table.code, builder: (column) => ColumnFilters(column));
+    column: $table.code,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<int> get page => $composableBuilder(
-      column: $table.page, builder: (column) => ColumnFilters(column));
+    column: $table.page,
+    builder: (column) => ColumnFilters(column),
+  );
 
   ColumnFilters<Uint8List> get font => $composableBuilder(
-      column: $table.font, builder: (column) => ColumnFilters(column));
+    column: $table.font,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
 class $$FontFilesTableOrderingComposer
@@ -3484,13 +4097,19 @@ class $$FontFilesTableOrderingComposer
     super.$removeJoinBuilderFromRootComposer,
   });
   ColumnOrderings<int> get code => $composableBuilder(
-      column: $table.code, builder: (column) => ColumnOrderings(column));
+    column: $table.code,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<int> get page => $composableBuilder(
-      column: $table.page, builder: (column) => ColumnOrderings(column));
+    column: $table.page,
+    builder: (column) => ColumnOrderings(column),
+  );
 
   ColumnOrderings<Uint8List> get font => $composableBuilder(
-      column: $table.font, builder: (column) => ColumnOrderings(column));
+    column: $table.font,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$FontFilesTableAnnotationComposer
@@ -3512,20 +4131,24 @@ class $$FontFilesTableAnnotationComposer
       $composableBuilder(column: $table.font, builder: (column) => column);
 }
 
-class $$FontFilesTableTableManager extends RootTableManager<
-    _$AppDatabase,
-    $FontFilesTable,
-    FontFile,
-    $$FontFilesTableFilterComposer,
-    $$FontFilesTableOrderingComposer,
-    $$FontFilesTableAnnotationComposer,
-    $$FontFilesTableCreateCompanionBuilder,
-    $$FontFilesTableUpdateCompanionBuilder,
-    (FontFile, BaseReferences<_$AppDatabase, $FontFilesTable, FontFile>),
-    FontFile,
-    PrefetchHooks Function()> {
+class $$FontFilesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $FontFilesTable,
+          FontFile,
+          $$FontFilesTableFilterComposer,
+          $$FontFilesTableOrderingComposer,
+          $$FontFilesTableAnnotationComposer,
+          $$FontFilesTableCreateCompanionBuilder,
+          $$FontFilesTableUpdateCompanionBuilder,
+          (FontFile, BaseReferences<_$AppDatabase, $FontFilesTable, FontFile>),
+          FontFile,
+          PrefetchHooks Function()
+        > {
   $$FontFilesTableTableManager(_$AppDatabase db, $FontFilesTable table)
-      : super(TableManagerState(
+    : super(
+        TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
@@ -3534,49 +4157,61 @@ class $$FontFilesTableTableManager extends RootTableManager<
               $$FontFilesTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
               $$FontFilesTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> code = const Value.absent(),
-            Value<int> page = const Value.absent(),
-            Value<Uint8List> font = const Value.absent(),
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              FontFilesCompanion(
-            code: code,
-            page: page,
-            font: font,
-            rowid: rowid,
-          ),
-          createCompanionCallback: ({
-            required int code,
-            required int page,
-            required Uint8List font,
-            Value<int> rowid = const Value.absent(),
-          }) =>
-              FontFilesCompanion.insert(
-            code: code,
-            page: page,
-            font: font,
-            rowid: rowid,
-          ),
+          updateCompanionCallback:
+              ({
+                Value<int> code = const Value.absent(),
+                Value<int> page = const Value.absent(),
+                Value<Uint8List> font = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => FontFilesCompanion(
+                code: code,
+                page: page,
+                font: font,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required int code,
+                required int page,
+                required Uint8List font,
+                Value<int> rowid = const Value.absent(),
+              }) => FontFilesCompanion.insert(
+                code: code,
+                page: page,
+                font: font,
+                rowid: rowid,
+              ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable<$FontFilesTable, FontFile>(table),
+                  BaseReferences<_$AppDatabase, $FontFilesTable, FontFile>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
               .toList(),
           prefetchHooksCallback: null,
-        ));
+        ),
+      );
 }
 
-typedef $$FontFilesTableProcessedTableManager = ProcessedTableManager<
-    _$AppDatabase,
-    $FontFilesTable,
-    FontFile,
-    $$FontFilesTableFilterComposer,
-    $$FontFilesTableOrderingComposer,
-    $$FontFilesTableAnnotationComposer,
-    $$FontFilesTableCreateCompanionBuilder,
-    $$FontFilesTableUpdateCompanionBuilder,
-    (FontFile, BaseReferences<_$AppDatabase, $FontFilesTable, FontFile>),
-    FontFile,
-    PrefetchHooks Function()>;
+typedef $$FontFilesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $FontFilesTable,
+      FontFile,
+      $$FontFilesTableFilterComposer,
+      $$FontFilesTableOrderingComposer,
+      $$FontFilesTableAnnotationComposer,
+      $$FontFilesTableCreateCompanionBuilder,
+      $$FontFilesTableUpdateCompanionBuilder,
+      (FontFile, BaseReferences<_$AppDatabase, $FontFilesTable, FontFile>),
+      FontFile,
+      PrefetchHooks Function()
+    >;
 
 class $AppDatabaseManager {
   final _$AppDatabase _db;

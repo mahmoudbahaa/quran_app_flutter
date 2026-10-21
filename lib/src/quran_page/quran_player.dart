@@ -144,8 +144,7 @@ class QuranPlayerState extends State<QuranPlayer> {
           surahNumber: i, recitationId: recitationId, queue: queue);
     }
 
-    await player.setAudioSource(ConcatenatingAudioSource(children: queue),
-        preload: false);
+    await player.setAudioSources(queue, preload: false);
 
     // downloadNextSurah(
     //     surahNumber: 1, recitationId: recitationId, showDownloadBar: false);

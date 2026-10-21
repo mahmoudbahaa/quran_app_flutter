@@ -72,7 +72,7 @@ class DBUtils {
 
   static Map<int, Map<String, Uint8List>> fonts = {};
 
-  static Future<void> _extractArchive(archivePath) async {
+  static Future<void> _extractArchive(String archivePath) async {
     final byteData = await rootBundle.load(archivePath);
     Uint8List xz = XZDecoder().decodeBytes(Uint8List.sublistView(byteData));
     final archive = TarDecoder().decodeBytes(xz);

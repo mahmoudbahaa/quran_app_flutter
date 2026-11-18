@@ -12,6 +12,7 @@ class AppTopBar extends AppBar {
     required this.state,
     required this.scaffoldKey,
     this.tabs,
+    this.toolbarActions,
     this.hasNotch = false,
     this.iconsSize = 40.0,
   });
@@ -22,6 +23,7 @@ class AppTopBar extends AppBar {
   final bool hasNotch;
   final double iconsSize;
   final List<Widget>? tabs;
+  final List<Widget>? toolbarActions;
 
   @override
   State<AppTopBar> createState() {
@@ -39,24 +41,40 @@ class _AppTopBarState extends State<AppTopBar> {
   Widget build(BuildContext context) {
     Widget title;
 
-    title = Text(AppLocalizations.of(context)!.appTitle,
-        style: TextStyle(fontSize: 14));
+    title = Text(
+      AppLocalizations.of(context)!.appTitle,
+      style: TextStyle(fontSize: 14),
+    );
 
     if (widget.tabs != null) {
-      title = Row(children: [
-        title,
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.only(left: 10, right: 10),
-            child: TabBar(
-              tabs: widget.tabs!,
+      title = Row(
+        children: [
+          title,
+          Expanded(
+            child: Padding(
+              padding: EdgeInsets.only(left: 10, right: 10),
+              child: TabBar(tabs: widget.tabs!),
             ),
           ),
-        ),
-      ]);
+        ],
+      );
     }
 
-    final appBar = AppBar(titleSpacing: 0.0, bottomOpacity: 0.0, title: title);
+    final appBar = AppBar(
+      titleSpacing: 0.0,
+      bottomOpacity: 0.0,
+      title: title,
+      actions: widget.toolbarActions == null
+          ? null
+          : [
+              ...widget.toolbarActions!,
+              if (Scaffold.maybeOf(context)?.hasEndDrawer ?? false)
+                EndDrawerButton(
+                  onPressed: () =>
+                      widget.scaffoldKey.currentState?.openEndDrawer(),
+                ),
+            ],
+    );
 
     if (!widget.hasNotch) return appBar;
 
@@ -80,8 +98,10 @@ class NotchedAppBarClipper extends CustomClipper<Path> {
         ..lineTo(0, 0)
         ..lineTo(0, size.height)
         ..lineTo(size.width / 2 - iconsSize / 2 - 4, size.height)
-        ..arcToPoint(Offset(size.width / 2 + iconsSize / 2 + 4, size.height),
-            radius: Radius.circular(iconsSize / 2 + 4))
+        ..arcToPoint(
+          Offset(size.width / 2 + iconsSize / 2 + 4, size.height),
+          radius: Radius.circular(iconsSize / 2 + 4),
+        )
         ..lineTo(size.width, size.height)
         ..lineTo(size.width, 0)
         ..close();
@@ -89,8 +109,11 @@ class NotchedAppBarClipper extends CustomClipper<Path> {
       return Path()
         ..lineTo(0, 0)
         ..lineTo(size.width / 2 - iconsSize / 2 - 4, 0)
-        ..arcToPoint(Offset(size.width / 2 + iconsSize / 2 + 4, 0),
-            radius: Radius.circular(iconsSize / 2 + 4), clockwise: false)
+        ..arcToPoint(
+          Offset(size.width / 2 + iconsSize / 2 + 4, 0),
+          radius: Radius.circular(iconsSize / 2 + 4),
+          clockwise: false,
+        )
         ..lineTo(size.width, 0)
         ..lineTo(size.width, size.height)
         ..lineTo(0, size.height)

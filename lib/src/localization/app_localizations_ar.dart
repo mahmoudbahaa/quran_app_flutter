@@ -98,4 +98,13 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get album => 'القرآن الكربم';
+
+  @override
+  String get zoomIn => 'تكبير';
+
+  @override
+  String get zoomOut => 'تصغير';
+
+  @override
+  String get resetZoom => 'إعادة ضبط التكبير';
 }

@@ -384,17 +384,19 @@ class QuranPlayerState extends State<QuranPlayer> {
     super.dispose();
   }
 
-  // Future<void> preBuild() async {
-  //   if (state.pause) {
-  //     state.pause = false;
-  //     await player.pause();
-  //   } else if (!state.playing) {
-  //     await changeSource(true);
-  //   }
-  // }
+  Future<void> preBuild() async {
+    if (state.update) {
+      state.update = false;
+      player.pause().then((_) {
+      player.play();
+      });
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
+    // preBuild();
     if (state.downloading && audioFile != null && downloadFilePath != null) {
       return DownloadWidget(
         audioFile: audioFile!,
@@ -403,11 +405,14 @@ class QuranPlayerState extends State<QuranPlayer> {
         parent: this,
       );
     } else {
-      if (pageNumber != state.pageNumber) {
+      if (pageNumber != state.pageNumber || state.update) {
+        state.update = false;
         pageNumber = state.pageNumber;
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) unawaited(changeSource(state.playing));
         });
+
+        // seek(state.playing);
       }
 
       return PlayerWidget(

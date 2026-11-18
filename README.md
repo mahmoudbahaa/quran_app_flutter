@@ -68,16 +68,21 @@ the latest compatible versions recorded in pubspec.lock.
 ## Quran Foundation v4 integration
 
 Flutter calls the Cloudflare backend; no client secrets or QF access tokens are
-stored in the app. The current default is the verified prelive Worker:
+stored in the app. The default is the verified production Worker:
+
+```sh
+flutter run
+```
+
+Production origin: `https://quran-content-production.mahmoudbahaa-eg.workers.dev`.
+Normal runs and CI builds use production. To test prelive explicitly:
 
 ```sh
 flutter run --dart-define=QURAN_API_BASE_URL=https://quran-content-prelive.mahmoudbahaa-eg.workers.dev
 ```
 
-To switch to production, supply your deployed production Worker origin with the
-same define for `flutter run` and every `flutter build` command. The value must
-be an HTTPS origin without a path. The production Worker has not yet been
-provided or verified. CI builds currently use the prelive default.
+Use the same define with `flutter build` when selecting a different backend.
+The value must be an HTTPS origin without a path.
 
 The app downloads content on demand, follows verse pagination, refreshes and
 caches the chapter-reciter catalog, and loads one chapter's audio metadata at a
@@ -95,8 +100,8 @@ layouts as unavailable until reloaded.
 Prelive currently returns only chapters 1 and 2. During integration checks,
 page-1 requests for mushaf 1 and 2 returned empty verse lists, and mushaf 19
 returned 404. Flutter displays a retryable unavailable-page message and does not
-mark these pages as downloaded. Full page-rendering verification needs a backend
-with populated layout data, normally approved production access.
+mark these pages as downloaded. Production provides populated layouts; the live integration test below verifies
+that Flutter can parse and store them.
 
 Backend deployment instructions are in `backend/README.md`.
 
@@ -107,4 +112,11 @@ flutter test --dart-define=QURAN_LIVE_TEST=true test/quran_api_live_test.dart
 ```
 
 This verifies chapters, the chapter-reciter catalog, and timed audio responses.
-It does not claim that the prelive page-layout dataset is populated.
+Production verification also checks all 114 chapters and persists V1, V2,
+and Tajweed page layouts into SQLite (including V1 pages 175 and 604):
+
+```sh
+flutter test --dart-define=QURAN_LIVE_TEST=true --dart-define=QURAN_PRODUCTION_TEST=true test/quran_api_live_test.dart
+```
+
+The prelive page-layout limitation above does not affect production.

@@ -3,15 +3,18 @@ import 'package:flutter/services.dart';
 import 'package:quran_app_flutter/src/util/quran_player_global_state.dart';
 
 class DesktopPageScroll extends StatelessWidget {
-  const DesktopPageScroll(
-      {super.key,
-      required this.child,
-      required this.controller,
-      required this.itemCount,
-      required this.numPages,
-      required this.state,
-      required this.update});
+  const DesktopPageScroll({
+    super.key,
+    required this.child,
+    required this.controller,
+    required this.itemCount,
+    required this.numPages,
+    required this.state,
+    required this.update,
+    this.enabled = true,
+  });
 
+  final bool enabled;
   final Widget child;
   final PageController controller;
   final int itemCount;
@@ -20,23 +23,29 @@ class DesktopPageScroll extends StatelessWidget {
   final VoidCallback update;
 
   void goNextPage() {
+    if (!enabled) return;
     if (controller.page == null || controller.page! >= itemCount - 1) return;
 
     state.pageNumber += numPages;
     state.pause = true;
     state.surahNumber = -1;
     controller.nextPage(
-        duration: Duration(milliseconds: 400), curve: Curves.ease);
+      duration: Duration(milliseconds: 400),
+      curve: Curves.ease,
+    );
   }
 
   void goPreviousPage() {
+    if (!enabled) return;
     if (controller.page == null || controller.page! <= 0.0) return;
 
     state.pageNumber -= numPages;
     state.pause = true;
     state.surahNumber = -1;
     controller.previousPage(
-        duration: Duration(milliseconds: 400), curve: Curves.ease);
+      duration: Duration(milliseconds: 400),
+      curve: Curves.ease,
+    );
   }
 
   bool? _turnPage(DragUpdateDetails details, bool? isForward) {
@@ -66,17 +75,23 @@ class DesktopPageScroll extends StatelessWidget {
     bool? isForward;
 
     return GestureDetector(
-      onHorizontalDragUpdate: (details) =>
-          isForward = _turnPage(details, isForward),
-      onHorizontalDragEnd: (details) => isForward = _onDragFinish(isForward),
-      child: CallbackShortcuts(bindings: {
-        const SingleActivator(LogicalKeyboardKey.arrowLeft): () {
-          goNextPage();
+      onHorizontalDragUpdate: enabled
+          ? (details) => isForward = _turnPage(details, isForward)
+          : null,
+      onHorizontalDragEnd: enabled
+          ? (details) => isForward = _onDragFinish(isForward)
+          : null,
+      child: CallbackShortcuts(
+        bindings: {
+          const SingleActivator(LogicalKeyboardKey.arrowLeft): () {
+            goNextPage();
+          },
+          const SingleActivator(LogicalKeyboardKey.arrowRight): () {
+            goPreviousPage();
+          },
         },
-        const SingleActivator(LogicalKeyboardKey.arrowRight): () {
-          goPreviousPage();
-        },
-      }, child: child),
+        child: child,
+      ),
     );
   }
 }

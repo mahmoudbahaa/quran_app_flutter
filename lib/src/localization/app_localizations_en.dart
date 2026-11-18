@@ -98,4 +98,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get album => 'Quran';
+
+  @override
+  String get zoomIn => 'Zoom in';
+
+  @override
+  String get zoomOut => 'Zoom out';
+
+  @override
+  String get resetZoom => 'Reset zoom';
 }

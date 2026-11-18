@@ -1,6 +1,8 @@
 class QuranPlayerGlobalState {
   bool pause = true;
 
+  bool update = false;
+
   bool downloading = false;
 
   bool playing = false;
@@ -11,11 +13,7 @@ class QuranPlayerGlobalState {
 
   int pageNumber = -1;
 
-  int _surahNumber = -1;
-  int get surahNumber => _surahNumber;
-  set surahNumber(int newSurahNumber) {
-    _surahNumber = newSurahNumber;
-  }
+  int surahNumber = -1;
 
   int verseNumber = -1;
 

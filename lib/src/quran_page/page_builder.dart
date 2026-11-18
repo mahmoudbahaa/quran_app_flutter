@@ -48,14 +48,15 @@ class PageBuilder {
           fontFamily: fontFamily,
           height: lineHeight,
         ),
-        recognizer: DoubleTapGestureRecognizer()
-          ..onDoubleTap = () {
+        recognizer: LongPressGestureRecognizer()
+          ..onLongPress = () {
             state
               ..pageNumber = pageNumber
               ..surahNumber = surahNumber
               ..verseNumber = verseNumber
               ..wordNumber = wordNumber;
-            state.playing = false;
+
+            state.update = true;
             update();
           },
       );

@@ -31,5 +31,8 @@
   "half": "½",
   "quarter3": "¾",
   "comma": ",",
-  "album": "Quran"
+  "album": "Quran",
+  "zoomIn": "Zoom in",
+  "zoomOut": "Zoom out",
+  "resetZoom": "Reset zoom"
 }

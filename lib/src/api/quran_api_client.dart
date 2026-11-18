@@ -35,7 +35,7 @@ class QuranApiClient {
 
   static const configuredBaseUrl = String.fromEnvironment(
     'QURAN_API_BASE_URL',
-    defaultValue: 'https://quran-content-prelive.mahmoudbahaa-eg.workers.dev',
+    defaultValue: 'https://quran-content-production.mahmoudbahaa-eg.workers.dev',
   );
   static final instance = QuranApiClient();
   final http.Client _client;

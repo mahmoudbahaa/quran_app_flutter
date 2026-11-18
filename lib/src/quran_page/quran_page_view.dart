@@ -16,6 +16,7 @@ import '../util/number_utils.dart';
 import '../util/quran_player_global_state.dart';
 import 'page_builder.dart';
 import 'quran_player.dart';
+import 'zoomable_quran_pages.dart';
 
 class QuranPageView extends StatefulWidget {
   const QuranPageView({
@@ -36,6 +37,7 @@ class QuranPageView extends StatefulWidget {
 
 class _QuranPageViewState extends State<QuranPageView> {
   final double defaultFontSize = 2;
+  final _zoomController = QuranZoomController();
 
   static bool showPlayer = false;
   static bool showAppBar = false;
@@ -106,6 +108,13 @@ class _QuranPageViewState extends State<QuranPageView> {
     assetsLoaderController = AssetsLoaderController(
       settingsController: settingsController,
     );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    _zoomController.dispose();
+    super.dispose();
   }
 
   void update() {
@@ -303,7 +312,7 @@ class _QuranPageViewState extends State<QuranPageView> {
         state.curPageInPageView = ((state.pageNumber - 1) / numPages).floor();
 
         if (_initialized) {
-          _pageController.jumpToPage(state.curPageInPageView);
+          // _pageController.jumpToPage(state.curPageInPageView);
         } else {
           _pageController.dispose();
           _pageController = PageController(
@@ -312,27 +321,35 @@ class _QuranPageViewState extends State<QuranPageView> {
           _initialized = true;
         }
 
-        Widget body = DesktopPageScroll(
-          controller: _pageController,
-          itemCount: (quran.totalPagesCount / numPages).ceil(),
-          numPages: numPages,
-          state: state,
-          update: update,
-          child: Focus(
-            autofocus: true,
-            child: PageView.builder(
-              onPageChanged: (value) => state.curPageInPageView = value,
-              scrollDirection: Axis.horizontal,
-              controller: _pageController,
-              scrollBehavior: ScrollConfiguration.of(context).copyWith(
-                scrollbars: true,
-                dragDevices: {PointerDeviceKind.touch},
+        Widget body = ZoomableQuranPages(
+          key: ValueKey('$orientation:$numPages'),
+          pageIdentity: state.pageNumber,
+          controller: _zoomController,
+          builder: (context, navigationEnabled) => DesktopPageScroll(
+            enabled: navigationEnabled,
+            controller: _pageController,
+            itemCount: (quran.totalPagesCount / numPages).ceil(),
+            numPages: numPages,
+            state: state,
+            update: update,
+            child: Focus(
+              autofocus: true,
+              child: PageView.builder(
+                onPageChanged: (value) => state.curPageInPageView = value,
+                scrollDirection: Axis.horizontal,
+                controller: _pageController,
+                scrollBehavior: ScrollConfiguration.of(context).copyWith(
+                  scrollbars: true,
+                  dragDevices: {PointerDeviceKind.touch},
+                ),
+                itemCount: (quran.totalPagesCount / numPages).ceil(),
+                reverse: !isRtl(context),
+                itemBuilder: (context, index) =>
+                    buildPages(context, orientation, index * numPages),
+                physics: navigationEnabled
+                    ? const BouncingScrollPhysics()
+                    : const NeverScrollableScrollPhysics(),
               ),
-              itemCount: (quran.totalPagesCount / numPages).ceil(),
-              reverse: !isRtl(context),
-              itemBuilder: (context, index) =>
-                  buildPages(context, orientation, index * numPages),
-              physics: BouncingScrollPhysics(),
             ),
           ),
         );
@@ -382,6 +399,9 @@ class _QuranPageViewState extends State<QuranPageView> {
                   settingsController: settingsController,
                   state: state,
                   hasNotch: true,
+                  toolbarActions: [
+                    QuranZoomControls(controller: _zoomController),
+                  ],
                   iconsSize: QuranPageView.iconsSize,
                 )
               : null,
